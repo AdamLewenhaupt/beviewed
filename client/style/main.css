@@ -1,0 +1,12 @@
+
+.chat .chat-window {
+  background-color: white;
+}
+.chat .chat-window tbody tr .user {
+  width: 1%;
+  text-align: center;
+}
+.chat form textarea {
+  resize: none;
+  width: 100%;
+}
