@@ -2,8 +2,41 @@ getTime = ->
 	d = new Date()
 	"#{d.getHours()}:#{d.getMinutes()}"
 
-communityNavCtrl = ($scope, $element) ->
 
+profileCtrl = ($scope) ->
+	$scope.user =
+		image: "/img/dummy.jpg"
+		tag: "spinnster"
+		email: "adam.lewenhauptt@gmail.com"
+		country: "sweden"
+		firstName: "adam"
+		lastName: "lewenhaupt"
+		communities: [{ name: "Aventry fan club", image: "/img/dummy2.jpeg"}]
+
+	$scope.admin = true
+
+communityCtrl = ($scope) ->
+
+	sendMessage = () ->
+		$scope.chatlog.push 
+			user: "Me"
+			content: $scope.messageText
+			time: getTime()
+		$scope.messageText = ""
+		$(".chat-window-wrapper").animate
+			scrollTop: $(".chat-window").height(),
+			duration: 50
+			queue: false
+
+	$scope.hosts = [
+			image: "/img/dummy.jpg"
+			tag: "spinnster"
+			email: "adam.lewenhauptt@gmail.com"
+			country: "sweden"
+			firstName: "adam"
+			lastName: "lewenhaupt"
+			communities: [{ name: "Aventry fan club", image: "/img/dummy2.jpeg"}]
+		]
 	$scope.current = 'social'
 	$scope.inputSize = 1
 	$scope.chatlog = [
@@ -13,19 +46,13 @@ communityNavCtrl = ($scope, $element) ->
 
 	$(".chat form textarea").on 'keypress', (e) ->
 		if e.keyCode == 13
-			$(this).parent().submit()
+			$scope.$apply ->
+				sendMessage()
 			return false
-
-	$scope.sendMessage = () ->
-		$scope.chatlog.push 
-			user: "Me"
-			content: $scope.messageText
-			time: getTime()
-		$scope.messageText = ""
 
 	$scope.active = (name) ->
 		if $scope.current == name then "active" else ""
 
 	$scope.set = (name) ->
-		console.log  $element.children("ul li")
+		console.log $element.children("ul li")
 		console.log name

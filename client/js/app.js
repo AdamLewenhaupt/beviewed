@@ -1,4 +1,4 @@
-var communityNavCtrl, getTime;
+var communityCtrl, getTime, profileCtrl;
 
 getTime = function() {
   var d;
@@ -6,7 +6,55 @@ getTime = function() {
   return "" + (d.getHours()) + ":" + (d.getMinutes());
 };
 
-communityNavCtrl = function($scope, $element) {
+profileCtrl = function($scope) {
+  $scope.user = {
+    image: "/img/dummy.jpg",
+    tag: "spinnster",
+    email: "adam.lewenhauptt@gmail.com",
+    country: "sweden",
+    firstName: "adam",
+    lastName: "lewenhaupt",
+    communities: [
+      {
+        name: "Aventry fan club",
+        image: "/img/dummy2.jpeg"
+      }
+    ]
+  };
+  return $scope.admin = true;
+};
+
+communityCtrl = function($scope) {
+  var sendMessage;
+  sendMessage = function() {
+    $scope.chatlog.push({
+      user: "Me",
+      content: $scope.messageText,
+      time: getTime()
+    });
+    $scope.messageText = "";
+    return $(".chat-window-wrapper").animate({
+      scrollTop: $(".chat-window").height(),
+      duration: 50,
+      queue: false
+    });
+  };
+  $scope.hosts = [
+    {
+      image: "/img/dummy.jpg",
+      tag: "spinnster",
+      email: "adam.lewenhauptt@gmail.com",
+      country: "sweden",
+      firstName: "adam",
+      lastName: "lewenhaupt",
+      communities: [
+        {
+          name: "Aventry fan club",
+          image: "/img/dummy2.jpeg"
+        }
+      ]
+    }
+  ];
   $scope.current = 'social';
   $scope.inputSize = 1;
   $scope.chatlog = [
@@ -22,18 +70,12 @@ communityNavCtrl = function($scope, $element) {
   ];
   $(".chat form textarea").on('keypress', function(e) {
     if (e.keyCode === 13) {
-      $(this).parent().submit();
+      $scope.$apply(function() {
+        return sendMessage();
+      });
       return false;
     }
   });
-  $scope.sendMessage = function() {
-    $scope.chatlog.push({
-      user: "Me",
-      content: $scope.messageText,
-      time: getTime()
-    });
-    return $scope.messageText = "";
-  };
   $scope.active = function(name) {
     if ($scope.current === name) {
       return "active";
@@ -50,3 +92,31 @@ communityNavCtrl = function($scope, $element) {
 var app;
 
 app = angular.module('beviewed', ["ui.bootstrap"]);
+
+app.directive("userLocal", function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      getUser: "&userLocal"
+    },
+    template: "			<div>			<a href='/profile'>			<img class='user img-rounded' 				ng-src='{{user.image}}' 				tooltip-append-to-body='true' 				tooltip='{{user.tag}}'/></a></div>",
+    link: function(scope) {
+      return scope.user = scope.getUser();
+    }
+  };
+});
+
+app.directive("communityLocal", function() {
+  return {
+    restrict: 'A',
+    replace: true,
+    scope: {
+      getCommunity: "&communityLocal"
+    },
+    template: "		<div><a href='/'>			<img class='community img-rounded' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
+    link: function(scope) {
+      return scope.community = scope.getCommunity();
+    }
+  };
+});

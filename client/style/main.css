@@ -1,8 +1,12 @@
 
-.chat .chat-window {
+.chat .chat-window-wrapper {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+.chat .chat-window-wrapper .chat-window {
   background-color: white;
 }
-.chat .chat-window tbody tr .user {
+.chat .chat-window-wrapper .chat-window tbody tr .user {
   width: 1%;
   text-align: center;
 }

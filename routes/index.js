@@ -1,4 +1,4 @@
-var index;
+var index, profile;
 
 index = {
   get: function(req, res) {
@@ -6,4 +6,12 @@ index = {
   }
 };
 
+profile = {
+  get: function(req, res) {
+    return res.render("profile.html");
+  }
+};
+
 exports.index = index;
+
+exports.profile = profile;

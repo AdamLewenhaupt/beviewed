@@ -1,15 +1,7 @@
 <html ng-app="beviewed">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Be Viewed</title>
-	<script type="text/javascript" src="/libs/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="/libs/angular/angular.min.js"></script>
-	<script type="text/javascript" src="/js/app.js"></script>
-	<script type="text/javascript" src="/libs/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="/style/main.css">
-	<link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="/libs/bootstrap/css/bootstrap-responsive.min.css" />
+	<% include head %>
 	<style type="text/css">
 	.embed {
 		height: 400px;
@@ -25,27 +17,16 @@
 			height: 300px;
 		}
 	}
+
+	.user {
+		width: 14%;
+	}
 	</style>
 </style>
 </head>
 <body>
-	<!-- Site navigation -->
-	<div class="navbar">
-		<div class="navbar-inner">
-			<a href="#" class="brand">Be viewed</a>
-			<ul class="nav pull-right">
-				<li><a class="btn" href="#">
-					<i class="icon-globe"></i>
-					Explore
-				</a></li>
-				<li><a class="btn" href="#">
-					<i class="icon-user"></i>
-					Profile
-				</a></li>
-			</ul>
-		</div>
-	</div>
-	<div class="row-fluid" ng-controller="communityNavCtrl">
+	<% include nav %>
+	<div class="row-fluid" ng-controller="communityCtrl">
 		<!-- Community nav -->
 		<div class="span2">
 			<ul class="nav nav-pills nav-stacked ">
@@ -98,19 +79,22 @@
 				<div class="row-fluid">
 					<!-- Chat -->
 					<div class="span5 chat">
-						<table class="table table-bordered chat-window">
-							<tbody>
-								<tr ng-repeat="entry in chatlog">
-									<td tooltip-append-to-body="true" tooltip-placement="left" tooltip="{{entry.time}}" class="user"><strong>{{entry.user}}</strong></td>
-									<td>{{entry.content}}</td>
-								</tr>
-							</tbody>
-						</table>
-						<form ng-submit="sendMessage(messageText)">
+						<div class="chat-window-wrapper">
+							<table class="table table-bordered chat-window">
+								<tbody>
+									<tr ng-repeat="entry in chatlog">
+										<td tooltip-append-to-body="true" tooltip-placement="left" tooltip="{{entry.time}}" class="user"><strong>{{entry.user}}</strong></td>
+										<td>{{entry.content}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<form >
 							<textarea rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
 							</textarea>
 						</form>
 					</div>
+					<!-- Chat room nav -->
 					<div class="span2">
 						<ul class="nav nav-pills nav-stacked">
 							<li class="active">
@@ -122,6 +106,27 @@
 						</ul>
 					</div>
 				</div>
+			</div>
+			<!-- Community Members -->
+			<div class="well">
+				<!-- Hosts -->
+				<h3 style="float:left;">Hosts</h3>
+				<form class="form-inline" style="margin: 10px 0 0 80px;">
+					<input type="text" class="input-large" ng-model="hostFilter.tag" style="height:36px;font-size:22px;line-height:36px;" 
+					placeholder="Search in hosts"/>
+				</form><br/>
+				<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
+					<li ng-repeat="host in hosts | filter:hostFilter">
+						<div user-local="host" />
+					</li>
+				</ul>
+				<!-- Members -->
+				<h3>Members</h3>
+				<ul style="list-style:none;margin-left:0px;">
+					<li ng-repeat="member in members">
+						<div user-local="member" />
+					</li>
+				</ul>
 			</div>
 		</div>
 	</div>

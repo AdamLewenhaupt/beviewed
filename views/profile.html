@@ -1,0 +1,59 @@
+<html ng-app="beviewed">
+<head>
+	<title>Beviewed - Profile</title>
+	<% include head %>
+</head>
+<style type="text/css">
+.community {
+	width: 20%;
+}
+
+.involved-communities {
+	list-style: none;
+}
+
+.edit {
+	margin-left: 5px;
+}
+</style>
+<body>
+	<% include nav %>
+	<div class="row-fluid">
+		<div ng-controller="profileCtrl">
+			<!-- Introduction -->
+			<div class="span2 well">
+				<img user-local="user">
+			</div>
+			<!-- User fields -->
+			<div class="span4 well">
+				<h1>A little about {{user.tag}}</h1>
+				<address>
+					<strong>Name</strong><button class="btn btn-mini btn-primary edit" ng-show="admin"><i class="icon-pencil icon-white"></i></button>
+					<p>{{user.firstName}} {{user.lastName}}</p>
+
+					<strong>Tag</strong><button class="btn btn-mini btn-primary edit" ng-show="admin"><i class="icon-pencil icon-white"></i></button>
+					<p>{{user.tag}}</p>
+
+					<strong>Country</strong><button class="btn btn-mini btn-primary edit" ng-show="admin"><i class="icon-pencil icon-white"></i></button>
+					<p>{{user.country}}</p>
+					<strong>Contact</strong><button class="btn btn-mini btn-primary edit" ng-show="admin"><i class="icon-pencil icon-white"></i></button><br/>
+					<p>{{user.email}}</p>
+				</address>
+			</div>
+			<!-- Communities -->
+			<div class="span6 well">
+				<!-- Involved communities -->
+				<h1>Involved in <span class="text-success">{{user.communities.length}}</span> community</h1>
+				<ul class="involved-communities">
+					<li ng-repeat="community in user.communities">
+						<div community-local="community" />
+					</li>
+				</ul>
+
+				<!-- Hosting communitites -->
+				<h1>Hosts <span class="text-success">0</span> communities</h1>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

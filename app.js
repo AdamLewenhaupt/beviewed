@@ -46,6 +46,8 @@ app.use(express["static"](path.join(__dirname, "client")));
 
 app.get("/", routes.index.get);
 
+app.get("/profile", routes.profile.get);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }
