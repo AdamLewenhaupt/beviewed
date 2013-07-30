@@ -26,9 +26,9 @@
 </head>
 <body>
 	<% include nav %>
-	<div class="row-fluid" ng-controller="communityCtrl">
+	<div class="row" ng-controller="communityCtrl">
 		<!-- Community nav -->
-		<div class="span2">
+		<div class="col-lg-2">
 			<ul class="nav nav-pills nav-stacked ">
 				<li class="{{ active('what-up') }}">
 					<a ng-click="current = 'what-up'" class="text-center" href="#">What's up</a>
@@ -39,46 +39,46 @@
 			</ul>
 		</div>
 		<!-- What'up -->
-		<div class="span10" ng-show="active('what-up')">
+		<div class="col-lg-10" ng-show="active('what-up')">
 			<div class="well well-large">
 				<!-- Feed -->
-				<div class="row-fluid">
-					<embed class="span6 embed" src="http://www.youtube.com/embed/pngO2pRNYOA">
-					<div class="span6 info">
+				<div class="row">
+					<embed class="col-lg-6 embed" src="http://www.youtube.com/embed/pngO2pRNYOA">
+					<div class="col-lg-6 info">
 						<h1>Title</h1>
 						<p>"But I am going to fight a duel with this gentleman."</p>
 					</div>
 				</div>
 			</div>
 			<!-- Now here's just some nifty info -->
-			<div class="row-fluid">
-				<div class="span4 well well-large">
+			<div class="row">
+				<div class="col-lg-4 well well-large">
 					<h3 class="text-center">Fame 3<h3/>
 					<div class="progress">
-						<div class="bar bar-success" style="width:30%;"></div>
+						<div class="progress-bar progress-bar-success" style="width:30%;"></div>
 					</div>
 				</div>
-				<div class="span4 well well-large">
+				<div class="col-lg-4 well well-large">
 					<h3 class="text-center">Members 102</h3>
 					<div class="progress">
-						<div class="bar bar-success" style="width:85%;"></div>
-						<div class="bar bar-info" style="width:15%;"></div>
+						<div class="progress-bar progress-bar-success" style="width:85%;"></div>
+						<div class="progress-bar progress-bar-info" style="width:15%;"></div>
 					</div>
 				</div>
-				<div class="span4 well well-large">
+				<div class="col-lg-4 well well-large">
 					<h3 class="text-center">Awesomeness 9000+</h3>
 					<div class="progress">
-						<div class="bar bar-success" style="width:0%;"></div>
+						<div class="progress-bar progress-bar-success" style="width:0%;"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- Social -->
-		<div class="span10" ng-show="active('social')">
+		<div class="col-lg-10" ng-show="active('social')">
 			<div class="well well-large">
-				<div class="row-fluid">
+				<div class="row">
 					<!-- Chat -->
-					<div class="span5 chat">
+					<div class="col-lg-5 chat">
 						<div class="chat-window-wrapper">
 							<table class="table table-bordered chat-window">
 								<tbody>
@@ -95,7 +95,7 @@
 						</form>
 					</div>
 					<!-- Chat room nav -->
-					<div class="span2">
+					<div class="col-lg-2">
 						<ul class="nav nav-pills nav-stacked">
 							<li class="active">
 								<a class="text-center" href="#">Feedback</a>

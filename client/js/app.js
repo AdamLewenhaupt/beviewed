@@ -100,7 +100,7 @@ app.directive("userLocal", function() {
     scope: {
       getUser: "&userLocal"
     },
-    template: "			<div>			<a href='/profile'>			<img class='user img-rounded' 				ng-src='{{user.image}}' 				tooltip-append-to-body='true' 				tooltip='{{user.tag}}'/></a></div>",
+    template: "			<div class='media'>			<a href='/profile'>			<img class='user img-rounded media-object' 				ng-src='{{user.image}}' 				tooltip-append-to-body='true' 				tooltip='{{user.tag}}'/></a></div>",
     link: function(scope) {
       return scope.user = scope.getUser();
     }
@@ -114,7 +114,7 @@ app.directive("communityLocal", function() {
     scope: {
       getCommunity: "&communityLocal"
     },
-    template: "		<div><a href='/community'>			<img class='community img-rounded' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
+    template: "		<div><a href='/community'>			<img class='community img-rounded media-object' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
     link: function(scope) {
       return scope.community = scope.getCommunity();
     }

@@ -6,9 +6,9 @@ app.directive "userLocal", () ->
 		scope:
 			getUser: "&userLocal"
 		template: "
-			<div>
+			<div class='media'>
 			<a href='/profile'>
-			<img class='user img-rounded' 
+			<img class='user img-rounded media-object' 
 				ng-src='{{user.image}}' 
 				tooltip-append-to-body='true' 
 				tooltip='{{user.tag}}'/></a></div>"
@@ -23,7 +23,7 @@ app.directive "communityLocal", () ->
 		getCommunity: "&communityLocal"
 	template: "
 		<div><a href='/community'>
-			<img class='community img-rounded' 
+			<img class='community img-rounded media-object' 
 				ng-src='{{community.image}}' 
 				tooltip-append-to-body='true' 
 				tooltip='{{community.name}}'/></a></div>"
