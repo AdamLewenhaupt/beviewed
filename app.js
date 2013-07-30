@@ -48,6 +48,8 @@ app.get("/", routes.index.get);
 
 app.get("/profile", routes.profile.get);
 
+app.get("/community", routes.community.get);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }

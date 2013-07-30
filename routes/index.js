@@ -1,4 +1,4 @@
-var index, profile;
+var community, index, profile;
 
 index = {
   get: function(req, res) {
@@ -12,6 +12,14 @@ profile = {
   }
 };
 
+community = {
+  get: function(req, res) {
+    return res.render("community.html");
+  }
+};
+
 exports.index = index;
 
 exports.profile = profile;
+
+exports.community = community;

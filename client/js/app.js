@@ -114,7 +114,7 @@ app.directive("communityLocal", function() {
     scope: {
       getCommunity: "&communityLocal"
     },
-    template: "		<div><a href='/'>			<img class='community img-rounded' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
+    template: "		<div><a href='/community'>			<img class='community img-rounded' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
     link: function(scope) {
       return scope.community = scope.getCommunity();
     }

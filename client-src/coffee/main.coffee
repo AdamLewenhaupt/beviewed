@@ -22,7 +22,7 @@ app.directive "communityLocal", () ->
 	scope:
 		getCommunity: "&communityLocal"
 	template: "
-		<div><a href='/'>
+		<div><a href='/community'>
 			<img class='community img-rounded' 
 				ng-src='{{community.image}}' 
 				tooltip-append-to-body='true' 
