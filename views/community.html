@@ -6,6 +6,7 @@
 	.embed {
 		height: 400px;
 	}
+
 	@media(max-width: 939) {
 		.embed {
 			height: 200px;
@@ -18,8 +19,30 @@
 		}
 	}
 
-	.user {
+	.host-filter {
+		height:36px;
+		font-size:22px;
+		line-height:36px;
+		width:200px;
+	}
+
+	.hosts-li {
 		width: 14%;
+	}
+
+	@media(max-width: 769) {
+		.host-filter {
+			width: 150px;
+			font-size: 18px;
+		}
+
+		.hosts-li {
+			width: 25%;
+		}
+	}
+
+	.user {
+		width: 100%;
 	}
 	</style>
 </style>
@@ -29,22 +52,24 @@
 	<div class="row" ng-controller="communityCtrl">
 		<!-- Community nav -->
 		<div class="col-lg-2">
-			<ul class="nav nav-pills nav-stacked ">
-				<li class="{{ active('what-up') }}">
-					<a ng-click="current = 'what-up'" class="text-center" href="#">What's up</a>
-				</li>
-				<li class="{{ active('social') }}">
-					<a ng-click="current = 'social'" class="text-center" href="#">Social</a>
-				</li>
-			</ul>
+			<div class="row">
+				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-success"
+					ng-click="current = 'what-up'">
+					What's up
+				</button>
+				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-info"
+					ng-click="current = 'social'">
+					Social
+				</button>
+			</div>
 		</div>
 		<!-- What'up -->
 		<div class="col-lg-10" ng-show="active('what-up')">
 			<div class="well well-large">
 				<!-- Feed -->
 				<div class="row">
-					<embed class="col-lg-6 embed" src="http://www.youtube.com/embed/pngO2pRNYOA">
-					<div class="col-lg-6 info">
+					<embed class="col-12 col-sm-6 col-lg-6 embed" src="http://www.youtube.com/embed/pngO2pRNYOA">
+					<div class="col-12 col-sm-6 col-lg-6 info">
 						<h1>Title</h1>
 						<p>"But I am going to fight a duel with this gentleman."</p>
 					</div>
@@ -52,20 +77,20 @@
 			</div>
 			<!-- Now here's just some nifty info -->
 			<div class="row">
-				<div class="col-lg-4 well well-large">
+				<div class="col-sm-4 col-lg-4 well well-large">
 					<h3 class="text-center">Fame 3<h3/>
 					<div class="progress">
 						<div class="progress-bar progress-bar-success" style="width:30%;"></div>
 					</div>
 				</div>
-				<div class="col-lg-4 well well-large">
+				<div class="col-sm-4 col-lg-4 well well-large">
 					<h3 class="text-center">Members 102</h3>
 					<div class="progress">
 						<div class="progress-bar progress-bar-success" style="width:85%;"></div>
 						<div class="progress-bar progress-bar-info" style="width:15%;"></div>
 					</div>
 				</div>
-				<div class="col-lg-4 well well-large">
+				<div class="col-sm-4 col-lg-4 well well-large">
 					<h3 class="text-center">Awesomeness 9000+</h3>
 					<div class="progress">
 						<div class="progress-bar progress-bar-success" style="width:0%;"></div>
@@ -78,7 +103,7 @@
 			<div class="well well-large">
 				<div class="row">
 					<!-- Chat -->
-					<div class="col-lg-5 chat">
+					<div class="col-sm-10 col-lg-10 chat">
 						<div class="chat-window-wrapper">
 							<table class="table table-bordered chat-window">
 								<tbody>
@@ -90,12 +115,12 @@
 							</table>
 						</div>
 						<form >
-							<textarea rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
+							<textarea class="form-control" rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
 							</textarea>
 						</form>
 					</div>
 					<!-- Chat room nav -->
-					<div class="col-lg-2">
+					<div class="col-sm-2 col-lg-2">
 						<ul class="nav nav-pills nav-stacked">
 							<li class="active">
 								<a class="text-center" href="#">Feedback</a>
@@ -111,19 +136,19 @@
 			<div class="well">
 				<!-- Hosts -->
 				<h3 style="float:left;">Hosts</h3>
-				<form class="form-inline" style="margin: 10px 0 0 80px;">
-					<input type="text" class="input-large" ng-model="hostFilter.tag" style="height:36px;font-size:22px;line-height:36px;" 
+				<form target="#" class="form-inline" style="margin: 10px 0 0 80px;">
+					<input type="text" class="form-control host-filter" ng-model="hostFilter.tag"
 					placeholder="Search in hosts"/>
 				</form><br/>
 				<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
-					<li ng-repeat="host in hosts | filter:hostFilter">
+					<li class="hosts-li" ng-repeat="host in hosts | filter:hostFilter">
 						<div user-local="host" />
 					</li>
 				</ul>
 				<!-- Members -->
 				<h3>Members</h3>
 				<ul style="list-style:none;margin-left:0px;">
-					<li ng-repeat="member in members">
+					<li  ng-repeat="member in members">
 						<div user-local="member" />
 					</li>
 				</ul>
