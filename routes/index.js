@@ -1,25 +1,23 @@
-var community, index, profile;
-
-index = {
+exports.index = {
   get: function(req, res) {
     return res.render("index.html");
   }
 };
 
-profile = {
+exports.profile = {
   get: function(req, res) {
     return res.render("profile.html");
   }
 };
 
-community = {
+exports.community = {
   get: function(req, res) {
     return res.render("community.html");
   }
 };
 
-exports.index = index;
-
-exports.profile = profile;
-
-exports.community = community;
+exports.explore = {
+  get: function(req, res) {
+    return res.render("explore.html");
+  }
+};

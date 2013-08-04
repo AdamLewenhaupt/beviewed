@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app="beviewed">
+<head>
+	<% include head %>
+	<title>Beviewed - Explore</title>
+	<style type="text/css">
+	.tags {
+		margin-top: 10px;
+	}
+
+	.tags div div img {
+		width: 100%;
+		background-color: white;
+	}
+
+	.tagSearch {
+		margin-bottom: 10px;
+	}
+	</style>
+</head>
+<body>
+	<% include nav %>
+	<div class="row" ng-controller="exploreCtrl">
+		<!-- Filtering -->
+		<div class="col-sm-5 col-lg-4">
+			<!-- Main filter -->
+			<div class="btn-group btn-group-justified">
+				<a class="btn btn-large btn-success">
+					Makers
+				</a>
+				<a class="btn btn-large btn-info">
+					Reviewers
+				</a>
+			</div>
+			<!-- Tag filter -->
+			<div class="well tags">
+				<input ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
+				<div class="row">
+					<div class="col-3 col-sm-3 col-lg-2" ng-repeat="tag in tags | filter:tagSearch | filter:filterNt | limitTo:60">
+						<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -3,6 +3,20 @@ getTime = ->
 	"#{d.getHours()}:#{d.getMinutes()}"
 
 
+exploreCtrl = ($scope) ->
+
+	$scope.tags = [
+			"music",
+			"games",
+			"art",
+			"comedy"
+		]
+
+	$scope.selectedTags = []
+
+	$scope.filterNt = (item) ->
+		!(item in $scope.selectedTags)
+
 profileCtrl = ($scope) ->
 	$scope.user =
 		image: "/img/dummy.jpg"

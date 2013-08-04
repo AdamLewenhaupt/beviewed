@@ -1,9 +1,18 @@
-var communityCtrl, getTime, profileCtrl;
+var communityCtrl, exploreCtrl, getTime, profileCtrl,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 getTime = function() {
   var d;
   d = new Date();
   return "" + (d.getHours()) + ":" + (d.getMinutes());
+};
+
+exploreCtrl = function($scope) {
+  $scope.tags = ["music", "games", "art", "comedy"];
+  $scope.selectedTags = [];
+  return $scope.filterNt = function(item) {
+    return !(__indexOf.call($scope.selectedTags, item) >= 0);
+  };
 };
 
 profileCtrl = function($scope) {

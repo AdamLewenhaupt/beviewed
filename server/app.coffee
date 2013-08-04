@@ -30,6 +30,7 @@ app.use express.static(path.join(__dirname, "client"))
 app.get "/", routes.index.get
 app.get "/profile", routes.profile.get
 app.get "/community", routes.community.get
+app.get "/explore", routes.explore.get
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")

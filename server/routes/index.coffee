@@ -1,15 +1,15 @@
-index =
+exports.index =
 	get: (req, res) ->
 		res.render "index.html"
 
-profile =
+exports.profile =
 	get: (req, res) ->
 		res.render "profile.html"
 
-community = 
+exports.community = 
 	get: (req, res) ->
 		res.render "community.html"
 
-exports.index = index
-exports.profile = profile
-exports.community = community
+exports.explore =
+	get: (req, res) ->
+		res.render "explore.html"
