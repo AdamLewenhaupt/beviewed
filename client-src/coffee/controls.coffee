@@ -29,7 +29,7 @@ exploreCtrl = ($scope) ->
 					break
 		else
 			check2 = true
-			
+
 		check1 && check2
 
 profileCtrl = ($scope) ->
@@ -57,6 +57,9 @@ communityCtrl = ($scope) ->
 			duration: 50
 			queue: false
 
+	$scope.community =
+		name: "Aventry fan club"
+
 	$scope.hosts = [
 			image: "/img/dummy.jpg"
 			tag: "spinnster"
@@ -66,7 +69,8 @@ communityCtrl = ($scope) ->
 			lastName: "lewenhaupt"
 			communities: [{ name: "Aventry fan club", image: "/img/dummy2.jpeg"}]
 		]
-	$scope.current = 'social'
+
+	$scope.current = 'what-up'
 	$scope.inputSize = 1
 	$scope.chatlog = [
 		{ user: "Me", content: "Hello world", time: "16:25" },

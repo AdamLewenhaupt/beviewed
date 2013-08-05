@@ -73,6 +73,9 @@ communityCtrl = function($scope) {
       queue: false
     });
   };
+  $scope.community = {
+    name: "Aventry fan club"
+  };
   $scope.hosts = [
     {
       image: "/img/dummy.jpg",
@@ -89,7 +92,7 @@ communityCtrl = function($scope) {
       ]
     }
   ];
-  $scope.current = 'social';
+  $scope.current = 'what-up';
   $scope.inputSize = 1;
   $scope.chatlog = [
     {
@@ -134,7 +137,7 @@ app.directive("userLocal", function() {
     scope: {
       getUser: "&userLocal"
     },
-    template: "			<div class='media'>			<a href='/profile'>			<img class='user img-rounded media-object' 				ng-src='{{user.image}}' 				tooltip-append-to-body='true' 				tooltip='{{user.tag}}'/></a></div>",
+    template: "			<div class='media'>			<a href='/profile'>			<img class='user img-rounded media-object' 				ng-src='{{user.image}}' /></a></div>",
     link: function(scope) {
       return scope.user = scope.getUser();
     }
@@ -148,7 +151,7 @@ app.directive("communityLocal", function() {
     scope: {
       getCommunity: "&communityLocal"
     },
-    template: "		<div><a href='/community'>			<img class='community img-rounded media-object' 				ng-src='{{community.image}}' 				tooltip-append-to-body='true' 				tooltip='{{community.name}}'/></a></div>",
+    template: "		<div><a href='/community'>			<img class='community img-rounded media-object' 				ng-src='{{community.image}}'/></a></div>",
     link: function(scope) {
       return scope.community = scope.getCommunity();
     }

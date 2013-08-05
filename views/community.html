@@ -44,12 +44,19 @@
 	.user {
 		width: 100%;
 	}
+
+	.community-header {
+		padding-left: 40px;
+		padding-bottom: 10px;
+		margin-top: 0px;
+	}
 	</style>
 </style>
 </head>
 <body>
 	<% include nav %>
 	<div class="row" ng-controller="communityCtrl">
+		<h1 class="col-lg-12 community-header">{{community.name}}</h1>
 		<!-- Community nav -->
 		<div class="col-lg-2">
 			<div class="row">
