@@ -5,6 +5,8 @@ getTime = ->
 
 exploreCtrl = ($scope) ->
 
+	$scope.communities = [{ name: "aventry fan club", image: "/img/dummy2.jpeg", tags: ["music"]}]
+
 	$scope.tags = [
 			"music",
 			"games",
@@ -14,8 +16,21 @@ exploreCtrl = ($scope) ->
 
 	$scope.selectedTags = []
 
-	$scope.displayTag = (item) ->
-		!(item in $scope.selectedTags) and item.indexOf($scope.tagSearch) != -1
+	$scope.displayTag = (tag) ->
+		!(tag in $scope.selectedTags) and tag.indexOf($scope.tagSearch) != -1
+
+	$scope.displayCommunity = (community) ->
+		check1 = community.name.indexOf($scope.mainQuery) != -1
+		check2 = false
+		if $scope.selectedTags.length > 0
+			for tag in community.tags
+				if tag in $scope.selectedTags
+					check2 = true
+					break
+		else
+			check2 = true
+			
+		check1 && check2
 
 profileCtrl = ($scope) ->
 	$scope.user =

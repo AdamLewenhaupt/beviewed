@@ -8,10 +8,35 @@ getTime = function() {
 };
 
 exploreCtrl = function($scope) {
+  $scope.communities = [
+    {
+      name: "aventry fan club",
+      image: "/img/dummy2.jpeg",
+      tags: ["music"]
+    }
+  ];
   $scope.tags = ["music", "games", "art", "comedy"];
   $scope.selectedTags = [];
-  return $scope.displayTag = function(item) {
-    return !(__indexOf.call($scope.selectedTags, item) >= 0) && item.indexOf($scope.tagSearch) !== -1;
+  $scope.displayTag = function(tag) {
+    return !(__indexOf.call($scope.selectedTags, tag) >= 0) && tag.indexOf($scope.tagSearch) !== -1;
+  };
+  return $scope.displayCommunity = function(community) {
+    var check1, check2, tag, _i, _len, _ref;
+    check1 = community.name.indexOf($scope.mainQuery) !== -1;
+    check2 = false;
+    if ($scope.selectedTags.length > 0) {
+      _ref = community.tags;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tag = _ref[_i];
+        if (__indexOf.call($scope.selectedTags, tag) >= 0) {
+          check2 = true;
+          break;
+        }
+      }
+    } else {
+      check2 = true;
+    }
+    return check1 && check2;
   };
 };
 
