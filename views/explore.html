@@ -8,13 +8,58 @@
 		margin-top: 10px;
 	}
 
-	.tags div div img {
-		width: 100%;
-		background-color: white;
-	}
-
 	.tagSearch {
 		margin-bottom: 10px;
+	}
+
+	.tag-item {
+		width: 41px;
+		float: left;
+		margin-left: 10px;
+		margin-top: 10px;
+	}
+
+	.tag-item img {
+		width: 100%;
+		background-color: white;
+
+		-moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+	    -webkit-user-select: none;
+	    -ms-user-select: none; /* From IE10 only */
+	    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+	    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+	    user-drag: none;
+	}
+
+	.main-query {
+		height: 55px;
+		font-size: 22px;
+		margin-bottom: 20px;
+	}
+
+	.tag-filter {
+		height: 55px;
+	}
+
+	.tag-filter div {
+		margin-top: -12px;
+		width: 41px;
+		float: left;
+		margin-left: 10px;
+	}
+
+	.tag-img {
+		width: 100%;
+		background-color: white;
+
+		-moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+	    -webkit-user-select: none;
+	    -ms-user-select: none; /* From IE10 only */
+	    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+	    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+	    user-drag: none;
 	}
 	</style>
 </head>
@@ -34,10 +79,27 @@
 			</div>
 			<!-- Tag filter -->
 			<div class="well tags">
-				<input ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
+				<input ng-init="tagSearch = ''" ng-change="setRgx(tagSearch)" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
 				<div class="row">
-					<div class="col-3 col-sm-3 col-lg-2" ng-repeat="tag in tags | filter:tagSearch | filter:filterNt | limitTo:60">
+					<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
 						<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Query -->
+		<div class="col-sm-7 col-lg-8">
+			<div class="row">
+				<!-- Main query -->
+				<div class="col-lg-6">
+					<input class="form-control main-query" ng-model="mainQuery" placeholder="Search for a community" />
+				</div>
+				<!-- Tag filter -->
+				<div class="col-sm-12 col-lg-6">
+					<div class="well tag-filter">
+						<div ng-repeat="(i, tag) in selectedTags" ng-click="selectedTags.splice(i, 1)">
+							<img class="img-rounded tag-img" ng-src="/img/tags/{{tag}}" />
+						</div>
 					</div>
 				</div>
 			</div>

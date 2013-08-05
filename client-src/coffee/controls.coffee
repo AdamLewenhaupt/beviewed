@@ -14,8 +14,8 @@ exploreCtrl = ($scope) ->
 
 	$scope.selectedTags = []
 
-	$scope.filterNt = (item) ->
-		!(item in $scope.selectedTags)
+	$scope.displayTag = (item) ->
+		!(item in $scope.selectedTags) and item.indexOf($scope.tagSearch) != -1
 
 profileCtrl = ($scope) ->
 	$scope.user =

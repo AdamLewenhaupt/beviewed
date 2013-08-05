@@ -10,8 +10,8 @@ getTime = function() {
 exploreCtrl = function($scope) {
   $scope.tags = ["music", "games", "art", "comedy"];
   $scope.selectedTags = [];
-  return $scope.filterNt = function(item) {
-    return !(__indexOf.call($scope.selectedTags, item) >= 0);
+  return $scope.displayTag = function(item) {
+    return !(__indexOf.call($scope.selectedTags, item) >= 0) && item.indexOf($scope.tagSearch) !== -1;
   };
 };
 
