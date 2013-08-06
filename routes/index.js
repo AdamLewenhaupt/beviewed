@@ -10,11 +10,7 @@ exports.profile = {
   }
 };
 
-exports.community = {
-  get: function(req, res) {
-    return res.render("community.html");
-  }
-};
+exports.community = require('./community');
 
 exports.explore = {
   get: function(req, res) {

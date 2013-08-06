@@ -2,7 +2,7 @@
 Module dependencies.
 */
 
-var app, express, http, path, routes, swoosh;
+var app, express, http, path, routes, swoosh, timers;
 
 express = require("express");
 
@@ -14,13 +14,19 @@ routes = require('./routes');
 
 swoosh = require('swoosh');
 
+timers = require('timers');
+
 app = express();
 
 swoosh(path.join(__dirname, "swoosh.yml"), function(err, collections) {
   if (err) {
     return console.log("Swoosh err:", err);
   } else {
-    return this.route(app);
+    this.route(app);
+    routes.community.fetchCommunities(collections.communities);
+    return timers.setInterval((function() {
+      return routes.community.log();
+    }), 86400000);
   }
 });
 
@@ -48,7 +54,7 @@ app.get("/", routes.index.get);
 
 app.get("/profile", routes.profile.get);
 
-app.get("/community", routes.community.get);
+app.get("/community/:id", routes.community.get);
 
 app.get("/explore", routes.explore.get);
 

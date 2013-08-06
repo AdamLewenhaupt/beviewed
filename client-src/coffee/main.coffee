@@ -20,7 +20,7 @@ app.directive "communityLocal", () ->
 	scope:
 		getCommunity: "&communityLocal"
 	template: "
-		<div><a href='/community'>
+		<div><a href='/community/5200f3073fbe5c0c0b000001'>
 			<img class='community img-rounded media-object' 
 				ng-src='{{community.image}}'/></a></div>"
 	link: (scope) ->

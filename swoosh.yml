@@ -1,36 +1,16 @@
-database: mongodb://main:access@linus.mongohq.com:10026/underdog-main
+database: mongodb://db-connector:0xJAgriBRB@ds039058.mongolab.com:39058/beviewed
 collections:
     communities:
         fields:
-            admins: "[String]"
-            chatlogs: "[String]"
+            admins: [String]
+            chatlogs: [String]
             fame: Number
-            feeds: "[String]"
+            feeds: [String]
             name: String
             progress: Number
-            rooms: "[String]"
-            users: "[String]"
-        methods:
-            - get
-            - post
-            - put
-            - delete
-    feeds:
-        fields:
-            title: String
-            content: String
-            embed: String
-        methods:
-            - get
-            - post
-            - put
-            - delete
-    chatlogs:
-        fields:
-            messages: "[String]"
-            names: "[String]"
-        methods:
-            - get
-            - post
-            - put
-            - delete
+            rooms: [String]
+            users: [String]
+            userCount: Number
+            userCountLog: [Number]
+            tags: [String]
+            icon: String

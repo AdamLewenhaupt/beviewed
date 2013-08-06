@@ -6,9 +6,7 @@ exports.profile =
 	get: (req, res) ->
 		res.render "profile.html"
 
-exports.community = 
-	get: (req, res) ->
-		res.render "community.html"
+exports.community = require('./community')
 
 exports.explore =
 	get: (req, res) ->
