@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html ng-app="beviewed">
+<head>
+	<% include head %>
+	<title>Beviewed - Create community</title>
+	<style type="text/css">
+	.tagSearch {
+		margin-bottom: 10px;
+	}
+
+	.tag-item {
+		width: 41px;
+		display: inline-block;
+		margin-left: 10px;
+		margin-top: 10px;
+	}
+
+	.tag-item img {
+		width: 100%;
+		background-color: white;
+
+		-moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+	    -webkit-user-select: none;
+	    -ms-user-select: none; /* From IE10 only */
+	    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+	    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+	    user-drag: none;
+	}
+
+	.bottom-bar {
+		height: 100px;
+	}
+
+	.bottom-bar button {
+		height: 100px;
+		width: 30%;
+		font-size: 20px;
+	}
+
+	.big-sel {
+		width: 100%%;
+	}
+
+	.big-sel button {
+		width: 50%;
+		height: 100px;
+		font-size: 25px;
+	}
+
+	.name-field {
+		margin-top: 10px;
+		margin-bottom: 50px;
+		height: 50px;
+		font-size: 26px;
+	}
+
+	.icon-select {
+		margin-top: 10px;
+	}
+
+	#img-upload {
+		display: none;
+	}
+
+	.hide {
+		display: none;
+	}
+	</style>
+</head>
+<body ng-controller="createCommunity">
+	<% include nav %>
+	<div class="container" ng-init="fields = { tags: [] }; step = 2">
+		<!-- Step one -->
+		<div ng-show="step == 1">
+			<!-- Name-field -->
+			<p class="lead text-center">
+				Allright, let's get this started. First of all
+				you need a kickass name for your community.<br/>
+				And make sure it's like atleast 8 characters long
+			</p>
+			<div class="form-group" ng-class="validName()">
+				<input type="text" class="form-control name-field" placeholder="Your kickass name" ng-model="fields.name" ng-init="fields.name = ''"/>
+			</div>
+
+			<!-- Type-field -->
+			<p class="lead text-center">
+				Awesome! Now we need to select the type of community<br/>
+				You can choose between creative and reviewer
+			</p>
+			<div class="btn-group big-sel">
+				<button class="btn btn-large btn-primary"
+						ng-click="stepOne('creative')">
+					Creative
+				</button>
+				<button class="btn btn-large btn-success"
+						ng-click="stepOne('reviewer')">
+					Reviewer
+				</button>
+			</div>
+		</div>
+		<!-- Step two -->
+		<div ng-show="step == 2">
+			<!-- Tag selection -->
+			<p class="lead text-center">
+				Allright now we're getting somewhere!<br/>
+				Let's add some tags that the describe the community, tags are a greate way to make sure the right people find your content.
+				<a href="#">read more about tags here</a>
+			</p>
+			<div class="row">
+				<!-- Tag filter -->
+				<div class="well tags col-lg-6">
+					<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
+					<div class="row">
+						<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="fields.tags.push(tag)">
+							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+						</div>
+					</div>
+				</div>
+				<!-- Tag Display -->
+				<div class="col-lg-6">
+					<div class="well tags">
+						<p class="lead">Selected tags</p>
+						<div class="tag-item sel-item"
+							ng-repeat="(i, tag) in fields.tags"
+							ng-click="fields.tags.splice(i, 1)">
+							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Icon select -->
+			<div class="icon-select">
+				<p class="lead text-center">Greate! For some additional uniqueness, let's add an image for your community.</p>
+				<!-- Hidden -->
+				<input id="img-upload" type="file" 
+					accept="image/*" 	
+					image="icon"
+					resize-max-width="300"
+					resize-max-height="300"
+					resize-quality="0.7" />
+				<button class="btn btn-large btn-success"
+					ng-click="runUpload()">
+					Upload image
+				</button>
+
+				<div ng-class="isUploading()" ng-hide="icon.resized.dataURL">Loading</div>
+				<img ng-show="icon.resized.dataURL" 
+					ng-src="{{icon.resized.dataURL}}"/>
+			</div>
+		</div>
+	</div>
+	<div class="navbar navbar-fixed-bottom bottom-bar text-center">
+		<button class="btn btn-large" ng-class="current(1)">
+			Step 1
+		</button>
+		<button class="btn btn-large" ng-class="current(2)">
+			Step 2
+		</button>
+		<button class="btn btn-large" ng-class="current(3)">
+			Step 3
+		</button>
+	</div>
+</body>
+</html>

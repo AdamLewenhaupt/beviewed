@@ -34,6 +34,8 @@ app.get "/", routes.index.get
 app.get "/profile", routes.profile.get
 app.get "/community/:id", routes.community.get
 app.get "/explore", routes.explore.get
+app.get "/dashboard", routes.dashboard.get
+app.get "/create-community", routes["create-community"].get
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")

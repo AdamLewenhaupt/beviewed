@@ -58,6 +58,10 @@ app.get("/community/:id", routes.community.get);
 
 app.get("/explore", routes.explore.get);
 
+app.get("/dashboard", routes.dashboard.get);
+
+app.get("/create-community", routes["create-community"].get);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }

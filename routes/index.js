@@ -17,3 +17,15 @@ exports.explore = {
     return res.render("explore.html");
   }
 };
+
+exports.dashboard = {
+  get: function(req, res) {
+    return res.render("dashboard.html");
+  }
+};
+
+exports["create-community"] = {
+  get: function(req, res) {
+    return res.render("create-community.html");
+  }
+};
