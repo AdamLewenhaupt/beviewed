@@ -62,6 +62,8 @@ app.get("/dashboard", routes.dashboard.get);
 
 app.get("/create-community", routes["create-community"].get);
 
+app.post("/create-community", routes.community.post);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }

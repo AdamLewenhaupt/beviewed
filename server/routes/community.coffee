@@ -1,3 +1,4 @@
+fs = require 'fs'
 communities = null
 
 exports.fetchCommunities = (data) -> communities = data
@@ -20,3 +21,16 @@ exports.log = () ->
 				community.save()
 		else
 			console.log "Error running community logger"
+
+
+exports.post = (req, res) ->
+	communities.post req.body, (err, community) ->
+		if err
+			res.send 500, "save-err"
+		else
+			path = "./client/img/icons/#{community['_id']}"
+			fs.writeFile path, req.body.icon, 'binary', (err) ->
+				if err
+					res.send 500, "img-err"
+				else
+					res.send 200, "success"

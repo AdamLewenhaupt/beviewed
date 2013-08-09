@@ -37,6 +37,8 @@ app.get "/explore", routes.explore.get
 app.get "/dashboard", routes.dashboard.get
 app.get "/create-community", routes["create-community"].get
 
+app.post "/create-community", routes.community.post
+
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
 http.createServer(app).listen app.get("port"), ->

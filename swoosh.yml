@@ -13,4 +13,5 @@ collections:
             userCount: Number
             userCountLog: [Number]
             tags: [String]
-            icon: String
+            description: String
+            type: String

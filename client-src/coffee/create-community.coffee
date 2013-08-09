@@ -1,6 +1,8 @@
-createCommunity = ($scope) ->
+createCommunity = ($scope, $http) ->
 
 	uploading = false
+
+	$scope.capitalize = capitalize
 
 	# Jquery setup
 	$ () ->
@@ -18,6 +20,12 @@ createCommunity = ($scope) ->
 			""
 		else
 			"hide"
+
+	$scope.isUploadingInverse = () ->
+		if uploading
+			"hide"
+		else
+			""
  
 	$scope.tags = [
 			"music",
@@ -25,6 +33,9 @@ createCommunity = ($scope) ->
 			"art",
 			"comedy"
 		]
+
+	$scope.go = (number) ->
+		$scope.step = number
 
 	$scope.current = (num) ->
 		if num == $scope.step
@@ -41,7 +52,32 @@ createCommunity = ($scope) ->
 		else
 			"has-success"
 
+	$scope.validDescription = () ->
+		if $scope.fields.description.length > 0 && $scope.fields.description.length <= 160
+			""
+		else
+			"has-error"
+ 
 	$scope.stepOne = (type) ->
 		$scope.fields.type = type
 		if $scope.validName() == "has-success"
 			$scope.step = 2
+
+	$scope.stepTwo = (dataUrl) ->
+		if dataUrl
+			$scope.fields.icon = dataUrl
+			$scope.step = 3
+
+	$scope.create = () ->
+		$scope.fields.admins = ['spinno']
+		$scope.fields.userCount = 0
+		request = $http
+			method: "POST"
+			url: "/create-community"
+			data: $scope.fields
+
+		request.sucess = (data) ->
+			alert("Success")
+
+		request.error (data) ->
+			alert("Error :(")

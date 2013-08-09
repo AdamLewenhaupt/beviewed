@@ -4,6 +4,35 @@
 	<% include head %>
 	<title>Beviewed - Create community</title>
 	<style type="text/css">
+	body {
+		padding-bottom: 120px;
+	}
+
+	canvas {
+		display: none;
+	}
+
+	.btn-roll {
+		margin-top: 20px;
+		height: 100px;
+		font-size: 26px;
+	}
+
+	.description-field {
+		font-size: 20px;
+		resize:vertical;
+	}
+
+	.goto-step3-btn, .upload-btn {
+		height: 214px;
+		font-size: 30px;
+	}
+
+	.upload-img {
+		width:180px;
+		height:180px;
+	}
+
 	.tagSearch {
 		margin-bottom: 10px;
 	}
@@ -66,11 +95,35 @@
 	.hide {
 		display: none;
 	}
+
+	@media (max-width: 990px) {
+		.goto-step3-btn, .upload-btn {
+			height: 160px;
+			font-size: 24px;
+		}
+
+		.upload-img {
+			width:120px;
+			height:120px;
+		}
+	}
+
+	@media (max-width: 769px) {
+		.goto-step3-btn, .upload-btn {
+			height: 120px;
+			font-size: 24px;
+		}
+
+		.upload-img {
+			width:90px;
+			height:90px;
+		}
+	}
 	</style>
 </head>
 <body ng-controller="createCommunity">
 	<% include nav %>
-	<div class="container" ng-init="fields = { tags: [] }; step = 2">
+	<div class="container" ng-init="fields = { tags: [] }; step = 1">
 		<!-- Step one -->
 		<div ng-show="step == 1">
 			<!-- Name-field -->
@@ -109,16 +162,18 @@
 			</p>
 			<div class="row">
 				<!-- Tag filter -->
-				<div class="well tags col-lg-6">
-					<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
-					<div class="row">
-						<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="fields.tags.push(tag)">
-							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+				<div class="col-sm-7 col-lg-6">
+					<div class="well tags">
+						<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
+						<div class="row">
+							<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="fields.tags.push(tag)">
+								<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+							</div>
 						</div>
 					</div>
 				</div>
 				<!-- Tag Display -->
-				<div class="col-lg-6">
+				<div class="col-sm-5 col-lg-6">
 					<div class="well tags">
 						<p class="lead">Selected tags</p>
 						<div class="tag-item sel-item"
@@ -136,28 +191,56 @@
 				<input id="img-upload" type="file" 
 					accept="image/*" 	
 					image="icon"
-					resize-max-width="300"
-					resize-max-height="300"
+					resize-max-width="200"
+					resize-max-height="200"
 					resize-quality="0.7" />
-				<button class="btn btn-large btn-success"
-					ng-click="runUpload()">
-					Upload image
-				</button>
-
-				<div ng-class="isUploading()" ng-hide="icon.resized.dataURL">Loading</div>
-				<img ng-show="icon.resized.dataURL" 
-					ng-src="{{icon.resized.dataURL}}"/>
+				<div class="row">
+					<div class="col-6 col-sm-6 col-lg-6">
+						<button class="btn btn-large btn-success upload-btn btn-block"
+							ng-click="runUpload()">
+							<span ng-class="isUploadingInverse()">Upload image</span>
+							<div ng-class="isUploading()" ng-hide="icon.resized.dataURL">Loading...</div>
+							<img class="upload-img img-rounded" ng-show="icon.resized.dataURL" 
+								ng-src="{{icon.resized.dataURL}}"/>
+						</button>
+					</div>
+					<div class="col-6 col-sm-6 col-lg-6">
+						<button class="btn btn-large btn-info goto-step3-btn btn-block" ng-click="stepTwo(icon.resized.dataURL)">
+							Moving on
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Step 3 -->
+		<div ng-show="step == 3">
+			<p class="lead text-center">
+				Super, now we're almost done! There one final thing left, we'd love if you could write a nice little description of the community
+			</p>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="form-group" ng-class="validDescription()">
+						<textarea ng-init="fields.description=''" ng-model="fields.description" class="form-control description-field" rows="3">
+						</textarea>
+					</div>
+					<p class="text-muted">Make sure you write atleast something, but don't go above 160 characters please.</p>
+				</div>
+				<div class="col-lg-12">
+					<button class="btn btn-large btn-success btn-block btn-roll" ng-click="create()">
+						Let's roll
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="navbar navbar-fixed-bottom bottom-bar text-center">
-		<button class="btn btn-large" ng-class="current(1)">
+		<button class="btn btn-large" ng-class="current(1)" ng-click="go(1)">
 			Step 1
 		</button>
-		<button class="btn btn-large" ng-class="current(2)">
+		<button class="btn btn-large" ng-class="current(2)" ng-click="go(2)">
 			Step 2
 		</button>
-		<button class="btn btn-large" ng-class="current(3)">
+		<button class="btn btn-large" ng-class="current(3)" ng-click="go(3)">
 			Step 3
 		</button>
 	</div>

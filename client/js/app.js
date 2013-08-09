@@ -145,9 +145,10 @@ profileCtrl = function($scope) {
 var createCommunity,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-createCommunity = function($scope) {
+createCommunity = function($scope, $http) {
   var uploading;
   uploading = false;
+  $scope.capitalize = capitalize;
   $(function() {
     return $("#img-upload").change(function() {
       return $scope.$apply(function() {
@@ -167,7 +168,17 @@ createCommunity = function($scope) {
       return "hide";
     }
   };
+  $scope.isUploadingInverse = function() {
+    if (uploading) {
+      return "hide";
+    } else {
+      return "";
+    }
+  };
   $scope.tags = ["music", "games", "art", "comedy"];
+  $scope.go = function(number) {
+    return $scope.step = number;
+  };
   $scope.current = function(num) {
     if (num === $scope.step) {
       return "btn-primary";
@@ -185,11 +196,40 @@ createCommunity = function($scope) {
       return "has-success";
     }
   };
-  return $scope.stepOne = function(type) {
+  $scope.validDescription = function() {
+    if ($scope.fields.description.length > 0 && $scope.fields.description.length <= 160) {
+      return "";
+    } else {
+      return "has-error";
+    }
+  };
+  $scope.stepOne = function(type) {
     $scope.fields.type = type;
     if ($scope.validName() === "has-success") {
       return $scope.step = 2;
     }
+  };
+  $scope.stepTwo = function(dataUrl) {
+    if (dataUrl) {
+      $scope.fields.icon = dataUrl;
+      return $scope.step = 3;
+    }
+  };
+  return $scope.create = function() {
+    var request;
+    $scope.fields.admins = ['spinno'];
+    $scope.fields.userCount = 0;
+    request = $http({
+      method: "POST",
+      url: "/create-community",
+      data: $scope.fields
+    });
+    request.sucess = function(data) {
+      return alert("Success");
+    };
+    return request.error(function(data) {
+      return alert("Error :(");
+    });
   };
 };
 

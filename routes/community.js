@@ -1,4 +1,6 @@
-var communities;
+var communities, fs;
+
+fs = require('fs');
 
 communities = null;
 
@@ -30,6 +32,24 @@ exports.log = function() {
       });
     } else {
       return console.log("Error running community logger");
+    }
+  });
+};
+
+exports.post = function(req, res) {
+  return communities.post(req.body, function(err, community) {
+    var path;
+    if (err) {
+      return res.send(500, "save-err");
+    } else {
+      path = "./client/img/icons/" + community['_id'];
+      return fs.writeFile(path, req.body.icon, 'binary', function(err) {
+        if (err) {
+          return res.send(500, "img-err");
+        } else {
+          return res.send(200, "success");
+        }
+      });
     }
   });
 };
