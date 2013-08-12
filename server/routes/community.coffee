@@ -29,8 +29,35 @@ exports.post = (req, res) ->
 			res.send 500, "save-err"
 		else
 			path = "./client/img/icons/#{community['_id']}"
-			fs.writeFile path, req.body.icon, 'binary', (err) ->
+			encodedIcon = req.body.icon.replace /^data:image\/png;base64,/, ""
+			fs.writeFile path, encodedIcon, 'base64', (err) ->
 				if err
 					res.send 500, "img-err"
 				else
 					res.send 200, "success"
+
+
+exports.min =
+	get: (req, res) ->
+		communities.get req.params.id, (err, community) ->
+			if err
+				res.send 500, err
+			else
+				res.send 200, 
+					name: community.name
+					users: community.userCount
+
+exports.explore =
+	get: (req, res) ->
+		if req.params.type == "init"
+			communities.model.find()
+				.select("_id tags name")
+				.sort({ userCount: -1 })
+				.limit(50)
+				.exec (err, communities) ->
+					if err
+						res.send 500, err
+					else
+						res.send 200, communities
+		else
+			res.send 500, "invalid request"

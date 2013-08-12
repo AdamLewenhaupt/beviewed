@@ -1,8 +1,12 @@
 createCommunity = ($scope, $http) ->
 
 	uploading = false
-
+	$scope.maxStep = 1
 	$scope.capitalize = capitalize
+
+	max = (nr) ->
+		if nr > $scope.maxStep
+			$scope.maxStep = nr
 
 	# Jquery setup
 	$ () ->
@@ -62,11 +66,13 @@ createCommunity = ($scope, $http) ->
 		$scope.fields.type = type
 		if $scope.validName() == "has-success"
 			$scope.step = 2
+			max(2)
 
 	$scope.stepTwo = (dataUrl) ->
 		if dataUrl
 			$scope.fields.icon = dataUrl
 			$scope.step = 3
+			max(3)
 
 	$scope.create = () ->
 		$scope.fields.admins = ['spinno']
@@ -76,7 +82,7 @@ createCommunity = ($scope, $http) ->
 			url: "/create-community"
 			data: $scope.fields
 
-		request.sucess = (data) ->
+		request.sucess (data) ->
 			alert("Success")
 
 		request.error (data) ->

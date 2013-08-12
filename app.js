@@ -24,6 +24,7 @@ swoosh(path.join(__dirname, "swoosh.yml"), function(err, collections) {
   } else {
     this.route(app);
     routes.community.fetchCommunities(collections.communities);
+    routes.users.fetch(collections);
     return timers.setInterval((function() {
       return routes.community.log();
     }), 86400000);
@@ -52,7 +53,7 @@ app.use(express["static"](path.join(__dirname, "client")));
 
 app.get("/", routes.index.get);
 
-app.get("/profile", routes.profile.get);
+app.get("/profile/:id", routes.users.profile.get);
 
 app.get("/community/:id", routes.community.get);
 
@@ -61,6 +62,10 @@ app.get("/explore", routes.explore.get);
 app.get("/dashboard", routes.dashboard.get);
 
 app.get("/create-community", routes["create-community"].get);
+
+app.get("/community-min/:id", routes.community.min.get);
+
+app.get("/community-explore/:type", routes.community.explore.get);
 
 app.post("/create-community", routes.community.post);
 

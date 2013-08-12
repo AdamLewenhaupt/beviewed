@@ -2,9 +2,7 @@ exports.index =
 	get: (req, res) ->
 		res.render "index.html"
 
-exports.profile =
-	get: (req, res) ->
-		res.render "profile.html"
+exports.users = require("./users")
 
 exports.community = require('./community')
 

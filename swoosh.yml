@@ -15,3 +15,8 @@ collections:
             tags: [String]
             description: String
             type: String
+    users:
+        fields:
+            name: String
+            admin: [String]
+            in: [String]

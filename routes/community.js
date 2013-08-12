@@ -38,12 +38,13 @@ exports.log = function() {
 
 exports.post = function(req, res) {
   return communities.post(req.body, function(err, community) {
-    var path;
+    var encodedIcon, path;
     if (err) {
       return res.send(500, "save-err");
     } else {
       path = "./client/img/icons/" + community['_id'];
-      return fs.writeFile(path, req.body.icon, 'binary', function(err) {
+      encodedIcon = req.body.icon.replace(/^data:image\/png;base64,/, "");
+      return fs.writeFile(path, encodedIcon, 'base64', function(err) {
         if (err) {
           return res.send(500, "img-err");
         } else {
@@ -52,4 +53,37 @@ exports.post = function(req, res) {
       });
     }
   });
+};
+
+exports.min = {
+  get: function(req, res) {
+    return communities.get(req.params.id, function(err, community) {
+      if (err) {
+        return res.send(500, err);
+      } else {
+        return res.send(200, {
+          name: community.name,
+          users: community.userCount
+        });
+      }
+    });
+  }
+};
+
+exports.explore = {
+  get: function(req, res) {
+    if (req.params.type === "init") {
+      return communities.model.find().select("_id tags name").sort({
+        userCount: -1
+      }).limit(50).exec(function(err, communities) {
+        if (err) {
+          return res.send(500, err);
+        } else {
+          return res.send(200, communities);
+        }
+      });
+    } else {
+      return res.send(500, "invalid request");
+    }
+  }
 };

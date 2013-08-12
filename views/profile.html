@@ -5,6 +5,10 @@
 	<% include head %>
 </head>
 <style type="text/css">
+.user-data {
+	display: none;
+}
+
 .community {
 	width: 20%;
 }
@@ -31,7 +35,7 @@ address button {
 		<div ng-controller="profileCtrl">
 			<!-- Introduction -->
 			<div class="col-4 col-sm-4 col-lg-2 well">
-				<img user-local="user">
+				<img user="user['_id']">
 			</div>
 			<!-- User fields -->
 			<div class="col-12 col-sm-8 col-lg-4 well">
@@ -52,7 +56,7 @@ address button {
 			<!-- Communities -->
 			<div class="col-12 col-sm-12 col-lg-6 well">
 				<!-- Involved communities -->
-				<h1>Involved in <span class="text-success">{{user.communities.length}}</span> community</h1>
+				<h1>Involved in <span class="text-success">{{user.in.length}}</span> community</h1>
 				<ul class="involved-communities">
 					<li ng-repeat="community in user.communities">
 						<div community-local="community" />
@@ -62,6 +66,8 @@ address button {
 				<!-- Hosting communitites -->
 				<h1>Hosts <span class="text-success">0</span> communities</h1>
 			</div>
+			<!-- User data -->
+			<div class="user-data"><%= JSON.stringify(user) %></div>
 		</div>
 	</div>
 </body>

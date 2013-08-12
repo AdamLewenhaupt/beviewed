@@ -4,11 +4,7 @@ exports.index = {
   }
 };
 
-exports.profile = {
-  get: function(req, res) {
-    return res.render("profile.html");
-  }
-};
+exports.users = require("./users");
 
 exports.community = require('./community');
 

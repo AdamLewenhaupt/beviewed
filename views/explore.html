@@ -122,7 +122,7 @@
 			<div class="row displaying">
 				<div class="well">
 					<div ng-show="displayCommunity(community)" class="community" ng-repeat="community in communities">
-						<div community-local="community" />
+						<div community="community['_id']" />
 					</div>
 				</div>
 			</div>

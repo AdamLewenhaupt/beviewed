@@ -91,14 +91,19 @@ getTime = function() {
   return "" + (d.getHours()) + ":" + (d.getMinutes());
 };
 
-exploreCtrl = function($scope) {
-  $scope.communities = [
-    {
-      name: "aventry fan club",
-      image: "/img/dummy2.jpeg",
-      tags: ["music"]
-    }
-  ];
+exploreCtrl = function($scope, $http) {
+  var req;
+  $scope.communities = [];
+  req = $http({
+    method: "GET",
+    url: "/community-explore/init"
+  });
+  req.success(function(data) {
+    return $scope.communities = data;
+  });
+  req.error(function(err) {
+    return console.log(err);
+  });
   $scope.tags = ["music", "games", "art", "comedy"];
   $scope.selectedTags = [];
   $scope.displayTag = function(tag) {
@@ -125,20 +130,11 @@ exploreCtrl = function($scope) {
 };
 
 profileCtrl = function($scope) {
-  $scope.user = {
-    image: "/img/dummy.jpg",
-    tag: "spinnster",
-    email: "adam.lewenhauptt@gmail.com",
-    country: "sweden",
-    firstName: "adam",
-    lastName: "lewenhaupt",
-    communities: [
-      {
-        name: "Aventry fan club",
-        image: "/img/dummy2.jpeg"
-      }
-    ]
-  };
+  $(function() {
+    return $scope.$apply(function() {
+      return $scope.user = $.parseJSON($(".user-data").html());
+    });
+  });
   return $scope.admin = true;
 };
 
@@ -146,9 +142,15 @@ var createCommunity,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 createCommunity = function($scope, $http) {
-  var uploading;
+  var max, uploading;
   uploading = false;
+  $scope.maxStep = 1;
   $scope.capitalize = capitalize;
+  max = function(nr) {
+    if (nr > $scope.maxStep) {
+      return $scope.maxStep = nr;
+    }
+  };
   $(function() {
     return $("#img-upload").change(function() {
       return $scope.$apply(function() {
@@ -206,13 +208,15 @@ createCommunity = function($scope, $http) {
   $scope.stepOne = function(type) {
     $scope.fields.type = type;
     if ($scope.validName() === "has-success") {
-      return $scope.step = 2;
+      $scope.step = 2;
+      return max(2);
     }
   };
   $scope.stepTwo = function(dataUrl) {
     if (dataUrl) {
       $scope.fields.icon = dataUrl;
-      return $scope.step = 3;
+      $scope.step = 3;
+      return max(3);
     }
   };
   return $scope.create = function() {
@@ -224,9 +228,9 @@ createCommunity = function($scope, $http) {
       url: "/create-community",
       data: $scope.fields
     });
-    request.sucess = function(data) {
+    request.sucess(function(data) {
       return alert("Success");
-    };
+    });
     return request.error(function(data) {
       return alert("Error :(");
     });
@@ -237,30 +241,30 @@ var app;
 
 app = angular.module('beviewed', ["ui.bootstrap"]);
 
-app.directive("userLocal", function() {
+app.directive("community", function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
-      getUser: "&userLocal"
+      getCommunity: "&community"
     },
-    template: "			<div class='media'>			<a href='/profile'>			<img class='user img-rounded media-object' 				ng-src='{{user.image}}' /></a></div>",
-    link: function(scope) {
-      return scope.user = scope.getUser();
+    template: "    <div class='media'>      <a href='/community/{{community}}'>        <img class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' />      </a></div>",
+    link: function(scope, el, attrs) {
+      return scope.community = scope.getCommunity();
     }
   };
 });
 
-app.directive("communityLocal", function() {
+app.directive("user", function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
-      getCommunity: "&communityLocal"
+      getUser: "&user"
     },
-    template: "		<div><a href='/community/5200f3073fbe5c0c0b000001'>			<img class='community img-rounded media-object' 				ng-src='{{community.image}}'/></a></div>",
+    template: "      <div class='media'>        <a href='/profile/{{user}}'>          <img class='user img-rounded media-object'            ng-src='/img/users/{{user}}' /></a></div>",
     link: function(scope) {
-      return scope.community = scope.getCommunity();
+      return scope.user = scope.getUser();
     }
   };
 });

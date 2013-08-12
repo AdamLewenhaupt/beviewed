@@ -3,9 +3,19 @@ getTime = ->
 	"#{d.getHours()}:#{d.getMinutes()}"
 
 
-exploreCtrl = ($scope) ->
+exploreCtrl = ($scope, $http) ->
 
-	$scope.communities = [{ name: "aventry fan club", image: "/img/dummy2.jpeg", tags: ["music"]}]
+	$scope.communities = []
+
+	req = $http
+		method: "GET"
+		url: "/community-explore/init"
+
+	req.success (data) ->
+		$scope.communities = data
+
+	req.error (err) ->
+		console.log err
 
 	$scope.tags = [
 			"music",
@@ -33,13 +43,9 @@ exploreCtrl = ($scope) ->
 		check1 && check2
 
 profileCtrl = ($scope) ->
-	$scope.user =
-		image: "/img/dummy.jpg"
-		tag: "spinnster"
-		email: "adam.lewenhauptt@gmail.com"
-		country: "sweden"
-		firstName: "adam"
-		lastName: "lewenhaupt"
-		communities: [{ name: "Aventry fan club", image: "/img/dummy2.jpeg"}]
+
+	$ () ->
+		$scope.$apply () ->
+			$scope.user = $.parseJSON $(".user-data").html()
 
 	$scope.admin = true
