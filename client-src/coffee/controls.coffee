@@ -27,10 +27,10 @@ exploreCtrl = ($scope, $http) ->
 	$scope.selectedTags = []
 
 	$scope.displayTag = (tag) ->
-		!(tag in $scope.selectedTags) and tag.indexOf($scope.tagSearch) != -1
+		!(tag in $scope.selectedTags) and tag.indexOf($scope.tagSearch.toLowerCase()) != -1
 
 	$scope.displayCommunity = (community) ->
-		check1 = community.name.indexOf($scope.mainQuery) != -1
+		check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) != -1
 		check2 = false
 		if $scope.selectedTags.length > 0
 			for tag in community.tags
@@ -47,5 +47,3 @@ profileCtrl = ($scope) ->
 	$ () ->
 		$scope.$apply () ->
 			$scope.user = $.parseJSON $(".user-data").html()
-
-	$scope.admin = true

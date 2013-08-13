@@ -10,11 +10,14 @@
 }
 
 .community {
-	width: 20%;
+	width: 100px;
+	display: inline-block;
+	margin-right: 10px;
+	margin-top: 10px;
 }
 
-.involved-communities {
-	list-style: none;
+.involved-communities, .admin-communitites {
+	list-style: none;	
 }
 
 .edit {
@@ -22,57 +25,94 @@
 }
 
 .user {
-	width: 100%;
+	width: 200px;
+	height: 200px;
 }
 
-address button {
+.profile {
+	width: 200px;
+	display: inline-block;
+	word-wrap: break-word;
 }
 
+.communities {
+	width: calc(100% - 210px);
+	display: inline-block;
+	vertical-align: top;
+}
+
+@media(max-width: 769px) {
+	.communities {
+		width: 100%;
+	}
+
+	.profile {
+		width: 100%;
+	}
+
+	.user {
+		width: 100%;
+	}
+
+	.community-header {
+		font-size: 16px;
+	}
+}
 </style>
 <body>
 	<% include nav %>
-	<div class="row">
-		<div ng-controller="profileCtrl">
-			<!-- Introduction -->
-			<div class="col-lg-2">
-				<div class="thumbnail">
-					<img ng-src="/img/users/{{user['_id']}}"
-						class="media-object img-rouneded user" />
-					<div class="caption">
-						<h3 class="hidden-sm">A little about {{user.tag}}</h3>
-				<address>
-					<strong>Name</strong><button class="btn btn-primary btn-small edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-					<p>{{user.firstName}} {{user.lastName}}</p>
+	<div ng-controller="profileCtrl">
+		<!-- Introduction -->
+		<div class="profile">
+			<div class="thumbnail">
+				<img ng-src="/img/users/{{user['_id']}}"
+					class="media-object img-rounded user" />
+				<div class="caption">
+					<h3 class="hidden-sm">A little about {{user.tag}}</h3>
+			<address>
+				<strong>Name</strong><button class="btn btn-primary btn-small edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<p>{{user.firstName}} {{user.lastName}}</p>
 
-					<strong>Tag</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-					<p>{{user.tag}}</p>
+				<strong>Tag</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<p>{{user.tag}}</p>
 
-					<strong>Country</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-					<p>{{user.country}}</p>
-					<strong>Contact</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button><br/>
-					<p>{{user.email}}</p>
-				</address>
+				<strong>Country</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<p>{{user.country}}</p>
+				<strong>Contact</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button><br/>
+				<p>{{user.email}}</p>
+			</address>
+				</div>
+			</div>
+		</div>
+		<!-- Communities -->
+		<div class="communities">
+			<div class="row">
+				<div class="col-12 col-sm-12 col-lg-6">
+					<div class="well">
+						<!-- Hosting communitites -->
+						<h2 class="text-center community-header">Admin of <span class="text-success">{{user.admin.length}}</span> communities</h2>
+						<ul class="admin-communitites">
+							<li ng-repeat="community in user.admin">
+								<div community="community" />
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-12 col-sm-12 col-lg-6">
+					<div class="well">
+						<!-- Involved communities -->
+						<h2 class="text-center community-header">Involved in <span class="text-success">{{user.in.length}}</span> community</h2>
+						<ul class="involved-communities">
+							<li ng-repeat="community in user.in">
+								<div community="community" />
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
-			<!-- Communities -->
-			<div class="col-12 col-sm-12 col-lg-10">
-				<div class="well">
-					<!-- Involved communities -->
-					<h1>Involved in <span class="text-success">{{user.in.length}}</span> community</h1>
-					<ul class="involved-communities">
-						<li ng-repeat="community in user.communities">
-							<div community-local="community" />
-						</li>
-					</ul>
-
-					<!-- Hosting communitites -->
-					<h1>Admin of <span class="text-success">0</span> communities</h1>
-				</div>
-			</div>
-			<!-- User data -->
-			<div class="user-data"><%= JSON.stringify(user) %></div>
 		</div>
+		<!-- User data -->
+		<div class="user-data"><%= JSON.stringify(user) %></div>
 	</div>
 </body>
 </html>

@@ -107,11 +107,11 @@ exploreCtrl = function($scope, $http) {
   $scope.tags = ["music", "games", "art", "comedy"];
   $scope.selectedTags = [];
   $scope.displayTag = function(tag) {
-    return !(__indexOf.call($scope.selectedTags, tag) >= 0) && tag.indexOf($scope.tagSearch) !== -1;
+    return !(__indexOf.call($scope.selectedTags, tag) >= 0) && tag.indexOf($scope.tagSearch.toLowerCase()) !== -1;
   };
   return $scope.displayCommunity = function(community) {
     var check1, check2, tag, _i, _len, _ref;
-    check1 = community.name.indexOf($scope.mainQuery) !== -1;
+    check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) !== -1;
     check2 = false;
     if ($scope.selectedTags.length > 0) {
       _ref = community.tags;
@@ -130,12 +130,11 @@ exploreCtrl = function($scope, $http) {
 };
 
 profileCtrl = function($scope) {
-  $(function() {
+  return $(function() {
     return $scope.$apply(function() {
       return $scope.user = $.parseJSON($(".user-data").html());
     });
   });
-  return $scope.admin = true;
 };
 
 var createCommunity,
