@@ -22,22 +22,6 @@ communityCtrl = function($scope) {
     });
   };
   $scope.capitalize = capitalize;
-  $scope.hosts = [
-    {
-      image: "/img/dummy.jpg",
-      tag: "spinnster",
-      email: "adam.lewenhauptt@gmail.com",
-      country: "sweden",
-      firstName: "adam",
-      lastName: "lewenhaupt",
-      communities: [
-        {
-          name: "Aventry fan club",
-          image: "/img/dummy2.jpeg"
-        }
-      ]
-    }
-  ];
   $scope.current = 'what-up';
   $scope.inputSize = 1;
   $scope.chatlog = [

@@ -88,17 +88,21 @@
 			</div>
 			<!-- Now here's just some nifty info -->
 			<div class="row">
-				<div class="col-sm-6 col-lg-6 well well-large">
-					<h3 class="text-center">Fame {{community.fame}}<h3/>
-					<div class="progress">
-						<div class="progress-bar progress-bar-success" style="width:{{community.progress}}%;"></div>
+				<div class="col-sm-6 col-lg-6">
+					<div class="well">
+						<h3 class="text-center">Fame {{community.fame}}<h3/>
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" style="width:{{community.progress}}%;"></div>
+						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-lg-6 well well-large">
-					<h3 class="text-center">Members {{community.userCount}}</h3>
-					<div class="progress">
-						<div class="progress-bar progress-bar-success" style="width:85%;"></div>
-						<div class="progress-bar progress-bar-info" style="width:15%;"></div>
+				<div class="col-sm-6 col-lg-6">
+					<div class="well">
+						<h3 class="text-center">Members {{community.userCount}}</h3>
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" style="width:85%;"></div>
+							<div class="progress-bar progress-bar-info" style="width:15%;"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -141,14 +145,10 @@
 			<!-- Community Members -->
 			<div class="well">
 				<!-- Hosts -->
-				<h3 style="float:left;">Hosts</h3>
-				<form target="#" class="form-inline" style="margin: 10px 0 0 80px;">
-					<input type="text" class="form-control host-filter" ng-model="hostFilter.tag"
-					placeholder="Search in hosts"/>
-				</form><br/>
+				<h3>Hosts</h3>
 				<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
-					<li class="hosts-li" ng-repeat="host in hosts | filter:hostFilter">
-						<div user-local="host" />
+					<li class="hosts-li" ng-repeat="admin in community.admins">
+						<div user="admin" />
 					</li>
 				</ul>
 				<!-- Members -->
