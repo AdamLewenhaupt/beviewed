@@ -96,18 +96,16 @@ exploreCtrl = function($scope, $http) {
   return $scope.displayCommunity = function(community) {
     var check1, check2, tag, _i, _len, _ref;
     check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) !== -1;
-    check2 = false;
+    check2 = true;
     if ($scope.selectedTags.length > 0) {
-      _ref = community.tags;
+      _ref = $scope.selectedTags;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         tag = _ref[_i];
-        if (__indexOf.call($scope.selectedTags, tag) >= 0) {
-          check2 = true;
+        if (!(__indexOf.call(community.tags, tag) >= 0)) {
+          check2 = false;
           break;
         }
       }
-    } else {
-      check2 = true;
     }
     return check1 && check2;
   };
@@ -217,6 +215,19 @@ createCommunity = function($scope, $http) {
     return request.error(function(data) {
       return alert("Error :(");
     });
+  };
+};
+
+var indexCtrl;
+
+indexCtrl = function($scope, $dialog) {
+  return $scope.loginDialog = {
+    open: function() {
+      return $scope.login = true;
+    },
+    close: function() {
+      return $scope.login = false;
+    }
   };
 };
 

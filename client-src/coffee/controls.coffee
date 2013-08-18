@@ -31,14 +31,12 @@ exploreCtrl = ($scope, $http) ->
 
 	$scope.displayCommunity = (community) ->
 		check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) != -1
-		check2 = false
+		check2 = true
 		if $scope.selectedTags.length > 0
-			for tag in community.tags
-				if tag in $scope.selectedTags
-					check2 = true
+			for tag in $scope.selectedTags
+				unless (tag in community.tags)
+					check2 = false
 					break
-		else
-			check2 = true
 
 		check1 && check2
 

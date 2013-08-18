@@ -5,9 +5,13 @@
 	<% include head %>
 	<style type="text/css">
 
-	@media(max-width: 769) {
+	@media(max-width: 769px) {
 		.greet {
 			margin-bottom: 30px;
+		}
+
+		.login h2, .signup h2 {
+			font-size: 24px;
 		}
 	}
 
@@ -16,18 +20,21 @@
 	}
 	</style>
 </head>
-<body class="container-fluid">
+<body class="container-fluid" ng-controller="indexCtrl">
 	<% include nav %>
+	<div modal="login" close="loginDialog.close()">
+		<h3 class="modal-header">Login</h3>
+	</div>
 	<div class="jumbotron">
 		<div class="row">
 			<div class="col-lg-6 greet">
 				<h1><span>Welcome to <span>Be Viewed</span></span><br/><small class="under">- It's about quality</small></h1>
 			</div>
 			<div class="col-lg-6">
-				<button class="btn btn-large btn-success" style="width:46%;">
+				<button class="btn btn-large btn-success login" style="width:46%;">
 					<h2>Login</h2>
 				</button>
-				<button class="btn btn-primary btn-large" style="width:50%;">
+				<button class="btn btn-primary btn-large signup" style="width:50%;">
 					<h2>Signup</h2>
 				</button>
 			</div>
