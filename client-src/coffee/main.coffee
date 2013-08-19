@@ -1,21 +1,39 @@
-app = angular.module 'beviewed', ["ui.bootstrap"]
+angular.module('beviewed', ["ui.bootstrap"])
 
-app.directive "community", () ->
+ .directive "community", () ->
     restrict: 'A'
     replace: true
     scope:
       getCommunity: "&community"
+      link: "="
+      click: "&ngClick"
     template: "
     <div class='media'>
-      <a href='/community/{{community}}'>
-        <img class='community img-rounded media-object'
+      <a href='{{ genLink() }}'>
+        <img ng-click='delegate()' class='community img-rounded media-object'
           ng-src='/img/icons/{{community}}' />
       </a></div>"
     link: (scope, el, attrs) ->
       scope.community = scope.getCommunity()
 
+      scope.doLink = scope.link
 
-app.directive "user", () ->
+      if scope.doLink == undefined
+        scope.doLink = true
+
+
+      scope.delegate = () -> 
+        unless scope.doLink 
+          scope.click()
+
+      scope.genLink = () ->
+        if scope.doLink 
+          "/community/#{scope.community}" 
+        else 
+          "#"
+
+
+ .directive "user", () ->
     restrict: 'A' 
     replace: true
     scope:
@@ -28,7 +46,7 @@ app.directive "user", () ->
     link: (scope) ->
       scope.user = scope.getUser()
 
-app.directive "image", ($q) ->
+ .directive "image", ($q) ->
   URL = window.URL or window.webkitURL
   getResizeArea = ->
     resizeAreaId = "fileupload-resize-area"

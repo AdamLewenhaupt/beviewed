@@ -3,6 +3,7 @@ createCommunity = ($scope, $http) ->
 	uploading = false
 	$scope.maxStep = 1
 	$scope.capitalize = capitalize
+	$scope.warnings = []
 
 	max = (nr) ->
 		if nr > $scope.maxStep
@@ -38,6 +39,9 @@ createCommunity = ($scope, $http) ->
 			"comedy"
 		]
 
+	$scope.warn = (msg) ->
+		$scope.warnings.push msg
+
 	$scope.go = (number) ->
 		$scope.step = number
 
@@ -67,6 +71,8 @@ createCommunity = ($scope, $http) ->
 		if $scope.validName() == "has-success"
 			$scope.step = 2
 			max(2)
+		else
+			$scope.warn "Hold your horeses! That name is to short"
 
 	$scope.stepTwo = (dataUrl) ->
 		if dataUrl

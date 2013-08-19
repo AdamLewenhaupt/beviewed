@@ -17,3 +17,5 @@ exports.dashboard =
 exports["create-community"] =
 	get: (req, res) ->
 		res.render "create-community.html"
+
+exports.write = require("./write")

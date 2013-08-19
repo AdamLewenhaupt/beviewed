@@ -1,0 +1,34 @@
+<html ng-app="beviewed">
+<head>
+	<title>Be Viewed - Write</title>
+	<% include head %>
+	<style type="text/css">
+	.data {
+		display: none;
+	}
+
+	.community {
+		width: 200px;
+		height: 200px;
+		margin-left: 10px;
+		margin-top: 10px;
+	}
+	</style>
+</head>
+<body ng-controller="writeCtrl">
+	<% include nav %>
+	<!-- Select community -->
+	<div ng-hide="community">
+		<h1 class="text-center">Please select the community you would like to write a feed for</h1>
+		<div>
+			<div ng-repeat="cty in available">
+				<div community="cty" link="false" ng-click="setCommunity(cty)" />
+			</div>
+		</div>
+	</div>
+	<!-- Community data -->
+	<div class="data">
+		<%= JSON.stringify(communities) %>
+	</div>
+</body>
+</html>

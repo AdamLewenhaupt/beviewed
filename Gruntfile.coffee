@@ -17,6 +17,20 @@ module.exports = (grunt) ->
 					['test/**/*.js']
 
 
+		jasmine:
+			pivotal:
+				src: [
+					'client/libs/jquery/jquery.min.js',
+					'client/libs/angular/angular.min.js',
+					'client/libs/angular-mocks/angular-mocks.js',
+					'client/libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
+					'client/js/app.js',
+					'client/libs/underscore.min.js'
+					]
+				options:
+					specs: "client-test/main.js"
+
+
 		coffee:
 			compileFront:
 				options:
@@ -40,24 +54,34 @@ module.exports = (grunt) ->
 				dest: 'test'
 				ext: '.js'
 
+
+			compileFrontTest:
+				options:
+					bare: true
+				files: 'client-test/main.js': ['client-src/test/**/*.coffee'] 
+
 		watch:
 			frontScripts:
 				files: ['client-src/coffee/*']
-				tasks: ['coffee:compileFront']
+				tasks: ['coffee:compileFront', 'jasmine:pivotal']
 				options:
 					interrupt: true
 
 			backScripts:
 				files: ['server/**/*.coffee']
-				tasks: ['coffee:compileBack']
+				tasks: ['coffee:compileBack', 'mochaTest']
 				options:
 					interrupt: true
 
 			test:
 				files: ['test/**/*.coffee']
-				tasks: ['coffee:compileTest', 'mochaTest']
+				tasks: ['coffee:compileTest']
 				options:
 					interrupt: true
+
+			frontTest:
+				files: ['client-src/test/**/*.coffee']
+				tasks: ['coffee:compileFrontTest', 'jasmine:pivotal']
 
 			less:
 				files: ['client-src/less/*']
@@ -72,5 +96,6 @@ module.exports = (grunt) ->
 	grunt.loadNpmTasks 'grunt-contrib-watch'
 	grunt.loadNpmTasks 'grunt-mocha-test'
 	grunt.loadNpmTasks 'grunt-contrib-less'
+	grunt.loadNpmTasks 'grunt-contrib-jasmine'
 
 	grunt.registerTask('default', ['watch'])

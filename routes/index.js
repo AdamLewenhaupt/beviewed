@@ -25,3 +25,5 @@ exports["create-community"] = {
     return res.render("create-community.html");
   }
 };
+
+exports.write = require("./write");

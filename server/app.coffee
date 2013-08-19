@@ -17,6 +17,7 @@ swoosh (path.join __dirname, "swoosh.yml"), (err, collections) ->
 		this.route app
 		routes.community.fetchCommunities collections.communities
 		routes.users.fetch collections
+		routes.write.fetch collections
 		timers.setInterval ( () -> routes.community.log() ), 86400000
 
 # all environments
@@ -39,6 +40,7 @@ app.get "/dashboard", routes.dashboard.get
 app.get "/create-community", routes["create-community"].get
 app.get "/community-min/:id", routes.community.min.get
 app.get "/community-explore/:type", routes.community.explore.get
+app.get "/write/:id", routes.write.get
 
 app.post "/create-community", routes.community.post
 

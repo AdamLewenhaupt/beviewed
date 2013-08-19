@@ -96,6 +96,14 @@
 		display: none;
 	}
 
+	.warner {
+		position: fixed;
+		bottom: 140px;
+		right: 50px;
+		width: 300px;
+		z-index: 999;
+	}
+
 	@media (max-width: 990px) {
 		.goto-step3-btn, .upload-btn {
 			height: 160px;
@@ -123,6 +131,12 @@
 </head>
 <body ng-controller="createCommunity">
 	<% include nav %>
+	<div class="warner">
+		<div class="alert" ng-repeat="(i, warning) in warnings">
+			<button ng-click="warnings.splice(i,1)" type="button" class="close" aria-hidden="true">&times;</button>
+			<h2>{{warning}}</h2>
+		</div>
+	</div>
 	<div class="container" ng-init="fields = { tags: [] }; step = 1">
 		<!-- Step one -->
 		<div ng-show="step == 1">

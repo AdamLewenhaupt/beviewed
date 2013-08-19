@@ -127,6 +127,7 @@ createCommunity = function($scope, $http) {
   uploading = false;
   $scope.maxStep = 1;
   $scope.capitalize = capitalize;
+  $scope.warnings = [];
   max = function(nr) {
     if (nr > $scope.maxStep) {
       return $scope.maxStep = nr;
@@ -159,6 +160,9 @@ createCommunity = function($scope, $http) {
     }
   };
   $scope.tags = ["music", "games", "art", "comedy"];
+  $scope.warn = function(msg) {
+    return $scope.warnings.push(msg);
+  };
   $scope.go = function(number) {
     return $scope.step = number;
   };
@@ -191,6 +195,8 @@ createCommunity = function($scope, $http) {
     if ($scope.validName() === "has-success") {
       $scope.step = 2;
       return max(2);
+    } else {
+      return $scope.warn("Hold your horeses! That name is to short");
     }
   };
   $scope.stepTwo = function(dataUrl) {
@@ -231,25 +237,37 @@ indexCtrl = function($scope, $dialog) {
   };
 };
 
-var app;
-
-app = angular.module('beviewed', ["ui.bootstrap"]);
-
-app.directive("community", function() {
+angular.module('beviewed', ["ui.bootstrap"]).directive("community", function() {
   return {
     restrict: 'A',
     replace: true,
     scope: {
-      getCommunity: "&community"
+      getCommunity: "&community",
+      link: "=",
+      click: "&ngClick"
     },
-    template: "    <div class='media'>      <a href='/community/{{community}}'>        <img class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' />      </a></div>",
+    template: "    <div class='media'>      <a href='{{ genLink() }}'>        <img ng-click='delegate()' class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' />      </a></div>",
     link: function(scope, el, attrs) {
-      return scope.community = scope.getCommunity();
+      scope.community = scope.getCommunity();
+      scope.doLink = scope.link;
+      if (scope.doLink === void 0) {
+        scope.doLink = true;
+      }
+      scope.delegate = function() {
+        if (!scope.doLink) {
+          return scope.click();
+        }
+      };
+      return scope.genLink = function() {
+        if (scope.doLink) {
+          return "/community/" + scope.community;
+        } else {
+          return "#";
+        }
+      };
     }
   };
-});
-
-app.directive("user", function() {
+}).directive("user", function() {
   return {
     restrict: 'A',
     replace: true,
@@ -261,9 +279,7 @@ app.directive("user", function() {
       return scope.user = scope.getUser();
     }
   };
-});
-
-app.directive("image", function($q) {
+}).directive("image", function($q) {
   var URL, createImage, fileToDataURL, getResizeArea, postLink, resizeImage;
   URL = window.URL || window.webkitURL;
   getResizeArea = function() {
@@ -390,4 +406,17 @@ capitalize = function(word) {
   if (word) {
     return word[0].toUpperCase() + word.slice(1);
   }
+};
+
+var writeCtrl;
+
+writeCtrl = function($scope) {
+  $(function() {
+    return $scope.$apply(function() {
+      return $scope.available = $.parseJSON($(".data").html());
+    });
+  });
+  return $scope.setCommunity = function(community) {
+    return $scope.community = community;
+  };
 };
