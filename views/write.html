@@ -3,6 +3,10 @@
 	<title>Be Viewed - Write</title>
 	<% include head %>
 	<style type="text/css">
+	.text {
+		font-size: 17px;
+	}
+
 	.data {
 		display: none;
 	}
@@ -13,6 +17,23 @@
 		margin-left: 10px;
 		margin-top: 10px;
 	}
+
+
+
+	.title-input {
+		font-size: 22px;
+	}
+
+	.logo {
+		width: 150px;
+		height: 150px;
+		margin-right: 10px;
+	}
+
+	.text-input {
+		margin-top: 10px;
+		resize: vertical;
+	}
 	</style>
 </head>
 <body ng-controller="writeCtrl">
@@ -22,7 +43,90 @@
 		<h1 class="text-center">Please select the community you would like to write a feed for</h1>
 		<div>
 			<div ng-repeat="cty in available">
-				<div community="cty" link="false" ng-click="setCommunity(cty)" />
+				<div community="cty" link="false" ng-click="setCommunity(cty)">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Select feed type -->
+	<div ng-show="community">
+		<!-- Is creator feed -->
+		<div ng-show="isCreator(community)">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="row">
+						<!-- Editing -->
+						<div class="col-lg-6">
+							<div class="well square">
+								<!-- Title -->
+								<input type="text" ng-model="fields.title" type="text" class="form-control title-input" placeholder="Your lovely title" />
+								<p class="text-muted">Please, atleast 8 characters</p>
+
+								<!-- Media -->
+								<div ng-hide="fields.media">
+									<h3>
+										Where can we find your media?
+									</h3>
+									<img class="logo img-rounded" src="/img/logos/soundcloud.jpg" ng-click="media('sc')" />
+
+									<img class="logo img-rounded" src="/img/logos/youtube.jpg" ng-click="media('yt')" />
+
+									<img src="/img/logos/deviantart.jpg" class="logo img-rounded" ng-click="media('da')" />
+								</div>
+								<div ng-show="fields.media">
+									<h3>
+										Please enter the embed
+									</h3>
+									<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
+									<a>What am I suppose to paste here?</a>
+								</div>
+								<!-- Text -->
+								<h3>
+									What would you like to tell about your media?
+								</h3>
+								<textarea ng-model="fields.text" class="form-control text-input"></textarea>
+								<p class="text-muted">
+									Make, sure it's not like crazy long
+								</p>
+							</div>
+						</div>
+						<!-- Rendering -->
+						<div class="col-lg-6">
+							<div class="well square">
+								<div class="row">
+									<!-- Media -->
+									<div class="col-lg-6">
+										<!-- Soundcloud -->
+										<iframe ng-show="mediaType('sc')" width="100%" height="166" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
+
+										<!-- Youtube -->
+										<iframe ng-show="mediaType('yt')" width="100%" height="315" ng-src="//www.youtube.com/embed/{{extracted}}" frameborder="no" allowfullscreen></iframe>
+									</div>
+									<!-- Text area -->
+
+									<div class="col-lg-6">
+										<!-- Title -->
+										<h1>
+											{{capitalize(fields.title)}}
+										</h1>
+
+										<!-- Text -->
+										<p class="text">
+											{{fields.text}}
+										</p>
+									</div>
+								</div>
+
+								<!-- Media -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Is reviewer feed -->
+		<div ng-hide="isCreator(community)">
+			<div>
 			</div>
 		</div>
 	</div>

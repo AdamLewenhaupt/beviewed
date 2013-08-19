@@ -70,6 +70,18 @@ exports.min = {
   }
 };
 
+exports.api = {
+  get: function(req, res) {
+    return communities.get(req.params.id, function(err, community) {
+      if (err) {
+        return res.send(500, err);
+      } else {
+        return res.send(community);
+      }
+    });
+  }
+};
+
 exports.explore = {
   get: function(req, res) {
     if (req.params.type === "init") {

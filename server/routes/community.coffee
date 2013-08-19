@@ -47,6 +47,14 @@ exports.min =
 					name: community.name
 					users: community.userCount
 
+exports.api =
+	get: (req, res) ->
+		communities.get req.params.id, (err, community) ->
+			if err
+				res.send 500, err
+			else
+				res.send community
+
 exports.explore =
 	get: (req, res) ->
 		if req.params.type == "init"

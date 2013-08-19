@@ -70,6 +70,8 @@ app.get("/community-explore/:type", routes.community.explore.get);
 
 app.get("/write/:id", routes.write.get);
 
+app.get("/api/community/:id", routes.community.api.get);
+
 app.post("/create-community", routes.community.post);
 
 if ("development" === app.get("env")) {

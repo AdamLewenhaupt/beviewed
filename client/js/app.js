@@ -410,13 +410,55 @@ capitalize = function(word) {
 
 var writeCtrl;
 
-writeCtrl = function($scope) {
+writeCtrl = function($scope, $http) {
+  var regex;
+  regex = {
+    extractors: {
+      sc: /(.*)src\=\"([^\"]+)(.*)/gi,
+      yt: /(.+)\/watch\?v=(.+)/gi
+    }
+  };
+  $scope.capitalize = capitalize;
+  $scope.fields = {};
   $(function() {
     return $scope.$apply(function() {
-      return $scope.available = $.parseJSON($(".data").html());
+      $scope.available = $.parseJSON($(".data").html());
+      if ($scope.available.length === 1) {
+        return $scope.setCommunity($scope.available[0]);
+      }
     });
   });
-  return $scope.setCommunity = function(community) {
-    return $scope.community = community;
+  $scope.setCommunity = function(community) {
+    var req;
+    $scope.community = community;
+    req = $http({
+      url: "/api/community/" + community,
+      method: "GET"
+    });
+    req.success(function(data) {
+      return $scope.communityData = data;
+    });
+    return req.error(function(err) {
+      return $scope.error = err;
+    });
+  };
+  $scope.isCreator = function() {
+    return ($scope.communityData || {}).type === "creative";
+  };
+  $scope.media = function(name) {
+    return $scope.fields.media = name;
+  };
+  $scope.extract = function() {
+    return $scope.extracted = (function() {
+      switch ($scope.fields.media) {
+        case "sc":
+          return $scope.fields.mediaData.replace(regex.extractors.sc, "$2");
+        case "yt":
+          return $scope.fields.mediaData.replace(regex.extractors.yt, "$2");
+      }
+    })();
+  };
+  return $scope.mediaType = function(name) {
+    return $scope.fields.media === name;
   };
 };

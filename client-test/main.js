@@ -90,7 +90,7 @@ describe("Explore page tests", function() {
 
 describe("Write page tests", function() {
   return describe("Creating", function() {
-    return it("Should create a object ready for the server", function() {
+    it("Should create a object ready for the server", function() {
       var scope, write;
       scope = {
         available: ["a", "b", "c"],
@@ -99,6 +99,17 @@ describe("Write page tests", function() {
       write = new writeCtrl(scope, dummyHttp);
       scope.setCommunity("a");
       return expect(scope.community).toBe("a");
+    });
+    return it("Should extract the vital information", function() {
+      var scope, write;
+      scope = {
+        $apply: function() {},
+        fields: {
+          media: "sc",
+          mediaData: '<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F104935880&amp;color=ff00d0&amp;auto_play=false&amp;show_artwork=true"></iframe>'
+        }
+      };
+      return write = new writeCtrl(scope, dummyHttp);
     });
   });
 });

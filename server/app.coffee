@@ -41,6 +41,7 @@ app.get "/create-community", routes["create-community"].get
 app.get "/community-min/:id", routes.community.min.get
 app.get "/community-explore/:type", routes.community.explore.get
 app.get "/write/:id", routes.write.get
+app.get "/api/community/:id", routes.community.api.get
 
 app.post "/create-community", routes.community.post
 
