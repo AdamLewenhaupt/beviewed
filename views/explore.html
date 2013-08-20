@@ -95,7 +95,7 @@
 			<div class="well tags">
 				<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
 				<div class="row">
-					<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
+					<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
 						<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
 					</div>
 				</div>
@@ -112,7 +112,7 @@
 				<!-- Tag filter -->
 				<div class="col-sm-12 col-lg-6">
 					<div class="well tag-filter">
-						<div ng-repeat="(i, tag) in selectedTags" ng-click="selectedTags.splice(i, 1)">
+						<div ng-repeat="(i, tag) in selectedTags" ng-click="selectedTags.splice(i, 1)" class="bounce-animation">
 							<img class="img-rounded tag-img" ng-src="/img/tags/{{tag}}" />
 						</div>
 					</div>

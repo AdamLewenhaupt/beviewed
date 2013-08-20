@@ -1,0 +1,54 @@
+.transition(@selection, @type, @speed) {
+	-webkit-transition: @selection @type @speed;
+	-moz-transition: @selection @type @speed;
+	-o-transition: @selection @type @speed;
+	transition: @selection @type @speed;
+}
+
+@-webkit-keyframes bounce {
+	0% { -webkit-transform: scale(1); }
+	50% { -webkit-transform: scale(2); }
+	100% { -webkit-transform: scale(0.5); }
+}
+
+.bounce-animation.ng-hide-add,
+.bounce-animation.ng-hide-remove {
+	-webkit-animation: bounce 0.25s linear;
+}
+
+.bounce-animation.ng-enter, 
+.bounce-animation.ng-leave {
+	-webkit-animation: bounce 0.25s linear;
+}
+
+.fade-animation.ng-hide-add, 
+.fade-animation.ng-hide-remove {
+  .transition(all, linear, 0.5s);
+}
+ 
+.fade-animation.ng-hide-add.ng-hide-add-active,
+.fade-animation.ng-hide-remove {
+  opacity:0;
+}
+ 
+.fade-animation.ng-hide-add,
+.fade-animation.ng-hide-remove.ng-hide-remove-active {
+  opacity:1;
+}
+
+.tag-click-animation.ng-hide-add, 
+.tag-click-animation.ng-hide-remove {
+  .transition(all, ease-out, 0.5s);
+  display:block!important;
+}
+ 
+.tag-click-animation.ng-hide-add.ng-hide-add-active,
+.tag-click-animation.ng-hide-remove {
+  opacity:0;
+  width: 50px;
+}
+ 
+.tag-click-animation.ng-hide-add,
+.tag-click-animation.ng-hide-remove.ng-hide-remove-active {
+  opacity:1;
+}

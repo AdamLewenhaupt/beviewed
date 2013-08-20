@@ -1,4 +1,4 @@
-angular.module('beviewed', ["ui.bootstrap"])
+angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
 
  .directive "community", () ->
     restrict: 'A'

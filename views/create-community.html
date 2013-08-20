@@ -180,7 +180,7 @@
 					<div class="well tags">
 						<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
 						<div class="row">
-							<div ng-show="displayTag(tag)" class="tag-item" ng-repeat="tag in tags" ng-click="fields.tags.push(tag)">
+							<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="fields.tags.push(tag)">
 								<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
 							</div>
 						</div>
@@ -190,7 +190,7 @@
 				<div class="col-sm-5 col-lg-6">
 					<div class="well tags">
 						<p class="lead">Selected tags</p>
-						<div class="tag-item sel-item"
+						<div class="tag-item sel-item bounce-animation"
 							ng-repeat="(i, tag) in fields.tags"
 							ng-click="fields.tags.splice(i, 1)">
 							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />

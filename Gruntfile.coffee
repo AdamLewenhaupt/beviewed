@@ -22,6 +22,7 @@ module.exports = (grunt) ->
 				src: [
 					'client/libs/jquery/jquery.min.js',
 					'client/libs/angular/angular.min.js',
+					'client/libs/angular-animate/angular-animate.min.js',
 					'client/libs/angular-mocks/angular-mocks.js',
 					'client/libs/angular-bootstrap/ui-bootstrap-tpls.min.js',
 					'client/js/app.js',

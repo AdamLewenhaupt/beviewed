@@ -237,7 +237,7 @@ indexCtrl = function($scope, $dialog) {
   };
 };
 
-angular.module('beviewed', ["ui.bootstrap"]).directive("community", function() {
+angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).directive("community", function() {
   return {
     restrict: 'A',
     replace: true,
