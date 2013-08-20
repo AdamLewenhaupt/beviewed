@@ -1,14 +1,45 @@
-writeCtrl = ($scope, $http) ->
+writeCtrl = ($scope, $http, $sce) ->
+
+	$scope.fields =
+		title: ""
+		media: "none"
+		mediaData: ""
+		text: ""
 
 	regex =
 		extractors:
 			sc: /(.*)src\=\"([^\"]+)(.*)/gi
 			yt: /(.+)\/watch\?v=(.+)/gi
 
-	$scope.capitalize = capitalize
+	validators =
+		title: () ->
+			$scope.fields.title.length >= 8 && $scope.fields.title.length <= 26
 
-	$scope.fields = 
-		media: "none"
+		mediaData: () ->
+			if $scope.fields.media == "none"
+				false
+			else
+				validators[$scope.fields.media]()
+
+		sc: () ->
+			$scope.fields.mediaData.match(regex.extractors.sc)
+
+		yt: () ->
+			$scope.fields.mediaData.match(regex.extractors.yt)
+
+		da: () ->
+			$scope.fields.mediaData.match(/^[\n]+$/) && $scope.fields.mediaData.length == 9
+
+		text: () ->
+			$scope.fields.text.length > 0 && $scope.fields.text.length <= 160
+
+	$scope.validate = (name) ->
+		if validators[name]()
+			"has-success"
+		else
+			"has-error"
+
+	$scope.capitalize = capitalize
 
 	$ () ->
 		$scope.$apply () ->
@@ -44,7 +75,10 @@ writeCtrl = ($scope, $http) ->
 			when "sc" then $scope.fields.mediaData.replace(regex.extractors.sc, "$2")
 			when "yt" then $scope.fields.mediaData.replace(regex.extractors.yt, "$2")
 			when "da" then $scope.fields.mediaData
-		$scope.fuckDeviantArt = "<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{$scope.extracted}' allowscriptaccess='always'></embed>"
+
+		$scope.soundCloud = $sce.trustAsResourceUrl $scope.extracted
+		$scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{$scope.extracted}"
+		$scope.deviantArt = $sce.trustAsHtml("<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{$scope.extracted}' allowscriptaccess='always'></embed>")
 
 	$scope.mediaType = (name) ->
 		$scope.fields.media == name

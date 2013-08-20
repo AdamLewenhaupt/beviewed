@@ -237,7 +237,12 @@ indexCtrl = function($scope, $dialog) {
   };
 };
 
-angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).directive("community", function() {
+angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function($sceDelegateProvider) {
+  var soundCloudResource, youtubeResource;
+  youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
+  soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/;
+  return $sceDelegateProvider.resourceUrlWhitelist(["self", youtubeResource]);
+}).directive("community", function() {
   return {
     restrict: 'A',
     replace: true,
@@ -410,18 +415,52 @@ capitalize = function(word) {
 
 var writeCtrl;
 
-writeCtrl = function($scope, $http) {
-  var regex;
+writeCtrl = function($scope, $http, $sce) {
+  var regex, validators;
+  $scope.fields = {
+    title: "",
+    media: "none",
+    mediaData: "",
+    text: ""
+  };
   regex = {
     extractors: {
       sc: /(.*)src\=\"([^\"]+)(.*)/gi,
       yt: /(.+)\/watch\?v=(.+)/gi
     }
   };
-  $scope.capitalize = capitalize;
-  $scope.fields = {
-    media: "none"
+  validators = {
+    title: function() {
+      return $scope.fields.title.length >= 8 && $scope.fields.title.length <= 26;
+    },
+    mediaData: function() {
+      if ($scope.fields.media === "none") {
+        return false;
+      } else {
+        return validators[$scope.fields.media]();
+      }
+    },
+    sc: function() {
+      return $scope.fields.mediaData.match(regex.extractors.sc);
+    },
+    yt: function() {
+      return $scope.fields.mediaData.match(regex.extractors.yt);
+    },
+    da: function() {
+      return $scope.fields.mediaData.match(/^[\n]+$/) && $scope.fields.mediaData.length === 9;
+    },
+    text: function() {
+      return $scope.fields.text.length > 0 && $scope.fields.text.length <= 160;
+    }
   };
+  $scope.validate = function(name) {
+    if (validators[name]()) {
+      return "has-success";
+    } else {
+      return "has-error";
+    }
+  };
+  $scope.capitalize = capitalize;
   $(function() {
     return $scope.$apply(function() {
       $scope.available = $.parseJSON($(".data").html());
@@ -463,7 +502,9 @@ writeCtrl = function($scope, $http) {
           return $scope.fields.mediaData;
       }
     })();
-    return $scope.fuckDeviantArt = "<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + $scope.extracted + "' allowscriptaccess='always'></embed>";
+    $scope.soundCloud = $sce.trustAsResourceUrl($scope.extracted);
+    $scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + $scope.extracted);
+    return $scope.deviantArt = $sce.trustAsHtml("<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + $scope.extracted + "' allowscriptaccess='always'></embed>");
   };
   return $scope.mediaType = function(name) {
     return $scope.fields.media === name;

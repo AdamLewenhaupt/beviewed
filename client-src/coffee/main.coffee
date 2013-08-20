@@ -1,5 +1,10 @@
 angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
 
+ .config ($sceDelegateProvider) ->
+    youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/
+    soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/
+    $sceDelegateProvider.resourceUrlWhitelist ["self", youtubeResource]
+
  .directive "community", () ->
     restrict: 'A'
     replace: true

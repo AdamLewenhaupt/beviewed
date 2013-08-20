@@ -76,7 +76,9 @@
 						<div class="col-lg-6">
 							<div class="well square">
 								<!-- Title -->
-								<input type="text" ng-model="fields.title" type="text" class="form-control title-input" placeholder="Your lovely title" />
+								<div ng-class="validate('title')" class="form-group">
+									<input type="text" ng-model="fields.title" type="text" class="form-control title-input" placeholder="Your lovely title" />
+								</div>
 								<p class="text-muted">Please, atleast 8 characters</p>
 
 								<!-- Media -->
@@ -106,9 +108,11 @@
 								<h3>
 									What would you like to tell about your media?
 								</h3>
-								<textarea ng-model="fields.text" class="form-control text-input"></textarea>
+								<div class="form-input" ng-class="validate('text')">
+									<textarea ng-model="fields.text" class="form-control text-input"></textarea>
+								</div>
 								<p class="text-muted">
-									Make, sure it's not like crazy long
+									Make, sure it's not like crazy long (below 160 characters)
 								</p>
 							</div>
 						</div>
@@ -119,13 +123,13 @@
 									<!-- Media -->
 									<div class="col-lg-6" ng-switch on="fields.media">
 										<!-- Soundcloud -->
-										<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
+										<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" src="{{soundCloud}}"></iframe>
 
 										<!-- Youtube -->
-										<iframe class="embed" ng-switch-when="yt" height="315" ng-src="//www.youtube.com/embed/{{extracted}}" frameborder="no" allowfullscreen></iframe>
+										<iframe class="embed" ng-switch-when="yt" height="315" src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
 
 										<!-- Deviant art -->
-										<div ng-switch-when="da" ng-bind-html-unsafe="fuckDeviantArt">
+										<div ng-switch-when="da" ng-bind-html="deviantArt">
 										</div>
 
 									</div>
