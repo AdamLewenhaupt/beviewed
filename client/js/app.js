@@ -419,7 +419,9 @@ writeCtrl = function($scope, $http) {
     }
   };
   $scope.capitalize = capitalize;
-  $scope.fields = {};
+  $scope.fields = {
+    media: "none"
+  };
   $(function() {
     return $scope.$apply(function() {
       $scope.available = $.parseJSON($(".data").html());
@@ -446,17 +448,22 @@ writeCtrl = function($scope, $http) {
     return ($scope.communityData || {}).type === "creative";
   };
   $scope.media = function(name) {
+    $scope.extracted = "";
+    $scope.fields.mediaData = "";
     return $scope.fields.media = name;
   };
   $scope.extract = function() {
-    return $scope.extracted = (function() {
+    $scope.extracted = (function() {
       switch ($scope.fields.media) {
         case "sc":
           return $scope.fields.mediaData.replace(regex.extractors.sc, "$2");
         case "yt":
           return $scope.fields.mediaData.replace(regex.extractors.yt, "$2");
+        case "da":
+          return $scope.fields.mediaData;
       }
     })();
+    return $scope.fuckDeviantArt = "<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + $scope.extracted + "' allowscriptaccess='always'></embed>";
   };
   return $scope.mediaType = function(name) {
     return $scope.fields.media === name;

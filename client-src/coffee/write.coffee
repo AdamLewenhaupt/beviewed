@@ -4,9 +4,11 @@ writeCtrl = ($scope, $http) ->
 		extractors:
 			sc: /(.*)src\=\"([^\"]+)(.*)/gi
 			yt: /(.+)\/watch\?v=(.+)/gi
+
 	$scope.capitalize = capitalize
 
-	$scope.fields = {}
+	$scope.fields = 
+		media: "none"
 
 	$ () ->
 		$scope.$apply () ->
@@ -33,12 +35,16 @@ writeCtrl = ($scope, $http) ->
 		($scope.communityData || {}).type == "creative"
 
 	$scope.media = (name) ->
+		$scope.extracted = ""
+		$scope.fields.mediaData = ""
 		$scope.fields.media = name
 
 	$scope.extract = () ->
 		$scope.extracted = switch $scope.fields.media 
 			when "sc" then $scope.fields.mediaData.replace(regex.extractors.sc, "$2")
 			when "yt" then $scope.fields.mediaData.replace(regex.extractors.yt, "$2")
+			when "da" then $scope.fields.mediaData
+		$scope.fuckDeviantArt = "<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{$scope.extracted}' allowscriptaccess='always'></embed>"
 
 	$scope.mediaType = (name) ->
 		$scope.fields.media == name

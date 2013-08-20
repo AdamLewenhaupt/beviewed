@@ -28,11 +28,28 @@
 		width: 150px;
 		height: 150px;
 		margin-right: 10px;
+		margin-top: 10px;
 	}
 
 	.text-input {
 		margin-top: 10px;
 		resize: vertical;
+	}
+
+	.embed {
+		width: 100%;
+		height: 315px;
+	}
+
+	@media(max-width: 769px) {
+		.embed {
+			height: 166px;
+		}
+
+		.logo {
+			width: 100px;
+			height: 100px;
+		}
 	}
 	</style>
 </head>
@@ -63,7 +80,7 @@
 								<p class="text-muted">Please, atleast 8 characters</p>
 
 								<!-- Media -->
-								<div ng-hide="fields.media">
+								<div ng-hide="fields.media != 'none'">
 									<h3>
 										Where can we find your media?
 									</h3>
@@ -73,13 +90,13 @@
 
 									<img src="/img/logos/deviantart.jpg" class="logo img-rounded" ng-click="media('da')" />
 								</div>
-								<div ng-show="fields.media">
+								<div ng-show="fields.media != 'none'">
 									<h3>
 										Please enter the embed
 									</h3>
 									<div class="input-group">
 										<span class="input-group-btn">
-											<button class="btn btn-info" ng-click="media(null)">Take me back</button>
+											<button class="btn btn-info" ng-click="media('none')">Take me back</button>
 										</span>
 										<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
 									</div>
@@ -100,15 +117,20 @@
 							<div class="well square">
 								<div class="row">
 									<!-- Media -->
-									<div class="col-lg-6">
+									<div class="col-lg-6" ng-switch on="fields.media">
 										<!-- Soundcloud -->
-										<iframe ng-show="mediaType('sc')" width="100%" height="315" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
+										<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
 
 										<!-- Youtube -->
-										<iframe ng-show="mediaType('yt')" width="100%" height="315" ng-src="//www.youtube.com/embed/{{extracted}}" frameborder="no" allowfullscreen></iframe>
-									</div>
-									<!-- Text area -->
+										<iframe class="embed" ng-switch-when="yt" height="315" ng-src="//www.youtube.com/embed/{{extracted}}" frameborder="no" allowfullscreen></iframe>
 
+										<!-- Deviant art -->
+										<div ng-switch-when="da" ng-bind-html-unsafe="fuckDeviantArt">
+										</div>
+
+									</div>
+
+									<!-- Text area -->
 									<div class="col-lg-6">
 										<!-- Title -->
 										<h1>
