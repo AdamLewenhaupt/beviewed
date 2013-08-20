@@ -77,7 +77,12 @@
 									<h3>
 										Please enter the embed
 									</h3>
-									<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
+									<div class="input-group">
+										<span class="input-group-btn">
+											<button class="btn btn-info" ng-click="media(null)">Take me back</button>
+										</span>
+										<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
+									</div>
 									<a>What am I suppose to paste here?</a>
 								</div>
 								<!-- Text -->
@@ -97,7 +102,7 @@
 									<!-- Media -->
 									<div class="col-lg-6">
 										<!-- Soundcloud -->
-										<iframe ng-show="mediaType('sc')" width="100%" height="166" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
+										<iframe ng-show="mediaType('sc')" width="100%" height="315" scrolling="no" frameborder="no" ng-src="{{extracted}}"></iframe>
 
 										<!-- Youtube -->
 										<iframe ng-show="mediaType('yt')" width="100%" height="315" ng-src="//www.youtube.com/embed/{{extracted}}" frameborder="no" allowfullscreen></iframe>
