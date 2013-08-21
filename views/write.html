@@ -77,7 +77,12 @@
 							<div class="well square">
 								<!-- Title -->
 								<div ng-class="validate('title')" class="form-group">
-									<input type="text" ng-model="fields.title" type="text" class="form-control title-input" placeholder="Your lovely title" />
+									<div class="input-group">
+										<input type="text" ng-model="fields.title" type="text" class="form-control title-input" placeholder="Your lovely title" />
+										<span class="input-group-addon">
+											<span ng-class="validateIcon('title')" ></span>
+										</span>
+									</div>
 								</div>
 								<p class="text-muted">Please, atleast 8 characters</p>
 
@@ -87,7 +92,7 @@
 										Where can we find your media?
 									</h3>
 									<img class="logo img-rounded" src="/img/logos/soundcloud.jpg" ng-click="media('sc')" />
-
+									
 									<img class="logo img-rounded" src="/img/logos/youtube.jpg" ng-click="media('yt')" />
 
 									<img src="/img/logos/deviantart.jpg" class="logo img-rounded" ng-click="media('da')" />
@@ -96,11 +101,16 @@
 									<h3>
 										Please enter the embed
 									</h3>
-									<div class="input-group">
-										<span class="input-group-btn">
-											<button class="btn btn-info" ng-click="media('none')">Take me back</button>
-										</span>
-										<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
+									<div class="form-group" ng-class="validate('mediaData')">
+										<div class="input-group">
+											<span class="input-group-btn">
+												<button class="btn btn-info" ng-click="media('none')">Take me back</button>
+											</span>
+											<input type="text" ng-model="fields.mediaData" class="form-control" placeholder="Embed goes here" ng-change="extract()" />
+											<span class="input-group-addon">
+												<span ng-class="validateIcon('mediaData')" ></span>
+											</span>
+										</div>
 									</div>
 									<a>What am I suppose to paste here?</a>
 								</div>
@@ -123,10 +133,10 @@
 									<!-- Media -->
 									<div class="col-lg-6" ng-switch on="fields.media">
 										<!-- Soundcloud -->
-										<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" src="{{soundCloud}}"></iframe>
+										<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" ng-src="{{soundCloud}}"></iframe>
 
 										<!-- Youtube -->
-										<iframe class="embed" ng-switch-when="yt" height="315" src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
+										<iframe class="embed" ng-switch-when="yt" height="315" ng-src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
 
 										<!-- Deviant art -->
 										<div ng-switch-when="da" ng-bind-html="deviantArt">

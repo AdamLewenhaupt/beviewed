@@ -123,7 +123,7 @@ var createCommunity,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 createCommunity = function($scope, $http) {
-  var max, uploading;
+  var max, uploading, validators;
   uploading = false;
   $scope.maxStep = 1;
   $scope.capitalize = capitalize;
@@ -160,6 +160,28 @@ createCommunity = function($scope, $http) {
     }
   };
   $scope.tags = ["music", "games", "art", "comedy"];
+  validators = {
+    name: function() {
+      return $scope.fields.name.length >= 8 && $scope.fields.name.length <= 26;
+    },
+    description: function() {
+      return $scope.fields.description.length > 0 && $scope.fields.description.length <= 160;
+    }
+  };
+  $scope.validate = function(name) {
+    if (validators[name]()) {
+      return "has-success";
+    } else {
+      return "";
+    }
+  };
+  $scope.validateIcon = function(name) {
+    if (validators[name]()) {
+      return "glyphicon glyphicon-ok";
+    } else {
+      return "glyphicon glyphicon-remove";
+    }
+  };
   $scope.warn = function(msg) {
     return $scope.warnings.push(msg);
   };
@@ -176,35 +198,20 @@ createCommunity = function($scope, $http) {
   $scope.displayTag = function(tag) {
     return !(__indexOf.call($scope.fields.tags, tag) >= 0) && tag.indexOf($scope.tagSearch) !== -1;
   };
-  $scope.validName = function() {
-    if ($scope.fields.name.length < 8) {
-      return "has-error";
-    } else {
-      return "has-success";
-    }
-  };
-  $scope.validDescription = function() {
-    if ($scope.fields.description.length > 0 && $scope.fields.description.length <= 160) {
-      return "";
-    } else {
-      return "has-error";
-    }
-  };
   $scope.stepOne = function(type) {
     $scope.fields.type = type;
-    if ($scope.validName() === "has-success") {
+    if (validators["name"]()) {
       $scope.step = 2;
       return max(2);
     } else {
+      $scope.warnings = [];
       return $scope.warn("Hold your horeses! That name is to short");
     }
   };
   $scope.stepTwo = function(dataUrl) {
-    if (dataUrl) {
-      $scope.fields.icon = dataUrl;
-      $scope.step = 3;
-      return max(3);
-    }
+    $scope.fields.icon = dataUrl || "no-icon";
+    $scope.step = 3;
+    return max(3);
   };
   return $scope.create = function() {
     var request;
@@ -447,7 +454,7 @@ writeCtrl = function($scope, $http, $sce) {
       return $scope.fields.mediaData.match(regex.extractors.yt);
     },
     da: function() {
-      return $scope.fields.mediaData.match(/^[\n]+$/) && $scope.fields.mediaData.length === 9;
+      return $scope.fields.mediaData.match(/\d+/) && $scope.fields.mediaData.length > 0;
     },
     text: function() {
       return $scope.fields.text.length > 0 && $scope.fields.text.length <= 160;
@@ -457,7 +464,14 @@ writeCtrl = function($scope, $http, $sce) {
     if (validators[name]()) {
       return "has-success";
     } else {
-      return "has-error";
+      return "has-info";
+    }
+  };
+  $scope.validateIcon = function(name) {
+    if (validators[name]()) {
+      return "glyphicon glyphicon-ok";
+    } else {
+      return "glyphicon glyphicon-remove";
     }
   };
   $scope.capitalize = capitalize;

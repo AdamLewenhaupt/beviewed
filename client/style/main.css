@@ -9,6 +9,20 @@
     -webkit-transform: scale(0.5);
   }
 }
+@-webkit-keyframes shake {
+  0% {
+    -webkit-transform: translate(-3px, 0);
+  }
+  50% {
+    -webkit-transform: translate(6px, 0);
+  }
+  100% {
+    -webkit-transform: translate(-3px, 0);
+  }
+}
+.shake-animation.ng-enter {
+  -webkit-animation: shake 0.25s linear;
+}
 .bounce-animation.ng-hide-add,
 .bounce-animation.ng-hide-remove {
   -webkit-animation: bounce 0.25s linear;
@@ -557,4 +571,16 @@
 .chat form textarea {
   resize: none;
   width: 100%;
+}
+
+@media (min-width: 979px) {
+  .sub-menu div {
+    width: 100%;
+    max-height: 280px;
+  }
+  .sub-menu div div {
+    width: 100%;
+    height: 0px;
+    padding-bottom: 80%;
+  }
 }

@@ -28,7 +28,7 @@ writeCtrl = ($scope, $http, $sce) ->
 			$scope.fields.mediaData.match(regex.extractors.yt)
 
 		da: () ->
-			$scope.fields.mediaData.match(/^[\n]+$/) && $scope.fields.mediaData.length == 9
+			$scope.fields.mediaData.match(/\d+/) && $scope.fields.mediaData.length > 0
 
 		text: () ->
 			$scope.fields.text.length > 0 && $scope.fields.text.length <= 160
@@ -37,7 +37,14 @@ writeCtrl = ($scope, $http, $sce) ->
 		if validators[name]()
 			"has-success"
 		else
-			"has-error"
+			"has-info"
+
+	$scope.validateIcon = (name) ->
+		if validators[name]()
+			"glyphicon glyphicon-ok"
+		else
+			"glyphicon glyphicon-remove"
+
 
 	$scope.capitalize = capitalize
 
