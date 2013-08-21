@@ -11,9 +11,15 @@ writeCtrl = ($scope, $http, $sce) ->
 			sc: /(.*)src\=\"([^\"]+)(.*)/gi
 			yt: /(.+)\/watch\?v=(.+)/gi
 
+	$scope.warnings = []
+
+	warn = (msg, type) -> $scope.warnings.push 
+		msg: msg
+		type: type || ""
+
 	validators =
 		title: () ->
-			$scope.fields.title.length >= 8 && $scope.fields.title.length <= 26
+			$scope.fields.title.length >= 4 && $scope.fields.title.length <= 26
 
 		mediaData: () ->
 			if $scope.fields.media == "none"
@@ -31,7 +37,7 @@ writeCtrl = ($scope, $http, $sce) ->
 			$scope.fields.mediaData.match(/\d+/) && $scope.fields.mediaData.length > 0
 
 		text: () ->
-			$scope.fields.text.length > 0 && $scope.fields.text.length <= 160
+			$scope.fields.text.length > 0 && $scope.fields.text.length <= 320
 
 	$scope.validate = (name) ->
 		if validators[name]()
@@ -45,6 +51,50 @@ writeCtrl = ($scope, $http, $sce) ->
 		else
 			"glyphicon glyphicon-remove"
 
+	$scope.ready = () ->
+
+		if validators["title"]() && validators["mediaData"]() && validators["text"]()
+			"btn-success"
+		else
+			"btn-primary"
+
+	$scope.save = () ->
+		$scope.warnings = []
+		count = 0
+		if validators["title"]()
+			count += 1
+		else
+			warn "Looks like there is something wrong with your title"
+
+		if validators["mediaData"]() 
+			count += 1
+		else
+			warn "Woopsie daisy! Please recheck the media field"
+
+		if validators["text"]()
+			count += 1
+		else
+			warn "Don't try to trick us! Recheck your description please"
+
+		if count == 3
+			req = $http
+				method: "POST"
+				url: "/new-feed/#{$scope.community}"
+				data:
+					fields:
+						title: $scope.fields.title
+						media: $scope.fields.mediaData
+						text: $scope.fields.text
+						mediaData: $scope.extracted
+
+			req.success (data) ->
+				warn "Awesome! Successfully posted", "alert-success"
+
+			req.error (data) ->
+				if data == "404-type"
+					warn "Your community is not of the type that you are submiting a feed for"
+				else
+					warn "Oh no! Looks like there was a problem, please check your internet connection"
 
 	$scope.capitalize = capitalize
 

@@ -5,7 +5,6 @@ collections:
             admins: [String]
             chatlogs: [String]
             fame: Number
-            feeds: [String]
             name: String
             progress: Number
             rooms: [String]
@@ -20,3 +19,10 @@ collections:
             name: String
             admin: [String]
             in: [String]
+    creatorFeeds:
+        fields:
+            title: String
+            community: String
+            text: String
+            media: String
+            mediaData: String

@@ -423,7 +423,7 @@ capitalize = function(word) {
 var writeCtrl;
 
 writeCtrl = function($scope, $http, $sce) {
-  var regex, validators;
+  var regex, validators, warn;
   $scope.fields = {
     title: "",
     media: "none",
@@ -436,9 +436,16 @@ writeCtrl = function($scope, $http, $sce) {
       yt: /(.+)\/watch\?v=(.+)/gi
     }
   };
+  $scope.warnings = [];
+  warn = function(msg, type) {
+    return $scope.warnings.push({
+      msg: msg,
+      type: type || ""
+    });
+  };
   validators = {
     title: function() {
-      return $scope.fields.title.length >= 8 && $scope.fields.title.length <= 26;
+      return $scope.fields.title.length >= 4 && $scope.fields.title.length <= 26;
     },
     mediaData: function() {
       if ($scope.fields.media === "none") {
@@ -457,7 +464,7 @@ writeCtrl = function($scope, $http, $sce) {
       return $scope.fields.mediaData.match(/\d+/) && $scope.fields.mediaData.length > 0;
     },
     text: function() {
-      return $scope.fields.text.length > 0 && $scope.fields.text.length <= 160;
+      return $scope.fields.text.length > 0 && $scope.fields.text.length <= 320;
     }
   };
   $scope.validate = function(name) {
@@ -472,6 +479,57 @@ writeCtrl = function($scope, $http, $sce) {
       return "glyphicon glyphicon-ok";
     } else {
       return "glyphicon glyphicon-remove";
+    }
+  };
+  $scope.ready = function() {
+    if (validators["title"]() && validators["mediaData"]() && validators["text"]()) {
+      return "btn-success";
+    } else {
+      return "btn-primary";
+    }
+  };
+  $scope.save = function() {
+    var count, req;
+    $scope.warnings = [];
+    count = 0;
+    if (validators["title"]()) {
+      count += 1;
+    } else {
+      warn("Looks like there is something wrong with your title");
+    }
+    if (validators["mediaData"]()) {
+      count += 1;
+    } else {
+      warn("Woopsie daisy! Please recheck the media field");
+    }
+    if (validators["text"]()) {
+      count += 1;
+    } else {
+      warn("Don't try to trick us! Recheck your description please");
+    }
+    if (count === 3) {
+      req = $http({
+        method: "POST",
+        url: "/new-feed/" + $scope.community,
+        data: {
+          fields: {
+            title: $scope.fields.title,
+            media: $scope.fields.mediaData,
+            text: $scope.fields.text,
+            mediaData: $scope.extracted
+          }
+        }
+      });
+      req.success(function(data) {
+        return warn("Awesome! Successfully posted", "alert-success");
+      });
+      return req.error(function(data) {
+        if (data === "404-type") {
+          return warn("Your community is not of the type that you are submiting a feed for");
+        } else {
+          return warn("Oh no! Looks like there was a problem, please check your internet connection");
+        }
+      });
     }
   };
   $scope.capitalize = capitalize;

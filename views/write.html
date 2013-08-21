@@ -41,6 +41,14 @@
 		height: 315px;
 	}
 
+	.warner {
+		position: fixed;
+		bottom: 50px;
+		right: 50px;
+		width: 300px;
+		z-index: 999;
+	}
+
 	@media(max-width: 769px) {
 		.embed {
 			height: 166px;
@@ -50,11 +58,30 @@
 			width: 100px;
 			height: 100px;
 		}
+
+		.warner {
+			top: 200px;
+			position: fixed;
+			bottom: auto;
+			right: 10px;
+			width: calc(100% - 20px);
+			z-index: 999;
+		}
+
+		.warner div h2 {
+			font-size: 16px;
+		}	
 	}
 	</style>
 </head>
 <body ng-controller="writeCtrl">
 	<% include nav %>
+	<div class="warner">
+		<div ng-click="warnings.splice(i,1)" class="alert shake-animation" ng-class="warning.type" ng-repeat="(i, warning) in warnings">
+			<button ng-click="warnings.splice(i,1)" type="button" class="close" aria-hidden="true">&times;</button>
+			<h2>{{warning.msg}}</h2>
+		</div>
+	</div>
 	<!-- Select community -->
 	<div ng-hide="community">
 		<h1 class="text-center">Please select the community you would like to write a feed for</h1>
@@ -84,7 +111,7 @@
 										</span>
 									</div>
 								</div>
-								<p class="text-muted">Please, atleast 8 characters</p>
+								<p class="text-muted">Please, atleast 4 characters</p>
 
 								<!-- Media -->
 								<div ng-hide="fields.media != 'none'" class="fade-animation">
@@ -122,8 +149,11 @@
 									<textarea ng-model="fields.text" class="form-control text-input"></textarea>
 								</div>
 								<p class="text-muted">
-									Make, sure it's not like crazy long (below 160 characters)
+									Make, sure it's not like crazy long (below 320 characters)
 								</p>
+								<button ng-click="save()" class="btn btn-large btn-block" ng-class="ready()">
+									Post
+								</button>
 							</div>
 						</div>
 						<!-- Rendering -->

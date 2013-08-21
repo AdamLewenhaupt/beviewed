@@ -74,6 +74,8 @@ app.get("/api/community/:id", routes.community.api.get);
 
 app.post("/create-community", routes.community.post);
 
+app.post("/new-feed/:id", routes.write.newFeed);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }

@@ -44,6 +44,7 @@ app.get "/write/:id", routes.write.get
 app.get "/api/community/:id", routes.community.api.get
 
 app.post "/create-community", routes.community.post
+app.post "/new-feed/:id", routes.write.newFeed
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
