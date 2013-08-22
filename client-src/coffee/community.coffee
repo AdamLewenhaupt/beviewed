@@ -4,7 +4,10 @@ communityCtrl = ($scope, $http, $sce) ->
 	$scope.mainFeed =
 		media: "none"
 
-	setMainFeed = (n) ->
+	$scope.feedFilter = (novelty) ->
+		$scope.mainFeed["_id"] != novelty["_id"]
+
+	$scope.setMainFeed = (n) ->
 		$scope.mainFeed = $scope.feed[n]
 
 		if $scope.mainFeed.media == "sc"
@@ -23,7 +26,7 @@ communityCtrl = ($scope, $http, $sce) ->
 			req.success (data) ->
 				$scope.feed = data
 				if $scope.feed.length > 0
-					setMainFeed(0)
+					$scope.setMainFeed(0)
 
 			req.error (data) ->
 				console.log data

@@ -1,12 +1,15 @@
 var communityCtrl;
 
 communityCtrl = function($scope, $http, $sce) {
-  var sendMessage, setMainFeed;
+  var sendMessage;
   $scope.feed = [];
   $scope.mainFeed = {
     media: "none"
   };
-  setMainFeed = function(n) {
+  $scope.feedFilter = function(novelty) {
+    return $scope.mainFeed["_id"] !== novelty["_id"];
+  };
+  $scope.setMainFeed = function(n) {
     $scope.mainFeed = $scope.feed[n];
     if ($scope.mainFeed.media === "sc") {
       return $scope.soundCloud = $sce.trustAsResourceUrl($scope.mainFeed.mediaData);
@@ -26,7 +29,7 @@ communityCtrl = function($scope, $http, $sce) {
       req.success(function(data) {
         $scope.feed = data;
         if ($scope.feed.length > 0) {
-          return setMainFeed(0);
+          return $scope.setMainFeed(0);
         }
       });
       return req.error(function(data) {
