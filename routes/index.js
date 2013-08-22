@@ -27,3 +27,12 @@ exports["create-community"] = {
 };
 
 exports.write = require("./write");
+
+exports.feed = require("./feed");
+
+exports.fetch = function(colls) {
+  exports.write.fetch(colls);
+  exports.feed.fetch(colls);
+  exports.users.fetch(colls);
+  return exports.community.fetchCommunities(colls.communities);
+};

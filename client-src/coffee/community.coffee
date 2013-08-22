@@ -1,10 +1,33 @@
-communityCtrl = ($scope) ->
+communityCtrl = ($scope, $http, $sce) ->
+
+	$scope.feed = []
+	$scope.mainFeed =
+		media: "none"
+
+	setMainFeed = (n) ->
+		$scope.mainFeed = $scope.feed[n]
+
+		if $scope.mainFeed.media == "sc"
+			$scope.soundCloud = $sce.trustAsResourceUrl $scope.mainFeed.mediaData
+		else if $scope.mainFeed.media == "yt"
+			$scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{$scope.mainFeed.mediaData}"
 
 	$ () ->
 		$scope.$apply () ->
 			$scope.community = $.parseJSON $(".community-data").html()
-
 			$scope.activeRoom = $scope.community.rooms[0]
+			req = $http
+				method: "GET"
+				url: "/api/feed/#{$scope.community['_id']}/#{$scope.community.type}/0/10"
+
+			req.success (data) ->
+				$scope.feed = data
+				if $scope.feed.length > 0
+					setMainFeed(0)
+
+			req.error (data) ->
+				console.log data
+
 
 	sendMessage = () ->
 		$scope.chatlog.push 

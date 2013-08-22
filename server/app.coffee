@@ -15,9 +15,7 @@ swoosh (path.join __dirname, "swoosh.yml"), (err, collections) ->
 		console.log "Swoosh err:", err
 	else
 		this.route app
-		routes.community.fetchCommunities collections.communities
-		routes.users.fetch collections
-		routes.write.fetch collections
+		routes.fetch collections
 		timers.setInterval ( () -> routes.community.log() ), 86400000
 
 # all environments
@@ -42,6 +40,7 @@ app.get "/community-min/:id", routes.community.min.get
 app.get "/community-explore/:type", routes.community.explore.get
 app.get "/write/:id", routes.write.get
 app.get "/api/community/:id", routes.community.api.get
+app.get "/api/feed/:community/:type/:from?/:to", routes.feed.api.get
 
 app.post "/create-community", routes.community.post
 app.post "/new-feed/:id", routes.write.newFeed

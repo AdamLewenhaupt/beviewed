@@ -8,7 +8,12 @@
 	}
 
 	.embed {
-		height: 400px;
+		height: 200px;
+		width: 100%;
+	}
+
+	.embed.yt {
+		height: 300px;
 	}
 
 	@media(max-width: 939) {
@@ -79,16 +84,26 @@
 			<div class="well well-large">
 				<!-- Feed -->
 				<div class="row">
-					<embed class="col-12 col-sm-6 col-lg-6 embed" src="http://www.youtube.com/embed/pngO2pRNYOA">
+					<div class="col-12 col-sm-6 col-lg-6">
+						<div ng-switch on="mainFeed.media">
+							<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" ng-src="{{soundCloud}}"></iframe>
+
+							<!-- Youtube -->
+							<iframe class="embed yt" ng-switch-when="yt" height="315" ng-src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
+
+							<!-- Deviant art -->
+							<!-- <div ng-switch-when="da" ng-bind-html="deviantArt">
+							</div> -->
+						</div>
+					</div>
 					<div class="col-12 col-sm-6 col-lg-6 info">
-						<h1>Title</h1>
-						<p>"But I am going to fight a duel with this gentleman."</p>
+						<h1>{{mainFeed.title}}</h1>
+						<p>{{mainFeed.text}}</p>
 					</div>
 				</div>
 			</div>
 			<!-- Feed overview -->
 			<div class="well text-center">
-				<p class="text-muted">To add feed overview</p>
 			</div>
 			<!-- Now here's just some nifty info -->
 			<div class="row">

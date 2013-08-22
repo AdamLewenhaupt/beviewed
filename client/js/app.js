@@ -1,11 +1,37 @@
 var communityCtrl;
 
-communityCtrl = function($scope) {
-  var sendMessage;
+communityCtrl = function($scope, $http, $sce) {
+  var sendMessage, setMainFeed;
+  $scope.feed = [];
+  $scope.mainFeed = {
+    media: "none"
+  };
+  setMainFeed = function(n) {
+    $scope.mainFeed = $scope.feed[n];
+    if ($scope.mainFeed.media === "sc") {
+      return $scope.soundCloud = $sce.trustAsResourceUrl($scope.mainFeed.mediaData);
+    } else if ($scope.mainFeed.media === "yt") {
+      return $scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + $scope.mainFeed.mediaData);
+    }
+  };
   $(function() {
     return $scope.$apply(function() {
+      var req;
       $scope.community = $.parseJSON($(".community-data").html());
-      return $scope.activeRoom = $scope.community.rooms[0];
+      $scope.activeRoom = $scope.community.rooms[0];
+      req = $http({
+        method: "GET",
+        url: "/api/feed/" + $scope.community['_id'] + "/" + $scope.community.type + "/0/10"
+      });
+      req.success(function(data) {
+        $scope.feed = data;
+        if ($scope.feed.length > 0) {
+          return setMainFeed(0);
+        }
+      });
+      return req.error(function(data) {
+        return console.log(data);
+      });
     });
   });
   sendMessage = function() {
@@ -514,7 +540,7 @@ writeCtrl = function($scope, $http, $sce) {
         data: {
           fields: {
             title: $scope.fields.title,
-            media: $scope.fields.mediaData,
+            media: $scope.fields.media,
             text: $scope.fields.text,
             mediaData: $scope.extracted
           }

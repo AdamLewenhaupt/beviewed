@@ -83,7 +83,7 @@ writeCtrl = ($scope, $http, $sce) ->
 				data:
 					fields:
 						title: $scope.fields.title
-						media: $scope.fields.mediaData
+						media: $scope.fields.media
 						text: $scope.fields.text
 						mediaData: $scope.extracted
 

@@ -19,3 +19,11 @@ exports["create-community"] =
 		res.render "create-community.html"
 
 exports.write = require("./write")
+
+exports.feed = require("./feed")
+
+exports.fetch = (colls) ->
+	exports.write.fetch colls
+	exports.feed.fetch colls
+	exports.users.fetch colls
+	exports.community.fetchCommunities colls.communities

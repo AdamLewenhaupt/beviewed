@@ -6,25 +6,25 @@ exports.fetch = function(collections) {
   return colls = collections;
 };
 
-exports.newFeed = function(req, res) {
-  return colls.communities.get(req.params.id, function(err, community) {
-    var data;
-    if (err) {
-      return res.send(500, "404-community");
+exports.api = {
+  get: function(req, res) {
+    var community, from, to, type;
+    community = req.params.community;
+    type = req.params.type;
+    from = req.params.from;
+    to = req.params.to;
+    if (type === "creative") {
+      return colls.creatorFeeds.model.find().where("community", community).sort({
+        '_id': -1
+      }).skip(from || 0).limit(to).exec(function(err, feeds) {
+        if (err) {
+          return res.send(500, err);
+        } else {
+          return res.send(feeds);
+        }
+      });
     } else {
-      data = req.body.fields;
-      data.community = req.params.id;
-      if (community.type === "creative") {
-        return colls.creatorFeeds.post(data, function(err) {
-          if (err) {
-            return res.send(500, "500-feed");
-          } else {
-            return res.send("success");
-          }
-        });
-      } else {
-        return res.send(500, "404-type");
-      }
+      return res.send(500, "nope");
     }
-  });
+  }
 };
