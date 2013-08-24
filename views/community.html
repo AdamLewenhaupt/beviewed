@@ -29,16 +29,7 @@
 				<!-- Feed -->
 				<div class="row">
 					<div class="col-12 col-sm-6 col-lg-6">
-						<div ng-switch on="mainFeed.media">
-							<iframe class="embed" ng-switch-when="sc" height="315" scrolling="no" frameborder="no" ng-src="{{soundCloud}}"></iframe>
-
-							<!-- Youtube -->
-							<iframe class="embed yt" ng-switch-when="yt" height="315" ng-src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
-
-							<!-- Deviant art -->
-							<!-- <div ng-switch-when="da" ng-bind-html="deviantArt">
-							</div> -->
-						</div>
+						<div embeder="mainFeed.media" embeder-src="mainFeed.mediaData"></div>
 					</div>
 					<div class="col-12 col-sm-6 col-lg-6 info">
 						<h1>{{mainFeed.title}}</h1>

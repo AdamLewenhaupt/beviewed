@@ -306,7 +306,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function(
       media: "=embeder",
       mediaData: "=embederSrc"
     },
-    template: "<div class='media' ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
+    template: "<div  ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
     link: function(scope, el, attrs) {
       var handleChange;
       handleChange = function() {
