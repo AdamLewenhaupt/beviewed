@@ -42,6 +42,8 @@ app.use(express.favicon());
 
 app.use(express.logger("dev"));
 
+app.use(express.compress("dev"));
+
 app.use(express.bodyParser());
 
 app.use(express.methodOverride());
@@ -58,7 +60,7 @@ app.get("/community/:id", routes.community.get);
 
 app.get("/explore", routes.explore.get);
 
-app.get("/dashboard", routes.dashboard.get);
+app.get("/dashboard/:id", routes.dashboard.get);
 
 app.get("/create-community", routes["create-community"].get);
 
@@ -69,6 +71,8 @@ app.get("/community-explore/:type", routes.community.explore.get);
 app.get("/write/:id", routes.write.get);
 
 app.get("/api/community/:id", routes.community.api.get);
+
+app.get("/api/feed/multi/:from?/:to", routes.feed.api.multi);
 
 app.get("/api/feed/:community/:type/:from?/:to", routes.feed.api.get);
 

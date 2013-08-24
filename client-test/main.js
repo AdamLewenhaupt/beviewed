@@ -43,6 +43,16 @@ describe("Community directive tests", function() {
   }));
 });
 
+describe("SSV directive test", function() {
+  beforeEach(module('beviewed'));
+  return it("Should retrive the data", inject(function($compile, $rootScope) {
+    var scope;
+    scope = $rootScope.$new();
+    $compile("<div ssv='user'>bob</div>")(scope);
+    return expect(scope.user).toBe("bob");
+  }));
+});
+
 var dummyHttp;
 
 dummyHttp = function() {

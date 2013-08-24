@@ -6,8 +6,14 @@ module.exports = (grunt) ->
 
 		less:
 			compile:
-				files:
-					"client/style/main.css": ["client-src/less/*"]
+				options:
+					yuicompress: true
+				files: [
+					expand: true
+					cwd: "client-src/less"
+					src: "*.less"
+					dest: "client/style"
+					ext: ".css"]
 
 		mochaTest:
 			test:

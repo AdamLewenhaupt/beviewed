@@ -5,6 +5,38 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
     soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/
     $sceDelegateProvider.resourceUrlWhitelist ["self", youtubeResource]
 
+ .directive "embeder", ($sce) ->
+    restrict: 'A'
+    scope: 
+      media: "=embeder"
+      mediaData: "=embederSrc"
+    template: "<div class='media' ng-switch on='media'>
+        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>
+        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>
+        <div ng-switch-when='da' ng-bind-html='deviantArt'>
+        </div>
+      </div>"
+    link: (scope, el, attrs) ->
+
+      handleChange = () ->
+        console.log "changing", scope.media, scope.mediaData
+        if scope.media == "sc"
+          scope.soundCloud = $sce.trustAsResourceUrl scope.mediaData
+        else if scope.media == "yt"
+          scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{scope.mediaData}"
+        else if scope.media == "da"
+          scope.deviantArt == "<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{scope.mediaData}' allowscriptaccess='always'></embed>"
+
+      scope.$watch "media", handleChange
+      scope.$watch "mediaData", handleChange
+
+      handleChange()
+
+ .directive "ssv", () ->
+    restrict: 'A'
+    link: (scope, el, attrs) ->
+      scope[attrs.ssv] = el.html()
+
  .directive "community", () ->
     restrict: 'A'
     replace: true

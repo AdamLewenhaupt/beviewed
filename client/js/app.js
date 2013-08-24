@@ -260,6 +260,27 @@ createCommunity = function($scope, $http) {
   };
 };
 
+var dashboardCtrl;
+
+dashboardCtrl = function($scope, $http) {
+  $scope.limit = limit;
+  return $scope.$watch('user', function() {
+    var communities, req;
+    $scope.userData = $.parseJSON($scope.user);
+    communities = $scope.userData["in"].concat($scope.userData.admin);
+    req = $http({
+      method: "GET",
+      url: "/api/feed/multi/0/20?communities=" + (communities.join(' '))
+    });
+    req.success(function(data) {
+      return $scope.feed = data;
+    });
+    return req.error(function(data) {
+      return console.log("Err", data);
+    });
+  });
+};
+
 var indexCtrl;
 
 indexCtrl = function($scope, $dialog) {
@@ -278,6 +299,38 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function(
   youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
   soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/;
   return $sceDelegateProvider.resourceUrlWhitelist(["self", youtubeResource]);
+}).directive("embeder", function($sce) {
+  return {
+    restrict: 'A',
+    scope: {
+      media: "=embeder",
+      mediaData: "=embederSrc"
+    },
+    template: "<div class='media' ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
+    link: function(scope, el, attrs) {
+      var handleChange;
+      handleChange = function() {
+        console.log("changing", scope.media, scope.mediaData);
+        if (scope.media === "sc") {
+          return scope.soundCloud = $sce.trustAsResourceUrl(scope.mediaData);
+        } else if (scope.media === "yt") {
+          return scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + scope.mediaData);
+        } else if (scope.media === "da") {
+          return scope.deviantArt === ("<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + scope.mediaData + "' allowscriptaccess='always'></embed>");
+        }
+      };
+      scope.$watch("media", handleChange);
+      scope.$watch("mediaData", handleChange);
+      return handleChange();
+    }
+  };
+}).directive("ssv", function() {
+  return {
+    restrict: 'A',
+    link: function(scope, el, attrs) {
+      return scope[attrs.ssv] = el.html();
+    }
+  };
 }).directive("community", function() {
   return {
     restrict: 'A',
@@ -441,11 +494,19 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function(
   };
 });
 
-var capitalize;
+var capitalize, limit;
 
 capitalize = function(word) {
   if (word) {
     return word[0].toUpperCase() + word.slice(1);
+  }
+};
+
+limit = function(word, n) {
+  if (word.length > n) {
+    return word.substr(0, n) + "...";
+  } else {
+    return word;
   }
 };
 

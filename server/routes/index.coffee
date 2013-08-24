@@ -10,9 +10,7 @@ exports.explore =
 	get: (req, res) ->
 		res.render "explore.html"
 
-exports.dashboard = 
-	get: (req, res) ->
-		res.render "dashboard.html"
+exports.dashboard = require("./dashboard")
 
 exports["create-community"] =
 	get: (req, res) ->
@@ -23,6 +21,7 @@ exports.write = require("./write")
 exports.feed = require("./feed")
 
 exports.fetch = (colls) ->
+	exports.dashboard.fetch colls
 	exports.write.fetch colls
 	exports.feed.fetch colls
 	exports.users.fetch colls

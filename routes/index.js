@@ -14,11 +14,7 @@ exports.explore = {
   }
 };
 
-exports.dashboard = {
-  get: function(req, res) {
-    return res.render("dashboard.html");
-  }
-};
+exports.dashboard = require("./dashboard");
 
 exports["create-community"] = {
   get: function(req, res) {
@@ -31,6 +27,7 @@ exports.write = require("./write");
 exports.feed = require("./feed");
 
 exports.fetch = function(colls) {
+  exports.dashboard.fetch(colls);
   exports.write.fetch(colls);
   exports.feed.fetch(colls);
   exports.users.fetch(colls);

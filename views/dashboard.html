@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="beviewed">
 <head>
 	<% include head %>
+	<link rel="stylesheet" type="text/css" href="/style/dashboard.css">
 	<title>Beviewed</title>
 </head>
-<body>
+<body ng-controller="dashboardCtrl">
 	<% include nav %>
 	<div class="row">
 		<!-- Menu -->
@@ -20,8 +21,30 @@
 			</button>
 		</div>
 		<!-- feed -->
-		<div class="col-lg-10">
+		<div class="col-lg-6">
+			<div class="novelty" ng-repeat="novelty in feed">
+				<div class="well">
+					<div class="row">
+						<div class="col-lg-6">
+							<div embeder="novelty.media" embeder-src="novelty.mediaData">
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<h2>{{novelty.title}}</h2>
+							<p>{{limit(novelty.text, 120)}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
+		<div class="col-lg-4">
+			<div class="well text-center text-muted">
+				Something else
+			</div>
+		</div>
+	</div>
+	<div class="user-data" ssv="user">
+		<%= JSON.stringify(user) %>
 	</div>
 </body>
 </html>
