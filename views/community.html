@@ -2,6 +2,7 @@
 <html ng-app="beviewed">
 <head>
 	<title>Be Viewed - Test community</title>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<% include head %>
 	<link type="text/css" rel="stylesheet" href="/style/community.css" />
 </style>
@@ -17,7 +18,7 @@
 					ng-click="current = 'what-up'">
 					What's up
 				</button>
-				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-info"
+				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-primary"
 					ng-click="current = 'social'">
 					Social
 				</button>
@@ -73,9 +74,9 @@
 						<div class="chat-window-wrapper">
 							<table class="table table-bordered chat-window">
 								<tbody>
-									<tr ng-repeat="entry in chatlog">
-										<td tooltip-append-to-body="true" tooltip-placement="left" tooltip="{{entry.time}}" class="user"><strong>{{entry.user}}</strong></td>
-										<td>{{entry.content}}</td>
+									<tr ng-repeat="entry in chats[activeRoomData]">
+										<td class="user"><strong>{{entry.user}}</strong></td>
+										<td>{{entry.msg}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -89,8 +90,8 @@
 					<div class="col-sm-2 col-lg-2">
 						<ul class="nav nav-pills nav-stacked">
 							<li ng-class="isCurrentRoom(room)"
-								ng-click="setRoom(room)"
-								ng-repeat="room in community.rooms">
+								ng-click="setRoom(i)"
+								ng-repeat="(i, room) in community.rooms">
 								<a class="text-center" href="#">
 									{{ capitalize(room) }}
 								</a>
@@ -119,6 +120,6 @@
 		</div>
 	</div>
 	<!-- Community data -->
-	<div class="community-data"><%= JSON.stringify(community) %></div>
+	<div class="community-data" ssv="communityData"><%= JSON.stringify(community) %></div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 Module dependencies.
 */
 
-var app, express, http, path, routes, swoosh, timers;
+var app, express, http, path, routes, server, services, swoosh, timers;
 
 express = require("express");
 
@@ -15,6 +15,8 @@ routes = require('./routes');
 swoosh = require('swoosh');
 
 timers = require('timers');
+
+services = require("./services");
 
 app = express();
 
@@ -84,6 +86,10 @@ if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }
 
-http.createServer(app).listen(app.get("port"), function() {
+server = http.createServer(app);
+
+services.init(server);
+
+server.listen(app.get("port"), function() {
   return console.log("Express server listening on port " + app.get("port"));
 });

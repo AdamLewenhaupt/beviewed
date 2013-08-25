@@ -1,11 +1,15 @@
 var communityCtrl;
 
-communityCtrl = function($scope, $http, $sce) {
+communityCtrl = function($scope, $http, $sce, flow) {
   var sendMessage;
+  $scope.chats = {};
   $scope.feed = [];
   $scope.mainFeed = {
     media: "none"
   };
+  $scope.capitalize = capitalize;
+  $scope.current = 'what-up';
+  $scope.inputSize = 1;
   $scope.feedFilter = function(novelty) {
     return $scope.mainFeed["_id"] !== novelty["_id"];
   };
@@ -17,31 +21,50 @@ communityCtrl = function($scope, $http, $sce) {
       return $scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + $scope.mainFeed.mediaData);
     }
   };
-  $(function() {
-    return $scope.$apply(function() {
-      var req;
-      $scope.community = $.parseJSON($(".community-data").html());
-      $scope.activeRoom = $scope.community.rooms[0];
-      req = $http({
-        method: "GET",
-        url: "/api/feed/" + $scope.community['_id'] + "/" + $scope.community.type + "/0/10"
+  $scope.$watch("communityData", function() {
+    var req;
+    $scope.community = $.parseJSON($scope.communityData);
+    flow.init(["chat"], {
+      rooms: $scope.community.roomDatas
+    });
+    $scope.community.roomDatas.forEach(function(room) {
+      $scope.chats[room] = [];
+      return flow.on("chat/update/" + room, function(entity) {
+        console.log(room, entity);
+        return $scope.$apply(function() {
+          $scope.chats[room].push(entity);
+          return $(".chat-window-wrapper").animate({
+            scrollTop: $(".chat-window").height(),
+            duration: 50,
+            queue: false
+          });
+        });
       });
-      req.success(function(data) {
-        $scope.feed = data;
-        if ($scope.feed.length > 0) {
-          return $scope.setMainFeed(0);
-        }
-      });
-      return req.error(function(data) {
-        return console.log(data);
-      });
+    });
+    $scope.setRoom(0);
+    req = $http({
+      method: "GET",
+      url: "/api/feed/" + $scope.community['_id'] + "/" + $scope.community.type + "/0/10"
+    });
+    req.success(function(data) {
+      $scope.feed = data;
+      if ($scope.feed.length > 0) {
+        return $scope.setMainFeed(0);
+      }
+    });
+    return req.error(function(data) {
+      return console.log(data);
     });
   });
   sendMessage = function() {
-    $scope.chatlog.push({
-      user: "Me",
-      content: $scope.messageText,
+    flow.emit("chat/" + $scope.activeRoomData, {
+      user: "spinno",
+      msg: $scope.messageText,
       time: getTime()
+    });
+    $scope.chats[$scope.activeRoomData].push({
+      user: "Me",
+      msg: $scope.messageText
     });
     $scope.messageText = "";
     return $(".chat-window-wrapper").animate({
@@ -50,20 +73,6 @@ communityCtrl = function($scope, $http, $sce) {
       queue: false
     });
   };
-  $scope.capitalize = capitalize;
-  $scope.current = 'what-up';
-  $scope.inputSize = 1;
-  $scope.chatlog = [
-    {
-      user: "Me",
-      content: "Hello world",
-      time: "16:25"
-    }, {
-      user: "Tomten",
-      content: "No",
-      time: "16:40"
-    }
-  ];
   $(".chat form textarea").on('keypress', function(e) {
     if (e.keyCode === 13) {
       $scope.$apply(function() {
@@ -90,8 +99,9 @@ communityCtrl = function($scope, $http, $sce) {
       return "";
     }
   };
-  return $scope.setRoom = function(room) {
-    return $scope.activeRoom = room;
+  return $scope.setRoom = function(n) {
+    $scope.activeRoom = $scope.community.rooms[n];
+    return $scope.activeRoomData = $scope.community.roomDatas[n];
   };
 };
 
@@ -310,7 +320,6 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function(
     link: function(scope, el, attrs) {
       var handleChange;
       handleChange = function() {
-        console.log("changing", scope.media, scope.mediaData);
         if (scope.media === "sc") {
           return scope.soundCloud = $sce.trustAsResourceUrl(scope.mediaData);
         } else if (scope.media === "yt") {
@@ -492,6 +501,24 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function(
       });
     }
   };
+}).factory("flow", function() {
+  var flow, socket;
+  socket = io.connect("http://localhost");
+  flow = {
+    init: function(types, data) {
+      return socket.emit("init", {
+        types: types,
+        data: data
+      });
+    },
+    on: function(name, fn) {
+      return socket.on(name, fn);
+    },
+    emit: function(name, data) {
+      return socket.emit(name, data);
+    }
+  };
+  return flow;
 });
 
 var capitalize, limit;

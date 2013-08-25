@@ -8,6 +8,7 @@ collections:
             name: String
             progress: Number
             rooms: [String]
+            roomDatas: [String]
             users: [String]
             userCount: Number
             userCountLog: [Number]
@@ -26,3 +27,8 @@ collections:
             text: String
             media: String
             mediaData: String
+    chatRooms:
+        fields:
+            logMsg: [String] 
+            logTime: [String]
+            logUser: [String]

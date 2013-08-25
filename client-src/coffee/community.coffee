@@ -1,8 +1,15 @@
-communityCtrl = ($scope, $http, $sce) ->
+communityCtrl = ($scope, $http, $sce, flow) ->
+
+	$scope.chats = {}
 
 	$scope.feed = []
 	$scope.mainFeed =
 		media: "none"
+
+	$scope.capitalize = capitalize
+
+	$scope.current = 'what-up'
+	$scope.inputSize = 1
 
 	$scope.feedFilter = (novelty) ->
 		$scope.mainFeed["_id"] != novelty["_id"]
@@ -15,10 +22,27 @@ communityCtrl = ($scope, $http, $sce) ->
 		else if $scope.mainFeed.media == "yt"
 			$scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{$scope.mainFeed.mediaData}"
 
-	$ () ->
-		$scope.$apply () ->
-			$scope.community = $.parseJSON $(".community-data").html()
-			$scope.activeRoom = $scope.community.rooms[0]
+	$scope.$watch "communityData", () ->
+			$scope.community = $.parseJSON $scope.communityData
+			
+			flow.init ["chat"],
+				rooms: $scope.community.roomDatas
+
+			$scope.community.roomDatas.forEach (room) ->
+				$scope.chats[room] = []
+				flow.on "chat/update/#{room}", (entity) ->
+					console.log room, entity
+					$scope.$apply () ->
+						$scope.chats[room].push entity
+
+						$(".chat-window-wrapper").animate
+							scrollTop: $(".chat-window").height(),
+							duration: 50
+							queue: false
+
+
+			$scope.setRoom 0
+
 			req = $http
 				method: "GET"
 				url: "/api/feed/#{$scope.community['_id']}/#{$scope.community.type}/0/10"
@@ -31,26 +55,21 @@ communityCtrl = ($scope, $http, $sce) ->
 			req.error (data) ->
 				console.log data
 
-
 	sendMessage = () ->
-		$scope.chatlog.push 
-			user: "Me"
-			content: $scope.messageText
+		flow.emit "chat/#{$scope.activeRoomData}", 
+			user: "spinno"
+			msg: $scope.messageText
 			time: getTime()
+
+		$scope.chats[$scope.activeRoomData].push 
+			user: "Me"
+			msg: $scope.messageText
+
 		$scope.messageText = ""
 		$(".chat-window-wrapper").animate
 			scrollTop: $(".chat-window").height(),
 			duration: 50
 			queue: false
-
-	$scope.capitalize = capitalize
-
-	$scope.current = 'what-up'
-	$scope.inputSize = 1
-	$scope.chatlog = [
-		{ user: "Me", content: "Hello world", time: "16:25" },
-		{ user: "Tomten", content: "No", time: "16:40" }
-		]
 
 	$(".chat form textarea").on 'keypress', (e) ->
 		if e.keyCode == 13
@@ -71,4 +90,6 @@ communityCtrl = ($scope, $http, $sce) ->
 		else
 			""
 
-	$scope.setRoom = (room) -> $scope.activeRoom = room
+	$scope.setRoom = (n) -> 
+		$scope.activeRoom = $scope.community.rooms[n]
+		$scope.activeRoomData = $scope.community.roomDatas[n]

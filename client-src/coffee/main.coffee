@@ -19,7 +19,6 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
     link: (scope, el, attrs) ->
 
       handleChange = () ->
-        console.log "changing", scope.media, scope.mediaData
         if scope.media == "sc"
           scope.soundCloud = $sce.trustAsResourceUrl scope.mediaData
         else if scope.media == "yt"
@@ -193,3 +192,20 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
           applyScope imageResult
         i++
 
+ .factory "flow", () ->
+
+    socket = io.connect "http://localhost"
+
+    flow = 
+      init: (types, data) ->
+        socket.emit "init", 
+          types: types
+          data: data
+
+      on: (name, fn) ->
+        socket.on name, fn
+
+      emit: (name, data) ->
+        socket.emit name, data
+
+    flow

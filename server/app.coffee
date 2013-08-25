@@ -8,6 +8,7 @@ path = require("path")
 routes = require('./routes')
 swoosh = require('swoosh')
 timers = require('timers')
+services = require "./services"
 app = express()
 
 swoosh (path.join __dirname, "swoosh.yml"), (err, collections) ->
@@ -49,5 +50,8 @@ app.post "/new-feed/:id", routes.write.newFeed
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
-http.createServer(app).listen app.get("port"), ->
+
+server = http.createServer(app)
+services.init server
+server.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
