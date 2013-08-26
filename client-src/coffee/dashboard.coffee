@@ -1,10 +1,14 @@
-dashboardCtrl = ($scope, $http) ->
+dashboardCtrl = ($scope, $http, flow) ->
 
 	$scope.limit = limit
+	$scope.new = 0
 
 	$scope.$watch 'user', () ->
 		$scope.userData = $.parseJSON $scope.user
 		communities = $scope.userData.in.concat $scope.userData.admin
+
+		flow.init ["feed"], 
+			communities: communities
 
 		req = $http
 			method: "GET"
@@ -15,3 +19,8 @@ dashboardCtrl = ($scope, $http) ->
 
 		req.error (data) ->
 			console.log "Err", data
+
+
+		flow.on "community/update", () ->
+			$scope.$apply () ->
+				$scope.new++;

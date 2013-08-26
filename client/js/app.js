@@ -272,12 +272,16 @@ createCommunity = function($scope, $http) {
 
 var dashboardCtrl;
 
-dashboardCtrl = function($scope, $http) {
+dashboardCtrl = function($scope, $http, flow) {
   $scope.limit = limit;
+  $scope["new"] = 0;
   return $scope.$watch('user', function() {
     var communities, req;
     $scope.userData = $.parseJSON($scope.user);
     communities = $scope.userData["in"].concat($scope.userData.admin);
+    flow.init(["feed"], {
+      communities: communities
+    });
     req = $http({
       method: "GET",
       url: "/api/feed/multi/0/20?communities=" + (communities.join(' '))
@@ -285,8 +289,13 @@ dashboardCtrl = function($scope, $http) {
     req.success(function(data) {
       return $scope.feed = data;
     });
-    return req.error(function(data) {
+    req.error(function(data) {
       return console.log("Err", data);
+    });
+    return flow.on("community/update", function() {
+      return $scope.$apply(function() {
+        return $scope["new"]++;
+      });
     });
   });
 };

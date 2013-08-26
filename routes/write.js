@@ -1,4 +1,6 @@
-var colls;
+var colls, flow;
+
+flow = require("../services");
 
 colls = null;
 
@@ -31,6 +33,7 @@ exports.newFeed = function(req, res) {
           if (err) {
             return res.send(500, "500-feed");
           } else {
+            flow.io.sockets["in"]("community/" + req.params.id).emit("community/update", {});
             return res.send("success");
           }
         });

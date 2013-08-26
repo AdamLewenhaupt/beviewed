@@ -1,7 +1,7 @@
 flow = require "./flow"
 
 services =
-	"main-feed": require "./main-feed"
+	"feed": require "./feed"
 	"chat": require "./chat"
 
 flow.io.sockets.on "connection", (socket) ->

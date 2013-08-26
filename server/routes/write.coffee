@@ -1,3 +1,4 @@
+flow = require "../services"
 colls = null
 
 exports.fetch = (inColls) ->
@@ -24,6 +25,7 @@ exports.newFeed = (req, res) ->
 					if err
 						res.send 500, "500-feed"
 					else
+						flow.io.sockets.in("community/#{req.params.id}").emit "community/update", {}
 						res.send "success"
 			else
 				res.send 500, "404-type"
