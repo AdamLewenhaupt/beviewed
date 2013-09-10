@@ -10,6 +10,13 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.capitalize = capitalize;
   $scope.current = 'what-up';
   $scope.inputSize = 1;
+  $scope.swipeRight = function() {
+    console.log("swipe");
+    return $(".side-nav").addClass("side-nav-hover");
+  };
+  $scope.swipeLeft = function() {
+    return $(".side-nav").removeClass("side-nav-hover");
+  };
   $scope.currentTab = function(name) {
     if (name === $scope.current) {
       return "btn-success";
@@ -318,7 +325,7 @@ indexCtrl = function($scope, $dialog) {
   };
 };
 
-angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"]).config(function($sceDelegateProvider) {
+angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).config(function($sceDelegateProvider) {
   var soundCloudResource, youtubeResource;
   youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
   soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/;

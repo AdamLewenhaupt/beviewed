@@ -11,6 +11,13 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.current = 'what-up'
 	$scope.inputSize = 1
 
+	$scope.swipeRight = () ->
+		console.log "swipe"
+		$(".side-nav").addClass("side-nav-hover")
+
+	$scope.swipeLeft = () ->
+		$(".side-nav").removeClass("side-nav-hover")
+
 	$scope.currentTab = (name) ->
 		"btn-success" if name == $scope.current
 

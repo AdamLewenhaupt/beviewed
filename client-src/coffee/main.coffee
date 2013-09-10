@@ -1,4 +1,4 @@
-angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate"])
+angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
 
  .config ($sceDelegateProvider) ->
     youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/
