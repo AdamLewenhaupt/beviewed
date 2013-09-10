@@ -11,6 +11,9 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.current = 'what-up'
 	$scope.inputSize = 1
 
+	$scope.currentTab = (name) ->
+		"btn-success" if name == $scope.current
+
 	$scope.feedFilter = (novelty) ->
 		$scope.mainFeed["_id"] != novelty["_id"]
 

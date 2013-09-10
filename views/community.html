@@ -7,115 +7,118 @@
 	<link type="text/css" rel="stylesheet" href="/style/community.css" />
 </style>
 </head>
-<body>
+<body ng-controller="communityCtrl">
 	<% include nav %>
-	<div class="row" ng-controller="communityCtrl">
-		<h1 class="col-lg-12 community-header">{{ capitalize(community.name) }}</h1>
-		<!-- Community nav -->
-		<div class="col-lg-2">
-			<div class="row">
-				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-success"
-					ng-click="current = 'what-up'">
-					What's up
-				</button>
-				<button class="col-12 col-sm-6 col-lg-12 btn btn-large btn-primary"
-					ng-click="current = 'social'">
-					Social
-				</button>
-			</div>
+	<div class="side-nav">
+		<div class="navbar navbar-inverse" role="navigation">
+			<button class="btn navbar-btn btn-default"
+				ng-class="currentTab('what-up')"
+				ng-click="current = 'what-up'">
+				What's up
+			</button>
+			<button class="btn navbar-btn btn-default"
+				ng-class="currentTab('social')"
+				ng-click="current = 'social'">
+				Social
+			</button>
 		</div>
-		<!-- What'up -->
-		<div class="col-lg-10" ng-show="active('what-up')">
-			<div class="well well-large">
-				<!-- Feed -->
+	</div>
+	<div class="main-content">
+		<div class="row">
+			<h1 class="col-lg-12 community-header">{{ capitalize(community.name) }}</h1>
+			<!-- What'up -->
+			<div class="col-lg-12" ng-show="active('what-up')">
+				<div class="well well-large">
+					<!-- Feed -->
+					<div class="row">
+						<div class="col-12 col-sm-6 col-lg-6">
+							<div embeder="mainFeed.media" embeder-src="mainFeed.mediaData"></div>
+						</div>
+						<div class="col-12 col-sm-6 col-lg-6 info">
+							<h1>{{mainFeed.title}}</h1>
+							<p>{{mainFeed.text}}</p>
+						</div>
+					</div>
+				</div>
+				<!-- Feed overview -->
+				<div class="well">
+					<div ng-show="feedFilter(novelty)" class="novelty" ng-repeat="(i, novelty) in feed">
+						<button ng-click="setMainFeed(i)" class="btn btn-primary">{{novelty.title}}</button>
+					</div>
+				</div>
+				<!-- Now here's just some nifty info -->
 				<div class="row">
-					<div class="col-12 col-sm-6 col-lg-6">
-						<div embeder="mainFeed.media" embeder-src="mainFeed.mediaData"></div>
-					</div>
-					<div class="col-12 col-sm-6 col-lg-6 info">
-						<h1>{{mainFeed.title}}</h1>
-						<p>{{mainFeed.text}}</p>
-					</div>
-				</div>
-			</div>
-			<!-- Feed overview -->
-			<div class="well">
-				<div ng-show="feedFilter(novelty)" class="novelty" ng-repeat="(i, novelty) in feed">
-					<button ng-click="setMainFeed(i)" class="btn btn-primary">{{novelty.title}}</button>
-				</div>
-			</div>
-			<!-- Now here's just some nifty info -->
-			<div class="row">
-				<div class="col-sm-6 col-lg-6">
-					<div class="well">
-						<h3 class="text-center">Fame {{community.fame}}<h3/>
-						<div class="progress">
-							<div class="progress-bar progress-bar-success" style="width:{{community.progress}}%;"></div>
+					<div class="col-sm-6 col-lg-6">
+						<div class="well">
+							<h3 class="text-center">Fame {{community.fame}}<h3/>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width:{{community.progress}}%;"></div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-sm-6 col-lg-6">
-					<div class="well">
-						<h3 class="text-center">Members {{community.userCount}}</h3>
-						<div class="progress">
-							<div class="progress-bar progress-bar-success" style="width:85%;"></div>
-							<div class="progress-bar progress-bar-info" style="width:15%;"></div>
+					<div class="col-sm-6 col-lg-6">
+						<div class="well">
+							<h3 class="text-center">Members {{community.userCount}}</h3>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width:85%;"></div>
+								<div class="progress-bar progress-bar-info" style="width:15%;"></div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<!-- Social -->
-		<div class="col-lg-10" ng-show="active('social')">
-			<div class="well well-large">
-				<div class="row">
-					<!-- Chat -->
-					<div class="col-sm-10 col-lg-10 chat">
-						<div class="chat-window-wrapper">
-							<table class="table table-bordered chat-window">
-								<tbody>
-									<tr ng-repeat="entry in chats[activeRoomData]">
-										<td class="user"><strong>{{entry.user}}</strong></td>
-										<td>{{entry.msg}}</td>
-									</tr>
-								</tbody>
-							</table>
+			<!-- Social -->
+			<div class="col-lg-10" ng-show="active('social')">
+				<div class="well well-large">
+					<div class="row">
+						<!-- Chat -->
+						<div class="col-sm-10 col-lg-10 chat">
+							<div class="chat-window-wrapper">
+								<table class="table table-bordered chat-window">
+									<tbody>
+										<tr ng-repeat="entry in chats[activeRoomData]">
+											<td class="user"><strong>{{entry.user}}</strong></td>
+											<td>{{entry.msg}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<form >
+								<textarea class="form-control" rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
+								</textarea>
+							</form>
 						</div>
-						<form >
-							<textarea class="form-control" rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
-							</textarea>
-						</form>
-					</div>
-					<!-- Chat room nav -->
-					<div class="col-sm-2 col-lg-2">
-						<ul class="nav nav-pills nav-stacked">
-							<li ng-class="isCurrentRoom(room)"
-								ng-click="setRoom(i)"
-								ng-repeat="(i, room) in community.rooms">
-								<a class="text-center" href="#">
-									{{ capitalize(room) }}
-								</a>
-							</li>
-						</ul>
+						<!-- Chat room nav -->
+						<div class="col-sm-2 col-lg-2">
+							<ul class="nav nav-pills nav-stacked">
+								<li ng-class="isCurrentRoom(room)"
+									ng-click="setRoom(i)"
+									ng-repeat="(i, room) in community.rooms">
+									<a class="text-center" href="#">
+										{{ capitalize(room) }}
+									</a>
+								</li>
+							</ul>
+						</div>
 					</div>
 				</div>
-			</div>
-			<!-- Community Members -->
-			<div class="well">
-				<!-- Hosts -->
-				<h3>Hosts</h3>
-				<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
-					<li class="hosts-li" ng-repeat="admin in community.admins">
-						<div user="admin" />
-					</li>
-				</ul>
-				<!-- Members -->
-				<h3>Members</h3>
-				<ul style="list-style:none;margin-left:0px;">
-					<li  ng-repeat="member in members">
-						<div user-local="member" />
-					</li>
-				</ul>
+				<!-- Community Members -->
+				<div class="well">
+					<!-- Hosts -->
+					<h3>Hosts</h3>
+					<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
+						<li class="hosts-li" ng-repeat="admin in community.admins">
+							<div user="admin" />
+						</li>
+					</ul>
+					<!-- Members -->
+					<h3>Members</h3>
+					<ul style="list-style:none;margin-left:0px;">
+						<li  ng-repeat="member in members">
+							<div user-local="member" />
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -10,6 +10,11 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.capitalize = capitalize;
   $scope.current = 'what-up';
   $scope.inputSize = 1;
+  $scope.currentTab = function(name) {
+    if (name === $scope.current) {
+      return "btn-success";
+    }
+  };
   $scope.feedFilter = function(novelty) {
     return $scope.mainFeed["_id"] !== novelty["_id"];
   };
