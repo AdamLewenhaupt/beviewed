@@ -35,11 +35,21 @@
 		.navbar button {
 			height: 60px;
 			font-size: 18px;
+
+			.discrete {
+				display: none;
+			}
 		}
 	}
 
 	.main-content {
 		padding-left: 100px;
+	}
+
+	.side-nav:hover {
+		.navbar button .discrete {
+			display: inline;
+		}
 	}
 
 }
@@ -65,4 +75,8 @@
 .side-nav-hover {
 	width: 250px;
 	left: 0px;
+}
+
+.side-nav-row {
+	margin: -10px;
 }

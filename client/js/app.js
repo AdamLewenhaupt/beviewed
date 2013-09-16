@@ -128,6 +128,12 @@ getTime = function() {
 
 exploreCtrl = function($scope, $http) {
   var req;
+  $scope.searchType = "makers";
+  $scope.currentType = function(name) {
+    if (name === $scope.searchType) {
+      return "btn-success";
+    }
+  };
   $scope.communities = [];
   req = $http({
     method: "GET",

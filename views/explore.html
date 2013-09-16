@@ -5,52 +5,64 @@
 	<link rel="stylesheet" type="text/css" href="/style/explore.css">
 	<title>Beviewed - Explore</title>
 </head>
-<body>
+<body ng-controller="exploreCtrl">
 	<% include nav %>
-	<div class="row" ng-controller="exploreCtrl">
-		<!-- Left side -->
-		<div class="col-sm-5 col-lg-4">
-			<!-- Main filter -->
-			<div class="btn-group btn-group-justified">
-				<a class="btn btn-large btn-success">
-					Makers
-				</a>
-				<a class="btn btn-large btn-primary">
-					Reviewers
-				</a>
-			</div>
-			<!-- Tag filter -->
-			<div class="well tags">
-				<input ng-init="tagSearch = ''" ng-model="tagSearch" type="text" class="form-control tagSearch" placeholder="Search for tags" />
-				<div class="row">
-					<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
-						<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
-					</div>
+	<!-- Side navigation -->
+	<div class="side-nav">
+		<div class="navbar navbar-inverse" role="navigation">
+			<div class="btn-group btn-type">
+				<button class="btn navbar-btn btn-default btn-type"
+					ng-class="currentType('makers')"
+					ng-click="searchType = 'makers'">
+					<span class="discrete">
+						Makers
+					</span>
+				</button>
+				<button class="btn navbar-btn btn-default btn-type"
+					ng-class="currentType('reviewers')"
+					ng-click="searchType = 'reviewers'">
+					<span class="discrete">
+						Reviewers
+					</span>
 				</div>
+				<form class="navbar-form form-inline">
+				<input  type="text" class="form-control" placeholder="Search for tags" ng-init="tagSearch = ''" ng-model="tagSearch" />
+			</form>
+			<div class="row side-nav-row">
+						<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
+							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
+						</div>
+					</div>
 			</div>
 		</div>
-		<!-- Right side -->
-		<div class="col-sm-7 col-lg-8">
-			<!-- Query -->
-			<div class="row">
-				<!-- Main query -->
-				<div class="col-lg-6">
-					<input ng-init="mainQuery = ''" class="form-control main-query" ng-model="mainQuery" placeholder="Search for a community" />
-				</div>
-				<!-- Tag filter -->
-				<div class="col-sm-12 col-lg-6">
-					<div class="well tag-filter">
-						<div ng-repeat="(i, tag) in selectedTags" ng-click="selectedTags.splice(i, 1)" class="bounce-animation">
-							<img class="img-rounded tag-img" ng-src="/img/tags/{{tag}}" />
+
+	</div>
+	<!-- Side navigation end -->
+	<div class="main-content">
+		<div class="row">
+			<!-- Right side -->
+			<div class="col-sm-12 col-lg-12">
+				<!-- Query -->
+				<div class="row">
+					<!-- Main query -->
+					<div class="col-lg-6">
+						<input ng-init="mainQuery = ''" class="form-control main-query" ng-model="mainQuery" placeholder="Search for a community" />
+					</div>
+					<!-- Tag filter -->
+					<div class="col-sm-12 col-lg-6">
+						<div class="well tag-filter">
+							<div ng-repeat="(i, tag) in selectedTags" ng-click="selectedTags.splice(i, 1)" class="bounce-animation">
+								<img class="img-rounded tag-img" ng-src="/img/tags/{{tag}}" />
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<!-- Displaying -->
-			<div class="row displaying">
-				<div class="well">
-					<div ng-show="displayCommunity(community)" class="community" ng-repeat="community in communities">
-						<div community="community['_id']" />
+				<!-- Displaying -->
+				<div class="row displaying">
+					<div class="well">
+						<div ng-show="displayCommunity(community)" class="community" ng-repeat="community in communities">
+							<div community="community['_id']" />
+						</div>
 					</div>
 				</div>
 			</div>

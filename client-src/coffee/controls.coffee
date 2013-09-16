@@ -5,6 +5,11 @@ getTime = ->
 
 exploreCtrl = ($scope, $http) ->
 
+	$scope.searchType = "makers"
+
+	$scope.currentType = (name) ->
+		"btn-success" if name == $scope.searchType
+
 	$scope.communities = []
 
 	req = $http
