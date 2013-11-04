@@ -17,10 +17,13 @@ collections:
             type: String
     users:
         fields:
-            name: String
+            email: String
             pass: String
             admin: [String]
             in: [String]
+            country: String
+            firstName: String
+            lastName: String
     creatorFeeds:
         fields:
             title: String

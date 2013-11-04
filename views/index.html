@@ -7,9 +7,6 @@
 </head>
 <body class="container-fluid" ng-controller="indexCtrl">
 	<% include nav %>
-	<div modal="login" close="loginDialog.close()">
-		<h3 class="modal-header">Login</h3>
-	</div>
 	<div class="jumbotron">
 		<div class="row">
 			<div class="col-lg-6 greet">
@@ -21,13 +18,13 @@
 					<div ng-show="focus == 'login'">
 						<div class="row">
 							<div class="col-lg-8">
-								<form class="form" ng-submit="login()">
-									<input ng-model="login.email" type="email" class="form-control" placeholder="Your mail adress" style="margin-bottom:10px;" />
-									<input ng-model="login.pass" type="password" class="form-control" placeholder="Password" />	
+								<form class="form">
+									<input sub="login" ng-model="loginFields.email" type="email" class="form-control" placeholder="Your mail adress" style="margin-bottom:10px;" />
+									<input sub="login" ng-model="loginFields.pass" type="password" class="form-control" placeholder="Password" />	
 								</form>	
 							</div>
 							<div class="col-lg-4">
-								<button class="btn btn-large btn-block" style="height:86px;font-size:26px;"><span style="margin-top:20px;">Login</span></button>
+								<button ng-click="login()" class="btn btn-large btn-block" style="height:86px;font-size:26px;"><span style="margin-top:20px;">Login</span></button>
 							</div>
 						</div>
 					</div>
@@ -38,9 +35,9 @@
 						<div class="row">
 							<div class="col-lg-8">
 								<form class="form" ng-submit="signup()">
-									<input ng-model="signup.email" type="email" class="form-control" placeholder="Your email" style="margin-bottom:10px;" />		
-									<input ng-model="signup.pass1" type="password" class="form-control" placeholder="Your password" style="margin-bottom:10px;" />
-									<input ng-model="signup.pass2" type="password" class="form-control" placeholder="And again please" />
+									<input ng-model="fields.signup.email" type="email" class="form-control" placeholder="Your email" style="margin-bottom:10px;" />		
+									<input ng-model="fields.signup.pass1" type="password" class="form-control" placeholder="Your password" style="margin-bottom:10px;" />
+									<input ng-model="fields.signup.pass2" type="password" class="form-control" placeholder="And again please" />
 								</form>
 							</div>
 							<div class="col-lg-4">

@@ -69,6 +69,15 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
           "#"
 
 
+ .directive "sub", () ->
+    restrict: 'A'
+    link: (scope, el, attrs) ->
+      el.on "keydown", (e) ->
+        e = e || window.event
+        if e.keyCode == 13
+          scope[attrs.sub]()
+          return false
+
  .directive "user", () ->
     restrict: 'A' 
     replace: true

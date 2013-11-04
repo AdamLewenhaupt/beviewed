@@ -325,10 +325,28 @@ dashboardCtrl = function($scope, $http, flow) {
 
 var indexCtrl;
 
-indexCtrl = function($scope, $dialog, $http) {
+indexCtrl = function($scope, $http) {
+  var getLogin;
   $scope.loginWidth = 46;
   $scope.signupWidth = 50;
   $scope.focus = false;
+  getLogin = function() {
+    console.log($scope.loginFields);
+    return $http({
+      method: "GET",
+      url: "/login",
+      params: {
+        email: $scope.loginFields.email,
+        pass: $scope.loginFields.pass
+      }
+    }).success(function(res) {
+      if (res.isValid) {
+        return $scope.user = res.id;
+      } else {
+        return $scope.error(res.error || "Something went wrong when loging in, please check your credientals");
+      }
+    });
+  };
   $scope.focusLogin = function() {
     $scope.loginWidth = 76;
     $scope.signupWidth = 20;
@@ -339,40 +357,29 @@ indexCtrl = function($scope, $dialog, $http) {
     $scope.signupWidth = 76;
     return $scope.focus = "signup";
   };
+  $scope.error = function() {
+    return console.log("err");
+  };
   $scope.login = function() {
-    return $http({
-      method: "GET",
-      url: "/authorize",
-      params: {
-        user: $scope.login.email,
-        pass: $scope.login.pass
-      }
-    }).success(function(res) {
-      if (res.isValid) {
-        return $scope.$apply(function() {
-          return $scope.user = res.id;
-        });
-      } else {
-        return $scope.$apply(function() {
-          return $scope.error(res.error || "Something went wrong when loging in, please check your credientals");
-        });
-      }
-    });
+    if ($scope.$$phase) {
+      console.log("phase");
+      return getLogin();
+    } else {
+      return $scope.$apply(function() {
+        return getLogin();
+      });
+    }
   };
   return $scope.signup = function() {
     return $http({
       method: "POST",
       url: "/signup",
-      data: $scope.signup
+      data: $scope.fields.signup
     }).success(function(res) {
       if (res.success) {
-        return $scope.$apply(function() {
-          return $scope.user = res.id;
-        });
+        return $scope.user = res.id;
       } else {
-        return $scope.$apply(function() {
-          return $scope.error(res.error || "Something went terribly terribly wrong, please try again!");
-        });
+        return $scope.error(res.error || "Something went terribly terribly wrong, please try again!");
       }
     });
   };
@@ -442,6 +449,19 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
           return "#";
         }
       };
+    }
+  };
+}).directive("sub", function() {
+  return {
+    restrict: 'A',
+    link: function(scope, el, attrs) {
+      return el.on("keydown", function(e) {
+        e = e || window.event;
+        if (e.keyCode === 13) {
+          scope[attrs.sub]();
+          return false;
+        }
+      });
     }
   };
 }).directive("user", function() {

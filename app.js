@@ -78,6 +78,8 @@ app.get("/api/feed/multi/:from?/:to", routes.feed.api.multi);
 
 app.get("/api/feed/:community/:type/:from?/:to", routes.feed.api.get);
 
+app.get("/login", routes.users.authentication.login);
+
 app.post("/create-community", routes.community.post);
 
 app.post("/new-feed/:id", routes.write.newFeed);
