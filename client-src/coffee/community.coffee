@@ -12,7 +12,6 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.inputSize = 1
 
 	$scope.swipeRight = () ->
-		console.log "swipe"
 		$(".side-nav").addClass("side-nav-hover")
 
 	$scope.swipeLeft = () ->

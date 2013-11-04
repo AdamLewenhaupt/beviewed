@@ -7,6 +7,12 @@ exploreCtrl = ($scope, $http) ->
 
 	$scope.searchType = "makers"
 
+	$scope.swipeRight = () ->
+		$(".side-nav").addClass("side-nav-hover")
+
+	$scope.swipeLeft = () ->
+		$(".side-nav").removeClass("side-nav-hover")
+
 	$scope.currentType = (name) ->
 		"btn-success" if name == $scope.searchType
 

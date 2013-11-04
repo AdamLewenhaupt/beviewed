@@ -16,12 +16,39 @@
 				<h1><span>Welcome to <span>BeViewed</span></span><br/><small class="under">- It's about quality</small></h1>
 			</div>
 			<div class="col-lg-6">
-				<button class="btn btn-large btn-success login" style="width:46%;">
-					<h2>Login</h2>
-				</button>
-				<button class="btn btn-primary btn-large signup" style="width:50%;">
-					<h2>Signup</h2>
-				</button>
+				<a class="btn btn-large btn-success login" style="width:{{loginWidth}}%;height:{{focus == 'login' ? 120 : 100}}px;" ng-click="focusLogin()">
+					<h2 ng-hide="focus == 'login'">Login</h2>
+					<div ng-show="focus == 'login'">
+						<div class="row">
+							<div class="col-lg-8">
+								<form class="form" ng-submit="login()">
+									<input ng-model="login.email" type="email" class="form-control" placeholder="Your mail adress" style="margin-bottom:10px;" />
+									<input ng-model="login.pass" type="password" class="form-control" placeholder="Password" />	
+								</form>	
+							</div>
+							<div class="col-lg-4">
+								<button class="btn btn-large btn-block" style="height:86px;font-size:26px;"><span style="margin-top:20px;">Login</span></button>
+							</div>
+						</div>
+					</div>
+				</a>
+				<a class="btn btn-primary btn-large signup" style="width:{{signupWidth}}%;height:{{focus == 'signup' ? 170 : 100}}px;" ng-click="focusSignup()">
+					<h2 ng-hide="focus == 'signup'">Signup</h2>
+					<div ng-show="focus=='signup'">
+						<div class="row">
+							<div class="col-lg-8">
+								<form class="form" ng-submit="signup()">
+									<input ng-model="signup.email" type="email" class="form-control" placeholder="Your email" style="margin-bottom:10px;" />		
+									<input ng-model="signup.pass1" type="password" class="form-control" placeholder="Your password" style="margin-bottom:10px;" />
+									<input ng-model="signup.pass2" type="password" class="form-control" placeholder="And again please" />
+								</form>
+							</div>
+							<div class="col-lg-4">
+								<button class="btn btn-large btn-block" style="height:136px;font-size:26px;">Let's Go</button>
+							</div>
+						</div>
+					</div>
+				</a>
 			</div>
 		</div>
 	</div>

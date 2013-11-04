@@ -18,6 +18,7 @@ collections:
     users:
         fields:
             name: String
+            pass: String
             admin: [String]
             in: [String]
     creatorFeeds:
@@ -32,3 +33,7 @@ collections:
             logMsg: [String] 
             logTime: [String]
             logUser: [String]
+    sessions:
+        fields:
+            target: String
+            expire: Date

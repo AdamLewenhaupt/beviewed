@@ -5,7 +5,9 @@
 	<link rel="stylesheet" type="text/css" href="/style/explore.css">
 	<title>Beviewed - Explore</title>
 </head>
-<body ng-controller="exploreCtrl">
+<body ng-controller="exploreCtrl" 
+	ng-swipe-right="swipeRight()"
+	ng-swipe-left="swipeLeft()">
 	<% include nav %>
 	<!-- Side navigation -->
 	<div class="side-nav">

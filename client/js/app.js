@@ -11,7 +11,6 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.current = 'what-up';
   $scope.inputSize = 1;
   $scope.swipeRight = function() {
-    console.log("swipe");
     return $(".side-nav").addClass("side-nav-hover");
   };
   $scope.swipeLeft = function() {
@@ -129,6 +128,12 @@ getTime = function() {
 exploreCtrl = function($scope, $http) {
   var req;
   $scope.searchType = "makers";
+  $scope.swipeRight = function() {
+    return $(".side-nav").addClass("side-nav-hover");
+  };
+  $scope.swipeLeft = function() {
+    return $(".side-nav").removeClass("side-nav-hover");
+  };
   $scope.currentType = function(name) {
     if (name === $scope.searchType) {
       return "btn-success";
@@ -320,14 +325,56 @@ dashboardCtrl = function($scope, $http, flow) {
 
 var indexCtrl;
 
-indexCtrl = function($scope, $dialog) {
-  return $scope.loginDialog = {
-    open: function() {
-      return $scope.login = true;
-    },
-    close: function() {
-      return $scope.login = false;
-    }
+indexCtrl = function($scope, $dialog, $http) {
+  $scope.loginWidth = 46;
+  $scope.signupWidth = 50;
+  $scope.focus = false;
+  $scope.focusLogin = function() {
+    $scope.loginWidth = 76;
+    $scope.signupWidth = 20;
+    return $scope.focus = "login";
+  };
+  $scope.focusSignup = function() {
+    $scope.loginWidth = 20;
+    $scope.signupWidth = 76;
+    return $scope.focus = "signup";
+  };
+  $scope.login = function() {
+    return $http({
+      method: "GET",
+      url: "/authorize",
+      params: {
+        user: $scope.login.email,
+        pass: $scope.login.pass
+      }
+    }).success(function(res) {
+      if (res.isValid) {
+        return $scope.$apply(function() {
+          return $scope.user = res.id;
+        });
+      } else {
+        return $scope.$apply(function() {
+          return $scope.error(res.error || "Something went wrong when loging in, please check your credientals");
+        });
+      }
+    });
+  };
+  return $scope.signup = function() {
+    return $http({
+      method: "POST",
+      url: "/signup",
+      data: $scope.signup
+    }).success(function(res) {
+      if (res.success) {
+        return $scope.$apply(function() {
+          return $scope.user = res.id;
+        });
+      } else {
+        return $scope.$apply(function() {
+          return $scope.error(res.error || "Something went terribly terribly wrong, please try again!");
+        });
+      }
+    });
   };
 };
 
