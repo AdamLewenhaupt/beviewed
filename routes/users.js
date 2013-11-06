@@ -134,26 +134,27 @@ exports.authentication = {
         }
         return colls.users.post({
           email: email,
-          pass: createHash(pass, function(err, user) {
-            if (err) {
-              return res.send({
-                error: "post-err"
-              });
-            } else {
-              return createSession(user, function(err, sess) {
-                if (err) {
-                  return res.send({
-                    error: "sess-err"
-                  });
-                } else {
-                  res.cookie("s_id", sess, {
-                    signed: true
-                  });
-                  return res.send("reg");
-                }
-              });
-            }
-          })
+          pass: createHash(pass)
+        }, function(err, user) {
+          if (err) {
+            return res.send({
+              error: "post-err"
+            });
+          } else {
+            return createSession(user, function(err, sess) {
+              console.log("stage 3");
+              if (err) {
+                return res.send({
+                  error: "sess-err"
+                });
+              } else {
+                res.cookie("s_id", sess, {
+                  signed: true
+                });
+                return res.send("reg");
+              }
+            });
+          }
         });
       });
     }

@@ -23,7 +23,7 @@
     "grunt-contrib-jasmine": "*"
   },
   "engines": {
-    "node": "*",
-    "npm": "*"
+    "node": "0.10.X",
+    "npm": "2.X.X"
   }
 }
