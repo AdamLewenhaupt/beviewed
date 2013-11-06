@@ -174,6 +174,7 @@ exploreCtrl = function($scope, $http) {
 };
 
 profileCtrl = function($scope) {
+  $scope.cap = capitalize;
   return $(function() {
     return $scope.$apply(function() {
       return $scope.user = $.parseJSON($(".user-data").html());
@@ -326,12 +327,23 @@ dashboardCtrl = function($scope, $http, flow) {
 var indexCtrl;
 
 indexCtrl = function($scope, $http) {
-  var getLogin;
+  var getLogin, getSignup;
+  window.toggleLoad = function() {
+    return $scope.$apply(function() {
+      return $scope.isLoading = !$scope.isLoading;
+    });
+  };
   $scope.loginWidth = 46;
   $scope.signupWidth = 50;
   $scope.focus = false;
+  $scope.isLoading = false;
+  $scope.loginFields = {};
+  $scope.signupFields = {};
   getLogin = function() {
-    console.log($scope.loginFields);
+    if (!($scope.loginFields.email && $scope.loginFields.pass)) {
+      return false;
+    }
+    $scope.isLoading = true;
     return $http({
       method: "GET",
       url: "/login",
@@ -340,11 +352,14 @@ indexCtrl = function($scope, $http) {
         pass: $scope.loginFields.pass
       }
     }).success(function(res) {
+      $scope.isLoading = false;
       if (res.isValid) {
-        return $scope.user = res.id;
+        return window.location.replace("/");
       } else {
         return $scope.error(res.error || "Something went wrong when loging in, please check your credientals");
       }
+    }).error(function(err) {
+      return $scope.isLoading = false;
     });
   };
   $scope.focusLogin = function() {
@@ -362,7 +377,6 @@ indexCtrl = function($scope, $http) {
   };
   $scope.login = function() {
     if ($scope.$$phase) {
-      console.log("phase");
       return getLogin();
     } else {
       return $scope.$apply(function() {
@@ -370,18 +384,39 @@ indexCtrl = function($scope, $http) {
       });
     }
   };
-  return $scope.signup = function() {
+  getSignup = function() {
+    if (!($scope.signupFields.email && $scope.signupFields.pass1 && $scope.signupFields.pass2)) {
+      return false;
+    }
+    if ($scope.signupFields.pass1 !== $scope.signupFields.pass2) {
+      $scope.error(res.error || "Your passwords don't match, please try again!");
+      return;
+    }
+    console.log("all good");
+    $scope.isLoading = true;
     return $http({
       method: "POST",
       url: "/signup",
-      data: $scope.fields.signup
+      data: $scope.signupFields
     }).success(function(res) {
-      if (res.success) {
-        return $scope.user = res.id;
-      } else {
-        return $scope.error(res.error || "Something went terribly terribly wrong, please try again!");
+      $scope.isLoading = false;
+      if (res.error) {
+        return console.log(res.error);
+      } else if (res === "reg") {
+        return window.location.replace("/");
       }
+    }).error(function(err) {
+      return $scope.isLoading = false;
     });
+  };
+  return $scope.signup = function() {
+    if ($scope.$$phase) {
+      return getSignup();
+    } else {
+      return $scope.$apply(function() {
+        return getSignup();
+      });
+    }
   };
 };
 

@@ -52,6 +52,7 @@ exploreCtrl = ($scope, $http) ->
 		check1 && check2
 
 profileCtrl = ($scope) ->
+	$scope.cap = capitalize
 
 	$ () ->
 		$scope.$apply () ->

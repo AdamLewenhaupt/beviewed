@@ -1,16 +1,17 @@
 flow = require "../services"
+authorize = require('./users').authorize
 colls = null
 
 exports.fetch = (inColls) ->
 	colls = inColls
 
 exports.get = (req, res) ->
-	colls.users.get req.params.id, (err, user) ->
-			if err
-				res.send 500, err
-			else
-				res.render "write.html", 
-					communities: user.admin
+	authorize req, (err, user) ->
+		if err
+			res.redirect "/"
+		else
+			res.render "write.html",
+				communities: user.admin
 
 exports.newFeed = (req, res) ->
 	colls.communities.get req.params.id, (err, community) ->

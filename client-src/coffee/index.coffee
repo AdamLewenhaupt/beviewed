@@ -1,11 +1,19 @@
 indexCtrl = ($scope, $http) ->
 
+	window.toggleLoad = () ->
+		$scope.$apply () ->
+			$scope.isLoading = !$scope.isLoading
+
 	$scope.loginWidth = 46
 	$scope.signupWidth = 50
 	$scope.focus = false
+	$scope.isLoading = false
+	$scope.loginFields = {}
+	$scope.signupFields = {}
 
 	getLogin = () ->
-		console.log $scope.loginFields
+		return false unless $scope.loginFields.email && $scope.loginFields.pass
+		$scope.isLoading = true
 		$http
 			method: "GET"
 			url: "/login"
@@ -13,10 +21,13 @@ indexCtrl = ($scope, $http) ->
 				email: $scope.loginFields.email
 				pass: $scope.loginFields.pass
 		.success (res) ->
+				$scope.isLoading = false
 				if res.isValid
-					$scope.user = res.id
+					window.location.replace("/")
 				else
 					$scope.error (res.error || "Something went wrong when loging in, please check your credientals")
+		.error (err) ->
+			$scope.isLoading = false
 
 	$scope.focusLogin = () ->
 		$scope.loginWidth = 76
@@ -32,20 +43,34 @@ indexCtrl = ($scope, $http) ->
 
 	$scope.login = () ->
 		if $scope.$$phase
-			console.log "phase"
 			getLogin()
 		else
-			$scope.$apply () ->
-				getLogin()
+			$scope.$apply () -> getLogin()
 
 
-	$scope.signup = () ->
+	getSignup = () ->
+		return false unless $scope.signupFields.email && $scope.signupFields.pass1 && $scope.signupFields.pass2
+		if $scope.signupFields.pass1 != $scope.signupFields.pass2
+			$scope.error (res.error || "Your passwords don't match, please try again!")
+			return
+		console.log "all good"
+		$scope.isLoading = true
 		$http
 			method: "POST"
 			url: "/signup"
-			data: $scope.fields.signup
+			data: $scope.signupFields
 		.success (res) ->
-			if res.success
-				$scope.user = res.id
-			else
-				$scope.error (res.error || "Something went terribly terribly wrong, please try again!")
+			$scope.isLoading = false
+			if res.error
+				console.log res.error
+			else if res == "reg"
+				window.location.replace("/")
+		.error (err) ->
+			$scope.isLoading = false
+
+
+	$scope.signup = () ->
+		if $scope.$$phase
+			getSignup()
+		else
+			$scope.$apply () -> getSignup()

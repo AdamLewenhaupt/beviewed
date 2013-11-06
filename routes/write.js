@@ -1,6 +1,8 @@
-var colls, flow;
+var authorize, colls, flow;
 
 flow = require("../services");
+
+authorize = require('./users').authorize;
 
 colls = null;
 
@@ -9,9 +11,9 @@ exports.fetch = function(inColls) {
 };
 
 exports.get = function(req, res) {
-  return colls.users.get(req.params.id, function(err, user) {
+  return authorize(req, function(err, user) {
     if (err) {
-      return res.send(500, err);
+      return res.redirect("/");
     } else {
       return res.render("write.html", {
         communities: user.admin

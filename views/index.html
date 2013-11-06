@@ -34,14 +34,14 @@
 					<div ng-show="focus=='signup'">
 						<div class="row">
 							<div class="col-lg-8">
-								<form class="form" ng-submit="signup()">
-									<input ng-model="fields.signup.email" type="email" class="form-control" placeholder="Your email" style="margin-bottom:10px;" />		
-									<input ng-model="fields.signup.pass1" type="password" class="form-control" placeholder="Your password" style="margin-bottom:10px;" />
-									<input ng-model="fields.signup.pass2" type="password" class="form-control" placeholder="And again please" />
+								<form class="form">
+									<input sub="signup" ng-model="signupFields.email" type="email" class="form-control" placeholder="Your email" style="margin-bottom:10px;" />
+									<input sub="signup" ng-model="signupFields.pass1" type="password" class="form-control" placeholder="Your password" style="margin-bottom:10px;" />
+									<input sub="signup" ng-model="signupFields.pass2" type="password" class="form-control" placeholder="And again please" />
 								</form>
 							</div>
 							<div class="col-lg-4">
-								<button class="btn btn-large btn-block" style="height:136px;font-size:26px;">Let's Go</button>
+								<button ng-click="signup()" class="btn btn-large btn-block" style="height:136px;font-size:26px;">Let's Go</button>
 							</div>
 						</div>
 					</div>

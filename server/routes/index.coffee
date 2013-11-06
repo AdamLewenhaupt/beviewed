@@ -1,8 +1,15 @@
+exports.users = require("./users")
+
+authorize = exports.users.authorize
+
 exports.index =
 	get: (req, res) ->
-		res.render "index.html"
-
-exports.users = require("./users")
+		authorize req, (err, user) ->
+			if err
+				res.render "index.html"
+			else
+				res.render "dashboard.html",
+					user: user
 
 exports.community = require('./community')
 

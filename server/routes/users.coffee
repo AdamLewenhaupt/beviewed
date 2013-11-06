@@ -9,8 +9,31 @@ valid = (pass, user) ->
 createHash = (pass) ->
 	hash.hashPassword pass
 
+
+createSession = (user, fn) ->
+	date = new Date().getTime()
+	colls.sessions.post 
+		target: user["_id"]
+		expire: date+36e5, (err, session) -> fn(err, session['_id'])
+
 exports.fetch = (inColls) ->
 	colls = inColls
+
+
+exports.authorize = (req, fn) ->
+	sid = req.signedCookies['s_id']
+	if sid
+		colls.sessions.get sid, (err, sess) ->
+			if err 
+				fn(err, null)
+			else
+				colls.users.get sess.target, (err, user) ->
+					if err
+						fn(err, null)
+					else
+						fn(null, user)
+	else
+		fn("no sid", null)
 
 exports.profile =
 	get: (req, res) ->
@@ -20,6 +43,12 @@ exports.profile =
 			else
 				res.render "profile.html", 
 					user: user
+
+exports.expire = () ->
+	time = new Date().getTime()
+	colls.sessions.model.find()
+		.where("expire").gte(time)
+		.remove()
 
 exports.authentication =
 	login: (req, res) ->
@@ -33,9 +62,51 @@ exports.authentication =
 						isValid: false
 						error: "Please check your credientials, no user with that email was found."
 				else
-					res.send
-						isValid: valid pass, user[0]
-						id: user[0]["_id"]
+					unless valid pass, user[0]
+						res.send 
+							isValid: false
+							error: "Invalid password / email combination."
+					else
+						createSession user[0], (err, sess) ->
+							if err
+								res.send
+									isValid: false
+									error: "There was an error when trying to generate your login session."
+							else
+								res.cookie "s_id", sess, { signed: true }
+								res.send
+									isValid: true
 
-	verifyToken: (req, res) ->
 	signup: (req, res) ->
+		email = req.body.email
+		pass = req.body.pass1 if req.body.pass1 == req.body.pass2
+		unless pass
+			res.send
+				error: "pass-err"
+		else
+			colls.users.model.find()
+				.where("email", email)
+				.exec (err, users) ->
+					if err
+						res.send
+							error: "usr-err"
+						return
+					if users.length > 0
+						res.send
+							error: "usr-exists"
+						return
+
+					colls.users.post
+						email: email
+						pass: createHash pass, (err, user) ->
+							if err
+								res.send
+									error: "post-err"
+							else
+								createSession user, (err, sess) ->
+									if err
+										res.send
+											error: "sess-err"
+									else
+										res.cookie "s_id", sess, { signed: true }
+										res.send "reg"

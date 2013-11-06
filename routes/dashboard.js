@@ -1,4 +1,6 @@
-var colls;
+var authorize, colls;
+
+authorize = require('./users').authorize;
 
 colls = void 0;
 
@@ -7,9 +9,9 @@ exports.fetch = function(collections) {
 };
 
 exports.get = function(req, res) {
-  return colls.users.get(req.params.id, function(err, user) {
+  return authorize(req, function(err, user) {
     if (err) {
-      return res.send(500, err);
+      return res.redirect("/");
     } else {
       return res.render("dashboard.html", {
         user: user

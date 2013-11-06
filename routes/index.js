@@ -1,10 +1,22 @@
-exports.index = {
-  get: function(req, res) {
-    return res.render("index.html");
-  }
-};
+var authorize;
 
 exports.users = require("./users");
+
+authorize = exports.users.authorize;
+
+exports.index = {
+  get: function(req, res) {
+    return authorize(req, function(err, user) {
+      if (err) {
+        return res.render("index.html");
+      } else {
+        return res.render("dashboard.html", {
+          user: user
+        });
+      }
+    });
+  }
+};
 
 exports.community = require('./community');
 

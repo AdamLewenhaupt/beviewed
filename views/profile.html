@@ -68,16 +68,13 @@
 				<img ng-src="/img/users/{{user['_id']}}"
 					class="media-object img-rounded user" />
 				<div class="caption">
-					<h3 class="hidden-sm">A little about {{user.tag}}</h3>
+					<h3 class="hidden-sm">A little about {{user.firstName}}</h3>
 			<address>
-				<strong>Name</strong><button class="btn btn-primary btn-small edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-				<p>{{user.firstName}} {{user.lastName}}</p>
-
-				<strong>Tag</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-				<p>{{user.tag}}</p>
+				<strong>Full Name</strong><button class="btn btn-primary btn-small edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<p>{{cap(user.firstName)}} {{cap(user.lastName)}}</p>
 
 				<strong>Country</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
-				<p>{{user.country}}</p>
+				<p>{{cap(user.country)}}</p>
 				<strong>Contact</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button><br/>
 				<p>{{user.email}}</p>
 			</address>
