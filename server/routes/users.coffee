@@ -98,12 +98,13 @@ exports.authentication =
 
 					colls.users.post
 						email: email
-						pass: createHash pass, (err, user) ->
+						pass: (createHash pass), (err, user) ->
 							if err
 								res.send
 									error: "post-err"
 							else
 								createSession user, (err, sess) ->
+									console.log "stage 3"
 									if err
 										res.send
 											error: "sess-err"
