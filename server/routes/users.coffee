@@ -24,8 +24,10 @@ exports.authorize = (req, fn) ->
 	sid = req.signedCookies['s_id']
 	if sid
 		colls.sessions.get sid, (err, sess) ->
-			if err 
+			if err
 				fn(err, null)
+			else if !sess
+				fn("no-sess", null)
 			else
 				colls.users.get sess.target, (err, user) ->
 					if err

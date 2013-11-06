@@ -15,13 +15,25 @@ exports.community = require('./community')
 
 exports.explore =
 	get: (req, res) ->
-		res.render "explore.html"
+		authorize req, (err, user) ->
+			if err
+				res.render "index.html",
+					user: {id:""}
+			else
+				res.render "explore.html",
+					user: user
 
 exports.dashboard = require("./dashboard")
 
 exports["create-community"] =
 	get: (req, res) ->
-		res.render "create-community.html"
+		authorize req, (err, user) ->
+			if err
+				res.render "index.html",
+					user: {id:""}
+			else
+				res.render "create-community.html",
+					user: user
 
 exports.write = require("./write")
 

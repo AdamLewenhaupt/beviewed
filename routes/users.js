@@ -36,6 +36,8 @@ exports.authorize = function(req, fn) {
     return colls.sessions.get(sid, function(err, sess) {
       if (err) {
         return fn(err, null);
+      } else if (!sess) {
+        return fn("no-sess", null);
       } else {
         return colls.users.get(sess.target, function(err, user) {
           if (err) {

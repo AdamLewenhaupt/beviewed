@@ -1,12 +1,15 @@
 fs = require 'fs'
+authorize = require('./users').authorize
 communities = null
 
 exports.fetchCommunities = (data) -> communities = data
 
 exports.get = (req, res) ->
-	communities.get req.params.id, (err, community) ->
-		res.render "community.html", 
-			community: community
+	authorize req, (err, user) ->
+		communities.get req.params.id, (err, community) ->
+			res.render "community.html", 
+				community: community
+				user: user || {id:''}
 
 exports.init = (data) ->
 	communities.post data, (c) ->

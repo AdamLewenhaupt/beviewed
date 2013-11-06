@@ -1,6 +1,8 @@
-var communities, fs;
+var authorize, communities, fs;
 
 fs = require('fs');
+
+authorize = require('./users').authorize;
 
 communities = null;
 
@@ -9,9 +11,14 @@ exports.fetchCommunities = function(data) {
 };
 
 exports.get = function(req, res) {
-  return communities.get(req.params.id, function(err, community) {
-    return res.render("community.html", {
-      community: community
+  return authorize(req, function(err, user) {
+    return communities.get(req.params.id, function(err, community) {
+      return res.render("community.html", {
+        community: community,
+        user: user || {
+          id: ''
+        }
+      });
     });
   });
 };

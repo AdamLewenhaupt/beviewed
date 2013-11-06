@@ -22,7 +22,19 @@ exports.community = require('./community');
 
 exports.explore = {
   get: function(req, res) {
-    return res.render("explore.html");
+    return authorize(req, function(err, user) {
+      if (err) {
+        return res.render("index.html", {
+          user: {
+            id: ""
+          }
+        });
+      } else {
+        return res.render("explore.html", {
+          user: user
+        });
+      }
+    });
   }
 };
 
@@ -30,7 +42,19 @@ exports.dashboard = require("./dashboard");
 
 exports["create-community"] = {
   get: function(req, res) {
-    return res.render("create-community.html");
+    return authorize(req, function(err, user) {
+      if (err) {
+        return res.render("index.html", {
+          user: {
+            id: ""
+          }
+        });
+      } else {
+        return res.render("create-community.html", {
+          user: user
+        });
+      }
+    });
   }
 };
 
