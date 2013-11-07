@@ -51,8 +51,18 @@ exploreCtrl = ($scope, $http) ->
 
 		check1 && check2
 
-profileCtrl = ($scope) ->
+profileCtrl = ($scope, $http) ->
 	$scope.cap = capitalize
+
+	$scope.signout = () ->
+		$http
+			method: "POST"
+			url: "/signout"
+		.success (res) ->
+			if res.error
+ 				console.log res.error
+ 			else
+ 				window.location.replace("/")
 
 	$ () ->
 		$scope.$apply () ->

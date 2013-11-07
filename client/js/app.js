@@ -173,8 +173,20 @@ exploreCtrl = function($scope, $http) {
   };
 };
 
-profileCtrl = function($scope) {
+profileCtrl = function($scope, $http) {
   $scope.cap = capitalize;
+  $scope.signout = function() {
+    return $http({
+      method: "POST",
+      url: "/signout"
+    }).success(function(res) {
+      if (res.error) {
+        return console.log(res.error);
+      } else {
+        return window.location.replace("/");
+      }
+    });
+  };
   return $(function() {
     return $scope.$apply(function() {
       return $scope.user = $.parseJSON($(".user-data").html());
@@ -278,18 +290,18 @@ createCommunity = function($scope, $http) {
   };
   return $scope.create = function() {
     var request;
-    $scope.fields.admins = ['spinno'];
+    $scope.fields.admins = [$scope.user['_id']];
     $scope.fields.userCount = 0;
     request = $http({
       method: "POST",
       url: "/create-community",
       data: $scope.fields
     });
-    request.sucess(function(data) {
-      return alert("Success");
+    request.success(function(data) {
+      return window.location.replace("/community/" + data.id);
     });
     return request.error(function(data) {
-      return alert("Error :(");
+      return $scope.warn("Unable to create community");
     });
   };
 };
@@ -456,6 +468,13 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       return scope[attrs.ssv] = el.html();
     }
   };
+}).directive("ssvParse", function() {
+  return {
+    restrict: 'A',
+    link: function(scope, el, attrs) {
+      return scope[attrs['ssvParse']] = JSON.parse(el.html());
+    }
+  };
 }).directive("community", function() {
   return {
     restrict: 'A',
@@ -465,7 +484,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       link: "=",
       click: "&ngClick"
     },
-    template: "    <div class='media'>      <a href='{{ genLink() }}'>        <img ng-click='delegate()' class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' />      </a></div>",
+    template: "    <div class='media'>      <a href='{{ genLink() }}'>        <img ng-click='delegate()' class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' />      </a></div>",
     link: function(scope, el, attrs) {
       scope.community = scope.getCommunity();
       scope.doLink = scope.link;
@@ -506,7 +525,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
     scope: {
       getUser: "&user"
     },
-    template: "      <div class='media'>        <a href='/profile/{{user}}'>          <img class='user img-rounded media-object'            ng-src='/img/users/{{user}}' /></a></div>",
+    template: "      <div class='media'>        <a href='/profile/{{user}}'>          <img class='user img-rounded media-object'            ng-src='/img/users/{{user}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' /></a></div>",
     link: function(scope) {
       return scope.user = scope.getUser();
     }

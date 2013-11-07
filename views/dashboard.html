@@ -22,7 +22,7 @@
 			</button>
 		</div>
 		<!-- feed -->
-		<div class="col-lg-6">
+		<div class="col-sm-7 col-lg-6">
 			<div class="novelty" ng-repeat="novelty in feed">
 				<div class="well">
 					<div class="row">
@@ -36,27 +36,27 @@
 								<p>{{limit(novelty.text, 120)}}</p>
 							</div>
 							<div class="actions">
-							<!-- Goto community -->
-							<div class="btn btn-mini btn-block btn-primary mini">
-								<span class="glyphicon glyphicon-fullscreen"></span>
+								<!-- Goto community -->
+								<a ng-href="/community/{{novelty.community}}" class="btn btn-mini btn-block btn-primary mini">
+									<span class="glyphicon glyphicon-fullscreen"></span>
+								</a>
+								<!-- Share -->
+								<div class="btn btn-mini btn-block btn-primary mini">
+									<span class="glyphicon glyphicon-share-alt">
+									</span>
+								</div>
+								<!-- Love -->
+								<div class="btn btn-mini btn-block btn-primary mini">
+									<span class="glyphicon glyphicon-heart">
+									</span>
+								</div>
 							</div>
-							<!-- Share -->
-							<div class="btn btn-mini btn-block btn-primary mini">
-								<span class="glyphicon glyphicon-share-alt">
-								</span>
-							</div>
-							<!-- Love -->
-							<div class="btn btn-mini btn-block btn-primary mini">
-								<span class="glyphicon glyphicon-heart">
-								</span>
-							</div>
-						</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-sm-2 col-lg-4">
 			<div class="well text-center text-muted">
 				Something else
 			</div>

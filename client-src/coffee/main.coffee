@@ -36,6 +36,11 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     link: (scope, el, attrs) ->
       scope[attrs.ssv] = el.html()
 
+ .directive "ssvParse", () ->
+    restrict: 'A'
+    link: (scope, el, attrs) ->
+      scope[attrs['ssvParse']] = JSON.parse(el.html())
+
  .directive "community", () ->
     restrict: 'A'
     replace: true
@@ -47,7 +52,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     <div class='media'>
       <a href='{{ genLink() }}'>
         <img ng-click='delegate()' class='community img-rounded media-object'
-          ng-src='/img/icons/{{community}}' />
+          ng-src='/img/icons/{{community}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' />
       </a></div>"
     link: (scope, el, attrs) ->
       scope.community = scope.getCommunity()
@@ -87,7 +92,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
       <div class='media'>
         <a href='/profile/{{user}}'>
           <img class='user img-rounded media-object'
-            ng-src='/img/users/{{user}}' /></a></div>"
+            ng-src='/img/users/{{user}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' /></a></div>"
     link: (scope) ->
       scope.user = scope.getUser()
 

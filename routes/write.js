@@ -16,7 +16,8 @@ exports.get = function(req, res) {
       return res.redirect("/");
     } else {
       return res.render("write.html", {
-        communities: user.admin
+        communities: user.admin,
+        user: user
       });
     }
   });

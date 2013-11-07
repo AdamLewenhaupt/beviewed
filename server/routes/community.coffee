@@ -1,8 +1,10 @@
 fs = require 'fs'
 authorize = require('./users').authorize
 communities = null
+users= null
 
 exports.fetchCommunities = (data) -> communities = data
+exports.fetchUsers = (data) -> users = data
 
 exports.get = (req, res) ->
 	authorize req, (err, user) ->
@@ -27,17 +29,29 @@ exports.log = () ->
 
 
 exports.post = (req, res) ->
-	communities.post req.body, (err, community) ->
-		if err
-			res.send 500, "save-err"
-		else
-			path = "./client/img/icons/#{community['_id']}"
-			encodedIcon = req.body.icon.replace /^data:image\/png;base64,/, ""
-			fs.writeFile path, encodedIcon, 'base64', (err) ->
-				if err
-					res.send 500, "img-err"
-				else
-					res.send 200, "success"
+	admin = req.body.admins[0]
+	req.body.userCount = 1
+	if admin
+		communities.post req.body, (err, community) ->
+			if err
+				res.send 500, "save-err"
+			else
+				path = "./client/img/icons/#{community['_id']}"
+				encodedIcon = req.body.icon.replace /^data:image\/png;base64,/, ""
+				fs.writeFile path, encodedIcon, 'base64', (err) ->
+					if err
+						res.send 500, "img-err"
+					else
+						users.get admin, (err, user) ->
+							if err
+								res.send 500, "user-err"
+							else
+								user.admin.push community['_id']
+								user.save()
+								res.send 
+									id: community["_id"]
+	else
+		res.send 500, "admin-err"
 
 
 exports.min =

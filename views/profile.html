@@ -65,8 +65,8 @@
 		<!-- Introduction -->
 		<div class="profile">
 			<div class="thumbnail">
-				<img ng-src="/img/users/{{user['_id']}}"
-					class="media-object img-rounded user" />
+				<img ng-src="/img/users/{{user['_id'] }}"
+					class="media-object img-rounded user" onerror="$(this).attr('src','/img/unknown.png')" ></img>
 				<div class="caption">
 					<h3 class="hidden-sm">A little about {{user.firstName}}</h3>
 			<address>
@@ -79,6 +79,7 @@
 				<p>{{user.email}}</p>
 			</address>
 				</div>
+				<% if(write){ %><button class="btn btn-warning btn-block" ng-click="signout()">Sign out</button><% } %>
 			</div>
 		</div>
 		<!-- Communities -->

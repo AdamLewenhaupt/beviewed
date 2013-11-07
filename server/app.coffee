@@ -35,7 +35,7 @@ app.use app.router
 app.use express.static(path.join(__dirname, "client"))
 
 app.get "/", routes.index.get
-app.get "/profile/:id", routes.users.profile.get
+app.get "/profile", routes.users.profile.get
 app.get "/community/:id", routes.community.get
 app.get "/explore", routes.explore.get
 app.get "/dashboard", routes.dashboard.get
@@ -47,7 +47,9 @@ app.get "/api/community/:id", routes.community.api.get
 app.get "/api/feed/multi/:from?/:to", routes.feed.api.multi
 app.get "/api/feed/:community/:type/:from?/:to", routes.feed.api.get
 app.get "/login", routes.users.authentication.login
+app.get "/profile/:id", routes.users.pubProfile.get
 
+app.post "/signout", routes.users.authentication.signout
 app.post "/signup", routes.users.authentication.signup
 app.post "/create-community", routes.community.post
 app.post "/new-feed/:id", routes.write.newFeed

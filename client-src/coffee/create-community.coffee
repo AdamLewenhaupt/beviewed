@@ -89,15 +89,15 @@ createCommunity = ($scope, $http) ->
 		max(3)
 
 	$scope.create = () ->
-		$scope.fields.admins = ['spinno']
+		$scope.fields.admins = [$scope.user['_id']]
 		$scope.fields.userCount = 0
 		request = $http
 			method: "POST"
 			url: "/create-community"
 			data: $scope.fields
 
-		request.sucess (data) ->
-			alert("Success")
+		request.success (data) ->
+			window.location.replace "/community/#{data.id}"
 
 		request.error (data) ->
-			alert("Error :(")
+			$scope.warn ("Unable to create community")

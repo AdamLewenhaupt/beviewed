@@ -8,7 +8,11 @@ exports.index = {
   get: function(req, res) {
     return authorize(req, function(err, user) {
       if (err) {
-        return res.render("index.html");
+        return res.render("index.html", {
+          user: {
+            id: ''
+          }
+        });
       } else {
         return res.render("dashboard.html", {
           user: user
@@ -24,11 +28,7 @@ exports.explore = {
   get: function(req, res) {
     return authorize(req, function(err, user) {
       if (err) {
-        return res.render("index.html", {
-          user: {
-            id: ""
-          }
-        });
+        return res.redirect("/");
       } else {
         return res.render("explore.html", {
           user: user
@@ -44,11 +44,7 @@ exports["create-community"] = {
   get: function(req, res) {
     return authorize(req, function(err, user) {
       if (err) {
-        return res.render("index.html", {
-          user: {
-            id: ""
-          }
-        });
+        return res.redirect("/");
       } else {
         return res.render("create-community.html", {
           user: user
@@ -67,5 +63,6 @@ exports.fetch = function(colls) {
   exports.write.fetch(colls);
   exports.feed.fetch(colls);
   exports.users.fetch(colls);
-  return exports.community.fetchCommunities(colls.communities);
+  exports.community.fetchCommunities(colls.communities);
+  return exports.community.fetchUsers(colls.users);
 };

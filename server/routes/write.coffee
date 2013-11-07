@@ -12,6 +12,7 @@ exports.get = (req, res) ->
 		else
 			res.render "write.html",
 				communities: user.admin
+				user: user
 
 exports.newFeed = (req, res) ->
 	colls.communities.get req.params.id, (err, community) ->

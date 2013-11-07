@@ -126,7 +126,7 @@
 					</button>
 				</div>
 			</div>
-		</div>/
+		</div>
 	</div>
 	<div class="navbar navbar-fixed-bottom bottom-bar text-center">
 		<button class="btn btn-large" ng-class="current(1)" ng-click="go(1)">
@@ -138,6 +138,9 @@
 		<button class="btn btn-large" ng-class="current(3)" ng-click="go(3)" ng-disabled="maxStep < 3">
 			Step 3
 		</button>
+	</div>
+	<div class="user-data" ssv-parse="user" style="display:none;">
+		<%= JSON.stringify(user) %>
 	</div>
 </body>
 </html>

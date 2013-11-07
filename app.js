@@ -61,7 +61,7 @@ app.use(express["static"](path.join(__dirname, "client")));
 
 app.get("/", routes.index.get);
 
-app.get("/profile/:id", routes.users.profile.get);
+app.get("/profile", routes.users.profile.get);
 
 app.get("/community/:id", routes.community.get);
 
@@ -84,6 +84,10 @@ app.get("/api/feed/multi/:from?/:to", routes.feed.api.multi);
 app.get("/api/feed/:community/:type/:from?/:to", routes.feed.api.get);
 
 app.get("/login", routes.users.authentication.login);
+
+app.get("/profile/:id", routes.users.pubProfile.get);
+
+app.post("/signout", routes.users.authentication.signout);
 
 app.post("/signup", routes.users.authentication.signup);
 

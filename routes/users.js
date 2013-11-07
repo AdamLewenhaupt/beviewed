@@ -55,14 +55,33 @@ exports.authorize = function(req, fn) {
 
 exports.profile = {
   get: function(req, res) {
-    return colls.users.get(req.params.id, function(err, user) {
+    return exports.authorize(req, function(err, user) {
       if (err) {
-        return res.send(500, err);
+        return res.redirect("/");
       } else {
         return res.render("profile.html", {
-          user: user
+          user: user,
+          write: true
         });
       }
+    });
+  }
+};
+
+exports.pubProfile = {
+  get: function(req, res) {
+    return exports.authorize(req, function(err, user) {
+      if (err) {
+        user = {
+          id: ''
+        };
+      }
+      return colls.users.get(req.params.id, function(err, user) {
+        return res.render("profile.html", {
+          user: user,
+          write: false
+        });
+      });
     });
   }
 };
@@ -74,6 +93,27 @@ exports.expire = function() {
 };
 
 exports.authentication = {
+  signout: function(req, res) {
+    var sid;
+    sid = req.signedCookies['s_id'];
+    if (!sid) {
+      return res.send({
+        error: "sess-err|c"
+      });
+    } else {
+      return colls.sessions.get(sid, function(err, sess) {
+        if (err) {
+          return res.send({
+            error: "sess-err|s"
+          });
+        } else {
+          sess.remove();
+          res.clearCookie("s_id");
+          return res.send("success");
+        }
+      });
+    }
+  },
   login: function(req, res) {
     var email, pass;
     email = req.query.email;

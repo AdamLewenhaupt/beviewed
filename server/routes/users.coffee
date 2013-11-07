@@ -39,12 +39,25 @@ exports.authorize = (req, fn) ->
 
 exports.profile =
 	get: (req, res) ->
-		colls.users.get req.params.id, (err, user) ->
+		exports.authorize req, (err, user) ->
 			if err
-				res.send 500, err
+				res.redirect "/"
 			else
 				res.render "profile.html", 
 					user: user
+					write: true
+
+exports.pubProfile = 
+	get: (req, res) ->
+		exports.authorize req, (err, user) ->
+			if err
+				user =
+					id:''
+
+			colls.users.get req.params.id, (err, user) ->
+				res.render "profile.html",
+					user:user
+					write:false
 
 exports.expire = () ->
 	time = new Date().getTime()
@@ -53,6 +66,22 @@ exports.expire = () ->
 		.remove()
 
 exports.authentication =
+
+	signout: (req, res) ->
+		sid = req.signedCookies['s_id']
+		unless sid
+			res.send 
+				error: "sess-err|c"
+		else
+			colls.sessions.get sid, (err, sess) ->
+				if err
+					res.send
+						error: "sess-err|s"
+				else
+					sess.remove()
+					res.clearCookie "s_id"
+					res.send "success"
+
 	login: (req, res) ->
 		email = req.query.email
 		pass = req.query.pass

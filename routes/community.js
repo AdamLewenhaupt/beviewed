@@ -1,4 +1,4 @@
-var authorize, communities, fs;
+var authorize, communities, fs, users;
 
 fs = require('fs');
 
@@ -6,8 +6,14 @@ authorize = require('./users').authorize;
 
 communities = null;
 
+users = null;
+
 exports.fetchCommunities = function(data) {
   return communities = data;
+};
+
+exports.fetchUsers = function(data) {
+  return users = data;
 };
 
 exports.get = function(req, res) {
@@ -44,22 +50,39 @@ exports.log = function() {
 };
 
 exports.post = function(req, res) {
-  return communities.post(req.body, function(err, community) {
-    var encodedIcon, path;
-    if (err) {
-      return res.send(500, "save-err");
-    } else {
-      path = "./client/img/icons/" + community['_id'];
-      encodedIcon = req.body.icon.replace(/^data:image\/png;base64,/, "");
-      return fs.writeFile(path, encodedIcon, 'base64', function(err) {
-        if (err) {
-          return res.send(500, "img-err");
-        } else {
-          return res.send(200, "success");
-        }
-      });
-    }
-  });
+  var admin;
+  admin = req.body.admins[0];
+  req.body.userCount = 1;
+  if (admin) {
+    return communities.post(req.body, function(err, community) {
+      var encodedIcon, path;
+      if (err) {
+        return res.send(500, "save-err");
+      } else {
+        path = "./client/img/icons/" + community['_id'];
+        encodedIcon = req.body.icon.replace(/^data:image\/png;base64,/, "");
+        return fs.writeFile(path, encodedIcon, 'base64', function(err) {
+          if (err) {
+            return res.send(500, "img-err");
+          } else {
+            return users.get(admin, function(err, user) {
+              if (err) {
+                return res.send(500, "user-err");
+              } else {
+                user.admin.push(community['_id']);
+                user.save();
+                return res.send({
+                  id: community["_id"]
+                });
+              }
+            });
+          }
+        });
+      }
+    });
+  } else {
+    return res.send(500, "admin-err");
+  }
 };
 
 exports.min = {

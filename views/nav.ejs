@@ -1,12 +1,12 @@
 <!-- Site navigation -->
 <div class="navbar" role="navigation">
 		<a href="/" class="navbar-brand">Be viewed<img ng-show="isLoading" style="height:20px;margin-left:10px;" src="/img/icons/loading.gif" class="ng-hide" /></a>
-		<ul class="nav navbar-nav pull-right">
+		<ul class="nav navbar-nav pull-right" ng-show="<%= user.id != '' %>">
 			<li><a class="btn" href="/explore">
 				<i class="glyphicon glyphicon-globe"></i>
 				<span>Explore</span>
 			</a></li>
-			<li><a class="btn" href="/profile/<%= user.id %>">
+			<li><a class="btn" href="/profile">
 				<i class="glyphicon glyphicon-user"></i>
 				<span class="">Profile</span>
 			</a></li>

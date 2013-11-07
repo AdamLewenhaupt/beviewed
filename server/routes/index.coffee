@@ -6,7 +6,8 @@ exports.index =
 	get: (req, res) ->
 		authorize req, (err, user) ->
 			if err
-				res.render "index.html"
+				res.render "index.html",
+					user:{id:''}			
 			else
 				res.render "dashboard.html",
 					user: user
@@ -17,8 +18,7 @@ exports.explore =
 	get: (req, res) ->
 		authorize req, (err, user) ->
 			if err
-				res.render "index.html",
-					user: {id:""}
+				res.redirect "/"
 			else
 				res.render "explore.html",
 					user: user
@@ -29,8 +29,7 @@ exports["create-community"] =
 	get: (req, res) ->
 		authorize req, (err, user) ->
 			if err
-				res.render "index.html",
-					user: {id:""}
+				res.redirect "/"
 			else
 				res.render "create-community.html",
 					user: user
@@ -45,3 +44,4 @@ exports.fetch = (colls) ->
 	exports.feed.fetch colls
 	exports.users.fetch colls
 	exports.community.fetchCommunities colls.communities
+	exports.community.fetchUsers colls.users
