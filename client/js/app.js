@@ -10,6 +10,9 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.capitalize = capitalize;
   $scope.current = 'what-up';
   $scope.inputSize = 1;
+  $scope.join = function() {
+    return $scope.isMember = true;
+  };
   $scope.swipeRight = function() {
     return $(".side-nav").addClass("side-nav-hover");
   };

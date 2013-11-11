@@ -27,9 +27,14 @@
 	</div>
 	<div class="main-content">
 		<div class="row">
-			<h1 class="col-lg-12 community-header">{{ capitalize(community.name) }}</h1>
+			<div class="col-12 col-sm-12 col-lg-12">
+				<h1 class="community-header pull-left">{{ capitalize(community.name) }} <i ng-show="isMember" class="has-joined glyphicon glyphicon-ok text-success"></i></h1>
+				<button ng-hide="isMember" class="btn btn-success join pull-left" ng-click="join()">
+					Join
+				</button>
+			</div>
 			<!-- What'up -->
-			<div class="col-lg-12" ng-show="active('what-up')">
+			<div class="col-lg-12 pull-left" ng-show="active('what-up')">
 				<div class="well well-large">
 					<!-- Feed -->
 					<div class="row">

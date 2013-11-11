@@ -11,6 +11,9 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.current = 'what-up'
 	$scope.inputSize = 1
 
+	$scope.join = () ->
+		$scope.isMember = true
+
 	$scope.swipeRight = () ->
 		$(".side-nav").addClass("side-nav-hover")
 
