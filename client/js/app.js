@@ -129,6 +129,7 @@ exploreCtrl = function($scope, $http) {
   var req;
   $scope.searchType = "makers";
   $scope.swipeRight = function() {
+    console.log("swipe");
     return $(".side-nav").addClass("side-nav-hover");
   };
   $scope.swipeLeft = function() {
@@ -528,6 +529,18 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
     template: "      <div class='media'>        <a href='/profile/{{user}}'>          <img class='user img-rounded media-object'            ng-src='/img/users/{{user}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' /></a></div>",
     link: function(scope) {
       return scope.user = scope.getUser();
+    }
+  };
+}).directive("hover", function() {
+  return {
+    restrict: 'A',
+    link: function(scope, el, attrs) {
+      el.on('mouseenter', function() {
+        return el.addClass(attrs.hover);
+      });
+      return el.on('mouseleave', function() {
+        return el.removeClass(attrs.hover);
+      });
     }
   };
 }).directive("image", function($q) {

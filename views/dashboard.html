@@ -8,62 +8,60 @@
 </head>
 <body ng-controller="dashboardCtrl">
 	<% include nav %>
-	<div class="row">
-		<!-- Menu -->
-		<div class="col-sm-3 col-lg-2">
-			<a href="/write" class="btn btn-large btn-primary btn-block">
+	<div class="side-nav">
+		<div class="navbar navbar-inverse link" role="navigation">
+			<a class="btn btn-default link" hover="btn-success" href="/write">
 				Write
 			</a>
-			<a href="/create-community" class="btn btn-large btn-success btn-block">
-				Create a community
+			<a class="btn btn-default link" hover="btn-success" href="/create-community">
+				Create community
 			</a>
-			<button class="btn btn-large btn-info btn-block">
-				Edit feed
+			<button class="btn btn-default" hover="btn-success">
+				Feed settings
 			</button>
 		</div>
-		<!-- feed -->
-		<div class="col-sm-7 col-lg-6">
-			<div class="novelty" ng-repeat="novelty in feed">
-				<div class="well">
-					<div class="row">
-						<div class="col-lg-6">
-							<div embeder="novelty.media" embeder-src="novelty.mediaData">
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="info">
-								<h2>{{novelty.title}}</h2>
-								<p>{{limit(novelty.text, 120)}}</p>
-							</div>
-							<div class="actions">
-								<!-- Goto community -->
-								<a ng-href="/community/{{novelty.community}}" class="btn btn-mini btn-block btn-primary mini">
-									<span class="glyphicon glyphicon-fullscreen"></span>
-								</a>
-								<!-- Share -->
-								<div class="btn btn-mini btn-block btn-primary mini">
-									<span class="glyphicon glyphicon-share-alt">
-									</span>
+	</div>
+	<div class="main-content">
+		<div class="row">
+			<!-- feed -->
+			<div class="col-sm-9 col-lg-8">
+				<div class="novelty" ng-repeat="novelty in feed">
+					<div class="well">
+						<div class="row">
+							<div class="col-lg-6">
+								<div embeder="novelty.media" embeder-src="novelty.mediaData">
 								</div>
-								<!-- Love -->
-								<div class="btn btn-mini btn-block btn-primary mini">
-									<span class="glyphicon glyphicon-heart">
-									</span>
+							</div>
+							<div class="col-lg-6">
+								<div class="info">
+									<h2>{{novelty.title}}</h2>
+									<p>{{limit(novelty.text, 120)}}</p>
+								</div>
+								<div class="actions">
+									<!-- Goto community -->
+									<a ng-href="/community/{{novelty.community}}" class="btn btn-mini btn-block btn-primary mini">
+										<span class="glyphicon glyphicon-fullscreen"></span>
+									</a>
+									<!-- Share -->
+									<div class="btn btn-mini btn-block btn-primary mini">
+										<span class="glyphicon glyphicon-share-alt">
+										</span>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-sm-2 col-lg-4">
-			<div class="well text-center text-muted">
-				Something else
+			<div class="col-sm-3 col-lg-4">
+				<div class="well text-center text-muted">
+					Channels and other filters
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="user-data" ssv="user">
-		<%= JSON.stringify(user) %>
+		<div class="user-data" ssv="user">
+			<%= JSON.stringify(user) %>
+		</div>
 	</div>
 </body>
 </html>

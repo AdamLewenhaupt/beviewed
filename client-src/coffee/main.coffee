@@ -96,6 +96,14 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     link: (scope) ->
       scope.user = scope.getUser()
 
+ .directive "hover", () ->
+  restrict: 'A'
+  link: (scope, el, attrs) ->
+    el.on 'mouseenter', () ->
+      el.addClass attrs.hover
+    el.on 'mouseleave', () ->
+      el.removeClass attrs.hover
+
  .directive "image", ($q) ->
   URL = window.URL or window.webkitURL
   getResizeArea = ->

@@ -92,7 +92,7 @@ module.exports = (grunt) ->
 				tasks: ['coffee:compileFrontTest', 'jasmine:pivotal']
 
 			less:
-				files: ['client-src/less/*']
+				files: ['client-src/less/**']
 				tasks: ['less:compile']
 				options:
 					interrupt: true

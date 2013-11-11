@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html ng-app="beviewed">
+<html ng-app="beviewed" ng-controller="exploreCtrl" 
+	ng-swipe-right="swipeRight()"
+	ng-swipe-left="swipeLeft()">
 <head>
 	<% include head %>
 	<link rel="stylesheet" type="text/css" href="/style/explore.css">
 	<title>Beviewed - Explore</title>
 </head>
-<body ng-controller="exploreCtrl" 
-	ng-swipe-right="swipeRight()"
-	ng-swipe-left="swipeLeft()">
+<body>
 	<% include nav %>
 	<!-- Side navigation -->
 	<div class="side-nav">

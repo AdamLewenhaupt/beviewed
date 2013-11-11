@@ -8,6 +8,7 @@ exploreCtrl = ($scope, $http) ->
 	$scope.searchType = "makers"
 
 	$scope.swipeRight = () ->
+		console.log "swipe"
 		$(".side-nav").addClass("side-nav-hover")
 
 	$scope.swipeLeft = () ->
