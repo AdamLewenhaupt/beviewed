@@ -42,7 +42,7 @@ exploreCtrl = ($scope, $http) ->
 		!(tag in $scope.selectedTags) and tag.indexOf($scope.tagSearch.toLowerCase()) != -1
 
 	$scope.displayCommunity = (community) ->
-		check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) != -1
+		check1 = community.name.toLowerCase().indexOf($scope.mainQuery.toLowerCase()) != -1
 		check2 = true
 		if $scope.selectedTags.length > 0
 			for tag in $scope.selectedTags

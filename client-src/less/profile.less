@@ -1,0 +1,54 @@
+.user-data {
+	display: none;
+}
+
+.community {
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
+.involved-communities, .admin-communitites {
+	list-style: none;	
+}
+
+.edit {
+	margin-left: 5px;
+}
+
+.user {
+	width: 200px;
+	height: 200px;
+}
+
+.profile {
+	width: 200px;
+	display: inline-block;
+	word-wrap: break-word;
+}
+
+.communities {
+	width: calc(~"100% - 210px");
+	display: inline-block;
+	vertical-align: top;
+}
+
+@media(max-width: 769px) {
+	.communities {
+		width: 100%;
+	}
+
+	.profile {
+		width: 100%;
+	}
+
+	.user {
+		width: 100%;
+	}
+
+	.community-header {
+		font-size: 16px;
+	}
+}

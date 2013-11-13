@@ -161,7 +161,7 @@ exploreCtrl = function($scope, $http) {
   };
   return $scope.displayCommunity = function(community) {
     var check1, check2, tag, _i, _len, _ref;
-    check1 = community.name.indexOf($scope.mainQuery.toLowerCase()) !== -1;
+    check1 = community.name.toLowerCase().indexOf($scope.mainQuery.toLowerCase()) !== -1;
     check2 = true;
     if ($scope.selectedTags.length > 0) {
       _ref = $scope.selectedTags;
