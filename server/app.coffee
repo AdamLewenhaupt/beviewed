@@ -53,6 +53,7 @@ app.post "/signout", routes.users.authentication.signout
 app.post "/signup", routes.users.authentication.signup
 app.post "/create-community", routes.community.post
 app.post "/new-feed/:id", routes.write.newFeed
+app.post "/join/:id", routes.users.join
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")

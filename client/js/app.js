@@ -11,8 +11,22 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.capitalize = capitalize;
   $scope.current = 'what-up';
   $scope.inputSize = 1;
+  $scope.error = function(msg) {
+    return console.log(msg);
+  };
   $scope.join = function() {
-    return console.log("joining...");
+    var req;
+    req = $http({
+      method: "POST",
+      url: "/join/" + $scope.community['_id']
+    });
+    return req.success(function(res) {
+      if (res.error) {
+        return $scope.error("Unable to join community");
+      } else if (res.joined) {
+        return $scope.memberType = "member";
+      }
+    });
   };
   $scope.isMember = function() {
     if (!$scope.memberType) {
@@ -50,6 +64,7 @@ communityCtrl = function($scope, $http, $sce, flow) {
     data = $.parseJSON($scope.communityData);
     $scope.community = data.community;
     $scope.user = data.user;
+    document.title = $scope.capitalize($scope.community.name);
     id = $scope.community['_id'];
     $scope.memberType = (function() {
       switch (false) {

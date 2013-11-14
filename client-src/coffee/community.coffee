@@ -11,8 +11,21 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.current = 'what-up'
 	$scope.inputSize = 1
 
+	$scope.error = (msg) ->
+		console.log msg
+
 	$scope.join = () ->
-		console.log "joining..."
+		req = $http
+			method: "POST"
+			url: "/join/#{$scope.community['_id']}"
+
+		req.success (res) ->
+			if res.error
+				$scope.error "Unable to join community"
+			else if res.joined
+				$scope.memberType = "member"
+
+
 
 	$scope.isMember = () ->
 		unless $scope.memberType
@@ -47,6 +60,8 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 			$scope.community = data.community
 			$scope.user = data.user
 
+			document.title = $scope.capitalize($scope.community.name)
+
 			id = $scope.community['_id']
 
 			$scope.memberType = switch
@@ -56,8 +71,6 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 					"admin"
 				else
 					"visitor"
-
-
 			
 			flow.init ["chat"],
 				rooms: $scope.community.roomDatas

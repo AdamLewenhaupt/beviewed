@@ -95,6 +95,8 @@ app.post("/create-community", routes.community.post);
 
 app.post("/new-feed/:id", routes.write.newFeed);
 
+app.post("/join/:id", routes.users.join);
+
 if ("development" === app.get("env")) {
   app.use(express.errorHandler());
 }

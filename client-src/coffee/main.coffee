@@ -73,7 +73,6 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
         else 
           "#"
 
-
  .directive "sub", () ->
     restrict: 'A'
     link: (scope, el, attrs) ->

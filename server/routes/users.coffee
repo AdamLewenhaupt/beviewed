@@ -37,6 +37,25 @@ exports.authorize = (req, fn) ->
 	else
 		fn("no sid", null)
 
+exports.join = (req, res) ->
+	exports.authorize req, (err, user) ->
+		if err
+			res.send
+				error: "auth-err"
+		else
+			colls.communities.get req.params.id, (err, community) ->
+				if err
+					res.send
+						error: "community-err"
+				else
+					user.in.push community['_id']
+					community.users.push user
+					user.save()
+					community.save()
+					res.send 
+						joined: true
+
+
 exports.profile =
 	get: (req, res) ->
 		exports.authorize req, (err, user) ->

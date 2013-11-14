@@ -53,6 +53,32 @@ exports.authorize = function(req, fn) {
   }
 };
 
+exports.join = function(req, res) {
+  return exports.authorize(req, function(err, user) {
+    if (err) {
+      return res.send({
+        error: "auth-err"
+      });
+    } else {
+      return colls.communities.get(req.params.id, function(err, community) {
+        if (err) {
+          return res.send({
+            error: "community-err"
+          });
+        } else {
+          user["in"].push(community['_id']);
+          community.users.push(user);
+          user.save();
+          community.save();
+          return res.send({
+            joined: true
+          });
+        }
+      });
+    }
+  });
+};
+
 exports.profile = {
   get: function(req, res) {
     return exports.authorize(req, function(err, user) {
