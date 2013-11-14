@@ -12,7 +12,15 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 	$scope.inputSize = 1
 
 	$scope.join = () ->
-		$scope.isMember = true
+		console.log "joining..."
+
+	$scope.isMember = () ->
+		unless $scope.memberType
+			return false
+		else if $scope.memberType == "admin" || $scope.memberType == "member"
+			return true
+		else
+			return false
 
 	$scope.swipeRight = () ->
 		$(".side-nav").addClass("side-nav-hover")
@@ -35,7 +43,21 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 			$scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{$scope.mainFeed.mediaData}"
 
 	$scope.$watch "communityData", () ->
-			$scope.community = $.parseJSON $scope.communityData
+			data = $.parseJSON $scope.communityData
+			$scope.community = data.community
+			$scope.user = data.user
+
+			id = $scope.community['_id']
+
+			$scope.memberType = switch
+				when id in $scope.user.in
+					"member"
+				when id in $scope.user.admin
+					"admin"
+				else
+					"visitor"
+
+
 			
 			flow.init ["chat"],
 				rooms: $scope.community.roomDatas
@@ -43,7 +65,6 @@ communityCtrl = ($scope, $http, $sce, flow) ->
 			$scope.community.roomDatas.forEach (room) ->
 				$scope.chats[room] = []
 				flow.on "chat/update/#{room}", (entity) ->
-					console.log room, entity
 					$scope.$apply () ->
 						$scope.chats[room].push entity
 

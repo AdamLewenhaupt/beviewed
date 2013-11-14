@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html ng-app="beviewed">
+<html ng-app="beviewed" ng-controller="communityCtrl">
 <head>
-	<title>Be Viewed - Test community</title>
+	<title>{{ capitalize(community.name) }}</title>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<% include head %>
 	<link type="text/css" rel="stylesheet" href="/style/community.css" />
 </style>
 </head>
-<body ng-controller="communityCtrl"
+<body
 	ng-swipe-right="swipeRight()"
 	ng-swipe-left="swipeLeft()">
 	<% include nav %>
@@ -28,8 +28,8 @@
 	<div class="main-content">
 		<div class="row">
 			<div class="col-12 col-sm-12 col-lg-12">
-				<h1 class="community-header pull-left">{{ capitalize(community.name) }} <i ng-show="isMember" class="has-joined glyphicon glyphicon-ok text-success"></i></h1>
-				<button ng-hide="isMember" class="btn btn-success join pull-left" ng-click="join()">
+				<h1 class="community-header pull-left">{{ capitalize(community.name) }} <i ng-show="isMember()" class="has-joined glyphicon glyphicon-ok text-success"></i></h1>
+				<button ng-hide="isMember()" class="btn btn-success join pull-left" ng-click="join()">
 					Join
 				</button>
 			</div>
@@ -130,6 +130,8 @@
 		</div>
 	</div>
 	<!-- Community data -->
-	<div class="community-data" ssv="communityData"><%= JSON.stringify(community) %></div>
+	<div class="community-data" ssv="communityData">
+		<%= '{"community":'+JSON.stringify(community)+',"user":'+JSON.stringify(user)+'}' %>
+	</div>
 </body>
 </html>

@@ -1,4 +1,5 @@
-var communityCtrl;
+var communityCtrl,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 communityCtrl = function($scope, $http, $sce, flow) {
   var sendMessage;
@@ -11,7 +12,16 @@ communityCtrl = function($scope, $http, $sce, flow) {
   $scope.current = 'what-up';
   $scope.inputSize = 1;
   $scope.join = function() {
-    return $scope.isMember = true;
+    return console.log("joining...");
+  };
+  $scope.isMember = function() {
+    if (!$scope.memberType) {
+      return false;
+    } else if ($scope.memberType === "admin" || $scope.memberType === "member") {
+      return true;
+    } else {
+      return false;
+    }
   };
   $scope.swipeRight = function() {
     return $(".side-nav").addClass("side-nav-hover");
@@ -36,15 +46,27 @@ communityCtrl = function($scope, $http, $sce, flow) {
     }
   };
   $scope.$watch("communityData", function() {
-    var req;
-    $scope.community = $.parseJSON($scope.communityData);
+    var data, id, req;
+    data = $.parseJSON($scope.communityData);
+    $scope.community = data.community;
+    $scope.user = data.user;
+    id = $scope.community['_id'];
+    $scope.memberType = (function() {
+      switch (false) {
+        case __indexOf.call($scope.user["in"], id) < 0:
+          return "member";
+        case __indexOf.call($scope.user.admin, id) < 0:
+          return "admin";
+        default:
+          return "visitor";
+      }
+    })();
     flow.init(["chat"], {
       rooms: $scope.community.roomDatas
     });
     $scope.community.roomDatas.forEach(function(room) {
       $scope.chats[room] = [];
       return flow.on("chat/update/" + room, function(entity) {
-        console.log(room, entity);
         return $scope.$apply(function() {
           $scope.chats[room].push(entity);
           return $(".chat-window-wrapper").animate({
@@ -667,7 +689,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
   };
 }).factory("flow", function() {
   var flow, socket;
-  socket = io.connect("http://localhost");
+  socket = io.connect(window.location.hostname);
   flow = {
     init: function(types, data) {
       return socket.emit("init", {

@@ -216,7 +216,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
 
  .factory "flow", () ->
 
-    socket = io.connect "http://localhost"
+    socket = io.connect window.location.hostname
 
     flow = 
       init: (types, data) ->
