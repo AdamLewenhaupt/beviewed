@@ -53,6 +53,7 @@ exploreCtrl = ($scope, $http) ->
 		check1 && check2
 
 profileCtrl = ($scope, $http) ->
+
 	$scope.cap = capitalize
 
 	$scope.signout = () ->
@@ -64,7 +65,3 @@ profileCtrl = ($scope, $http) ->
  				console.log res.error
  			else
  				window.location.replace("/")
-
-	$ () ->
-		$scope.$apply () ->
-			$scope.user = $.parseJSON $(".user-data").html()

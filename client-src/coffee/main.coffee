@@ -41,6 +41,46 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     link: (scope, el, attrs) ->
       scope[attrs['ssvParse']] = JSON.parse(el.html())
 
+ .directive "pEdit", () ->
+    restrict: 'A'
+    link: (scope, el, attrs) ->
+
+      el.on "click", () ->
+
+        $(".edit-field").remove()
+
+        x = el.offset().left
+        y = el.offset().top - 10
+        target = x + el.outerWidth(true)
+
+        wrapper = $("<div class='edit-field panel' style='position:fixed;left:#{target}px;top:#{y}px;' />")
+        form = $("<form class='form-inline' />")
+        field = $("<div class='input-group edit-field-group'/>")
+        input = $("<input type='text' class='form-control edit-field-input' />") 
+        save = $("<button class='input-group-addon btn btn-success edit-field-save'>Save</button>")
+        nvm = $("<button class='close edit-field-close' aria-hidden='true'>&times;</button>")
+        save.on "click", () -> 
+          val = input.val()
+          wrapper.remove()
+          scope.$apply () ->
+            switch attrs.pEdit
+              when "name"
+                items = val.split " "
+                if items.length == 2
+                  scope.user.firstName = items[0]
+                  scope.user.lastName = items[1]
+                else if items.length == 1
+                  scope.user.firstName = items[0]
+          false
+
+        nvm.on "click", () ->
+          wrapper.remove()
+
+        field.append input, save
+        form.append field
+        wrapper.append form, nvm
+        $(document.body).append wrapper
+
  .directive "community", () ->
     restrict: 'A'
     replace: true
@@ -230,3 +270,34 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
         socket.emit name, data
 
     flow
+
+ .factory "stream", () ->
+
+  stream = 
+    listeners: []
+    count: 0
+
+    watch: (fn) ->
+      fn()
+      stream.count += 1
+      stream.update()
+
+    done: () -> 
+      stream.count -= 1
+      stream.update()
+
+    update: () ->
+      for fn in stream.listeners
+        fn(stream.count)
+
+    change: (scope, name) ->
+      update = (n) -> scope[name] = n
+      stream.listeners.push (n) ->
+        if scope.$$phase
+          update n
+        else
+          scope.$apply () ->
+            update n
+
+
+  stream

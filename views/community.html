@@ -34,7 +34,7 @@
 				</button>
 			</div>
 			<!-- What'up -->
-			<div class="col-lg-12 pull-left" ng-show="active('what-up')">
+			<div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('what-up')">
 				<div class="well well-large">
 					<!-- Feed -->
 					<div class="row">
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 			<!-- Social -->
-			<div class="col-lg-12" ng-show="active('social')">
+			<div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('social')">
 				<div class="well well-large">
 					<div class="row">
 						<!-- Chat -->
@@ -113,16 +113,16 @@
 				<div class="well">
 					<!-- Hosts -->
 					<h3>Hosts</h3>
-					<ul style="list-style:none;margin-bottom:40px;margin-left:0px;">
-						<li class="hosts-li" ng-repeat="admin in community.admins">
+					<ul class="member-list">
+						<li class="members-li" ng-repeat="admin in community.admins">
 							<div user="admin" />
 						</li>
 					</ul>
 					<!-- Members -->
 					<h3>Members</h3>
-					<ul style="list-style:none;margin-left:0px;">
-						<li  ng-repeat="member in members">
-							<div user-local="member" />
+					<ul class="member-list">
+						<li class="members-li" ng-repeat="member in community.users">
+							<div user="member" />
 						</li>
 					</ul>
 				</div>

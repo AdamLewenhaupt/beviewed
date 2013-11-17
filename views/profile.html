@@ -16,12 +16,12 @@
 				<div class="caption">
 					<h3 class="hidden-sm">A little about {{user.firstName}}</h3>
 			<address>
-				<strong>Full Name</strong><button class="btn btn-primary btn-small edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<strong>Full Name</strong><a p-edit="name" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a>
 				<p>{{cap(user.firstName)}} {{cap(user.lastName)}}</p>
 
-				<strong>Country</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button>
+				<strong>Country</strong><a p-edit="counytry" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a></button>
 				<p>{{cap(user.country)}}</p>
-				<strong>Contact</strong><button class="btn btn-small btn-primary edit" ng-show="admin"><i class="glyphicon glyphicon-pencil icon-white"></i></button><br/>
+				<strong>Contact</strong><a p-edit="contact" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a><br/>
 				<p>{{user.email}}</p>
 			</address>
 				</div>
@@ -56,7 +56,8 @@
 			</div>
 		</div>
 		<!-- User data -->
-		<div class="user-data"><%= JSON.stringify(user) %></div>
+		<div class="ng-hide" ssv-parse="user"><%= JSON.stringify(user) %></div>
+		<div class="ng-hide" ssv-parse="write" ><%= write %></div>
 	</div>
 </body>
 </html>

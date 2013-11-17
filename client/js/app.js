@@ -1,8 +1,12 @@
 var communityCtrl,
   __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
-communityCtrl = function($scope, $http, $sce, flow) {
+communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
   var sendMessage;
+  stream.change($scope, "loadState");
+  $scope.isLoading = function() {
+    return $scope.loadState > 0;
+  };
   $scope.chats = {};
   $scope.feed = [];
   $scope.mainFeed = {
@@ -216,7 +220,7 @@ exploreCtrl = function($scope, $http) {
 
 profileCtrl = function($scope, $http) {
   $scope.cap = capitalize;
-  $scope.signout = function() {
+  return $scope.signout = function() {
     return $http({
       method: "POST",
       url: "/signout"
@@ -228,11 +232,6 @@ profileCtrl = function($scope, $http) {
       }
     });
   };
-  return $(function() {
-    return $scope.$apply(function() {
-      return $scope.user = $.parseJSON($(".user-data").html());
-    });
-  });
 };
 
 var createCommunity,
@@ -516,6 +515,51 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       return scope[attrs['ssvParse']] = JSON.parse(el.html());
     }
   };
+}).directive("pEdit", function() {
+  return {
+    restrict: 'A',
+    link: function(scope, el, attrs) {
+      return el.on("click", function() {
+        var field, form, input, nvm, save, target, wrapper, x, y;
+        $(".edit-field").remove();
+        x = el.offset().left;
+        y = el.offset().top - 10;
+        target = x + el.outerWidth(true);
+        wrapper = $("<div class='edit-field panel' style='position:fixed;left:" + target + "px;top:" + y + "px;' />");
+        form = $("<form class='form-inline' />");
+        field = $("<div class='input-group edit-field-group'/>");
+        input = $("<input type='text' class='form-control edit-field-input' />");
+        save = $("<button class='input-group-addon btn btn-success edit-field-save'>Save</button>");
+        nvm = $("<button class='close edit-field-close' aria-hidden='true'>&times;</button>");
+        save.on("click", function() {
+          var val;
+          val = input.val();
+          wrapper.remove();
+          scope.$apply(function() {
+            var items;
+            switch (attrs.pEdit) {
+              case "name":
+                items = val.split(" ");
+                if (items.length === 2) {
+                  scope.user.firstName = items[0];
+                  return scope.user.lastName = items[1];
+                } else if (items.length === 1) {
+                  return scope.user.firstName = items[0];
+                }
+            }
+          });
+          return false;
+        });
+        nvm.on("click", function() {
+          return wrapper.remove();
+        });
+        field.append(input, save);
+        form.append(field);
+        wrapper.append(form, nvm);
+        return $(document.body).append(wrapper);
+      });
+    }
+  };
 }).directive("community", function() {
   return {
     restrict: 'A',
@@ -720,6 +764,47 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
     }
   };
   return flow;
+}).factory("stream", function() {
+  var stream;
+  stream = {
+    listeners: [],
+    count: 0,
+    watch: function(fn) {
+      fn();
+      stream.count += 1;
+      return stream.update();
+    },
+    done: function() {
+      stream.count -= 1;
+      return stream.update();
+    },
+    update: function() {
+      var fn, _i, _len, _ref, _results;
+      _ref = stream.listeners;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        fn = _ref[_i];
+        _results.push(fn(stream.count));
+      }
+      return _results;
+    },
+    change: function(scope, name) {
+      var update;
+      update = function(n) {
+        return scope[name] = n;
+      };
+      return stream.listeners.push(function(n) {
+        if (scope.$$phase) {
+          return update(n);
+        } else {
+          return scope.$apply(function() {
+            return update(n);
+          });
+        }
+      });
+    }
+  };
+  return stream;
 });
 
 var capitalize, limit;

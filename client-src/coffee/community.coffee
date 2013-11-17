@@ -1,4 +1,9 @@
-communityCtrl = ($scope, $http, $sce, flow) ->
+communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
+
+	stream.change $scope, "loadState"
+
+	$scope.isLoading = () ->
+		$scope.loadState > 0
 
 	$scope.chats = {}
 
