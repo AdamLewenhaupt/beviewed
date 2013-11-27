@@ -9,16 +9,16 @@ routes = require('./routes')
 swoosh = require('swoosh')
 timers = require('timers')
 services = require "./services"
+attributes = require('./attributes')
 app = express()
 
-swoosh (path.join __dirname, "swoosh.yml"), (err, collections) ->
+swoosh (path.join __dirname, "swoosh.yml"), attributes, (err, collections) ->
 	if err
 		console.log "Swoosh err:", err
 	else
 		this.route app
 		routes.fetch collections
 		timers.setInterval ( () -> routes.community.log() ), 864e5 # Once a day
-		timers.setInterval ( () -> routes.users.expire() ), 18e5 # Once every half hour
 
 # all environments
 app.engine "html", require('ejs').renderFile
@@ -48,6 +48,8 @@ app.get "/api/feed/multi/:from?/:to", routes.feed.api.multi
 app.get "/api/feed/:community/:type/:from?/:to", routes.feed.api.get
 app.get "/login", routes.users.authentication.login
 app.get "/profile/:id", routes.users.pubProfile.get
+
+app.put "/profile", routes.users.profile.put
 
 app.post "/signout", routes.users.authentication.signout
 app.post "/signup", routes.users.authentication.signup

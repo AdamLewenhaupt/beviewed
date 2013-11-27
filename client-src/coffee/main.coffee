@@ -41,7 +41,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     link: (scope, el, attrs) ->
       scope[attrs['ssvParse']] = JSON.parse(el.html())
 
- .directive "pEdit", () ->
+ .directive "pEdit", ($http) ->
     restrict: 'A'
     link: (scope, el, attrs) ->
 
@@ -67,10 +67,20 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
               when "name"
                 items = val.split " "
                 if items.length == 2
-                  scope.user.firstName = items[0]
-                  scope.user.lastName = items[1]
+                  req = $http
+                    method: "PUT"
+                    url: "/profile"
+                    data: 
+                      firstName: items[0]
+                      lastName: items[1]
+
+                  req.success () ->
+                    scope.user.firstName = items[0].toLowerCase()
+                    scope.user.lastName = items[1].toLowerCase()
+                  req.error () ->
+                    scope.error "Unable to update profile"
                 else if items.length == 1
-                  scope.user.firstName = items[0]
+                  scope.user.firstName = items[0].toLowerCase()
           false
 
         nvm.on "click", () ->

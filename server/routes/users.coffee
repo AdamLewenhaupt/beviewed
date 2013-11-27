@@ -49,7 +49,8 @@ exports.join = (req, res) ->
 						error: "community-err"
 				else
 					user.in.push community['_id']
-					community.users.push user
+					community.users.push user["_id"]
+					community.userCount += 1
 					user.save()
 					community.save()
 					res.send 
@@ -66,6 +67,17 @@ exports.profile =
 					user: user
 					write: true
 
+	put: (req, res) ->
+		exports.authorize req, (err, user) ->
+			if err
+				res.send 403
+			else
+				colls.users.put user['_id'], req.body, (err) ->
+					if err
+						res.send 500
+					else
+						res.send 200
+
 exports.pubProfile = 
 	get: (req, res) ->
 		exports.authorize req, (err, user) ->
@@ -78,14 +90,7 @@ exports.pubProfile =
 					user:user
 					write:false
 
-exports.expire = () ->
-	time = new Date().getTime()
-	colls.sessions.model.find()
-		.where("expire").gte(time)
-		.remove()
-
 exports.authentication =
-
 	signout: (req, res) ->
 		sid = req.signedCookies['s_id']
 		unless sid

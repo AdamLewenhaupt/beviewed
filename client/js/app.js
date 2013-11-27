@@ -515,7 +515,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       return scope[attrs['ssvParse']] = JSON.parse(el.html());
     }
   };
-}).directive("pEdit", function() {
+}).directive("pEdit", function($http) {
   return {
     restrict: 'A',
     link: function(scope, el, attrs) {
@@ -536,15 +536,28 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
           val = input.val();
           wrapper.remove();
           scope.$apply(function() {
-            var items;
+            var items, req;
             switch (attrs.pEdit) {
               case "name":
                 items = val.split(" ");
                 if (items.length === 2) {
-                  scope.user.firstName = items[0];
-                  return scope.user.lastName = items[1];
+                  req = $http({
+                    method: "PUT",
+                    url: "/profile",
+                    data: {
+                      firstName: items[0],
+                      lastName: items[1]
+                    }
+                  });
+                  req.success(function() {
+                    scope.user.firstName = items[0].toLowerCase();
+                    return scope.user.lastName = items[1].toLowerCase();
+                  });
+                  return req.error(function() {
+                    return scope.error("Unable to update profile");
+                  });
                 } else if (items.length === 1) {
-                  return scope.user.firstName = items[0];
+                  return scope.user.firstName = items[0].toLowerCase();
                 }
             }
           });

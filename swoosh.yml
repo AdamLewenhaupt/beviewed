@@ -1,4 +1,5 @@
 database: mongodb://db-connector:0xJAgriBRB@ds039058.mongolab.com:39058/beviewed
+log: true
 collections:
     communities:
         fields:
@@ -17,13 +18,13 @@ collections:
             type: String
     users:
         fields:
-            email: String
+            email: usersEmail
             pass: String
             admin: [String]
             in: [String]
             country: String
-            firstName: String
-            lastName: String
+            firstName: usersFirstName
+            lastName: usersLastName
     creatorFeeds:
         fields:
             title: String
@@ -39,4 +40,4 @@ collections:
     sessions:
         fields:
             target: String
-            expire: Date
+            expire: sessionsExpire

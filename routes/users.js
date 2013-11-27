@@ -67,7 +67,8 @@ exports.join = function(req, res) {
           });
         } else {
           user["in"].push(community['_id']);
-          community.users.push(user);
+          community.users.push(user["_id"]);
+          community.userCount += 1;
           user.save();
           community.save();
           return res.send({
@@ -91,6 +92,21 @@ exports.profile = {
         });
       }
     });
+  },
+  put: function(req, res) {
+    return exports.authorize(req, function(err, user) {
+      if (err) {
+        return res.send(403);
+      } else {
+        return colls.users.put(user['_id'], req.body, function(err) {
+          if (err) {
+            return res.send(500);
+          } else {
+            return res.send(200);
+          }
+        });
+      }
+    });
   }
 };
 
@@ -110,12 +126,6 @@ exports.pubProfile = {
       });
     });
   }
-};
-
-exports.expire = function() {
-  var time;
-  time = new Date().getTime();
-  return colls.sessions.model.find().where("expire").gte(time).remove();
 };
 
 exports.authentication = {

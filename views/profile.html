@@ -14,7 +14,7 @@
 				<img ng-src="/img/users/{{user['_id'] }}"
 					class="media-object img-rounded user" onerror="$(this).attr('src','/img/unknown.png')" ></img>
 				<div class="caption">
-					<h3 class="hidden-sm">A little about {{user.firstName}}</h3>
+					<h3 class="hidden-sm">A little about {{cap(user.firstName)}}</h3>
 			<address>
 				<strong>Full Name</strong><a p-edit="name" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a>
 				<p>{{cap(user.firstName)}} {{cap(user.lastName)}}</p>
