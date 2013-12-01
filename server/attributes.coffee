@@ -17,4 +17,8 @@ module.exports =
 		type: String
 		lowercase: true
 		trim: true
-		match: /[^\s@]+@[^\s@]+\.[^\s@]+/
+
+	communitiesName:
+		type: String
+		lowercase: true
+		trim: true

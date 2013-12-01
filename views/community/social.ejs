@@ -1,0 +1,52 @@
+<div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('social')">
+				<div class="well well-large">
+					<div class="row">
+						<!-- Chat -->
+						<div class="col-sm-10 col-lg-10 chat">
+							<div class="chat-window-wrapper">
+								<table class="table table-bordered chat-window">
+									<tbody>
+										<tr ng-repeat="entry in chats[activeRoomData]">
+											<td class="user"><strong>{{entry.user}}</strong></td>
+											<td>{{entry.msg}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<form >
+								<textarea class="form-control" rows="{{inputSize}}" ng-model="messageText" placeholder="Enter message">
+								</textarea>
+							</form>
+						</div>
+						<!-- Chat room nav -->
+						<div class="col-sm-2 col-lg-2">
+							<ul class="nav nav-pills nav-stacked">
+								<li ng-class="isCurrentRoom(room)"
+									ng-click="setRoom(i)"
+									ng-repeat="(i, room) in community.rooms">
+									<a class="text-center" href="#">
+										{{ capitalize(room) }}
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<!-- Community Members -->
+				<div class="well">
+					<!-- Hosts -->
+					<h3>Hosts</h3>
+					<ul class="member-list">
+						<li class="members-li" ng-repeat="admin in community.admins">
+							<div user="admin" />
+						</li>
+					</ul>
+					<!-- Members -->
+					<h3>Members</h3>
+					<ul class="member-list">
+						<li class="members-li" ng-repeat="member in community.users">
+							<div user="member" />
+						</li>
+					</ul>
+				</div>
+			</div>

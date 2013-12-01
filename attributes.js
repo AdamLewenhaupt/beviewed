@@ -16,7 +16,11 @@ module.exports = {
   usersEmail: {
     type: String,
     lowercase: true,
-    trim: true,
-    match: /[^\s@]+@[^\s@]+\.[^\s@]+/
+    trim: true
+  },
+  communitiesName: {
+    type: String,
+    lowercase: true,
+    trim: true
   }
 };

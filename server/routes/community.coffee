@@ -72,6 +72,17 @@ exports.api =
 			else
 				res.send community
 
+	put: (req, res) ->
+		authorize req, (err, user) ->
+			if err
+				res.send 403
+			else
+				communities.put req.params.id, req.body, (err, community) ->
+					if err
+						res.send 500
+					else
+						res.send 200
+
 exports.explore =
 	get: (req, res) ->
 		if req.params.type == "init"

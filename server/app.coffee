@@ -50,6 +50,7 @@ app.get "/login", routes.users.authentication.login
 app.get "/profile/:id", routes.users.pubProfile.get
 
 app.put "/profile", routes.users.profile.put
+app.put "/community/:id", routes.community.api.put
 
 app.post "/signout", routes.users.authentication.signout
 app.post "/signup", routes.users.authentication.signup

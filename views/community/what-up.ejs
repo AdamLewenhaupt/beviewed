@@ -1,0 +1,40 @@
+<div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('what-up')">
+				<div class="well well-large">
+					<!-- Feed -->
+					<div class="row">
+						<div class="col-12 col-sm-6 col-lg-6">
+							<div embeder="mainFeed.media" embeder-src="mainFeed.mediaData"></div>
+						</div>
+						<div class="col-12 col-sm-6 col-lg-6 info">
+							<h1>{{mainFeed.title}}</h1>
+							<p>{{mainFeed.text}}</p>
+						</div>
+					</div>
+				</div>
+				<!-- Feed overview -->
+				<div class="well">
+					<div ng-show="feedFilter(novelty)" class="novelty" ng-repeat="(i, novelty) in feed">
+						<button ng-click="setMainFeed(i)" class="btn btn-primary">{{novelty.title}}</button>
+					</div>
+				</div>
+				<!-- Now here's just some nifty info -->
+				<div class="row">
+					<div class="col-sm-6 col-lg-6">
+						<div class="well">
+							<h3 class="text-center">Fame {{community.fame}}<h3/>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width:{{community.progress}}%;"></div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 col-lg-6">
+						<div class="well">
+							<h3 class="text-center">Members {{community.userCount}}</h3>
+							<div class="progress">
+								<div class="progress-bar progress-bar-success" style="width:85%;"></div>
+								<div class="progress-bar progress-bar-primary" style="width:15%;"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>

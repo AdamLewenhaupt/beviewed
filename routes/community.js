@@ -109,6 +109,21 @@ exports.api = {
         return res.send(community);
       }
     });
+  },
+  put: function(req, res) {
+    return authorize(req, function(err, user) {
+      if (err) {
+        return res.send(403);
+      } else {
+        return communities.put(req.params.id, req.body, function(err, community) {
+          if (err) {
+            return res.send(500);
+          } else {
+            return res.send(200);
+          }
+        });
+      }
+    });
   }
 };
 

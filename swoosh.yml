@@ -6,7 +6,7 @@ collections:
             admins: [String]
             chatlogs: [String]
             fame: Number
-            name: String
+            name: communitiesName
             progress: Number
             rooms: [String]
             roomDatas: [String]

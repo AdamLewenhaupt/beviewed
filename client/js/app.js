@@ -8,12 +8,13 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
     return $scope.loadState > 0;
   };
   $scope.chats = {};
+  $scope.newName = "";
   $scope.feed = [];
   $scope.mainFeed = {
     media: "none"
   };
   $scope.capitalize = capitalize;
-  $scope.current = 'what-up';
+  $scope.current = 'admin';
   $scope.inputSize = 1;
   $scope.error = function(msg) {
     return console.log(msg);
@@ -31,6 +32,24 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
         return $scope.memberType = "member";
       }
     });
+  };
+  $scope.renameCommunity = function() {
+    var req;
+    if ($scope.newName && $scope.newName.length > 8) {
+      req = $http({
+        method: "PUT",
+        url: "/community/" + $scope.community['_id'],
+        data: {
+          name: $scope.newName
+        }
+      });
+      req.error(function() {
+        return $scope.error("Unable to update community name, please try again later.");
+      });
+      return req.success(function() {
+        return $scope.community.name = $scope.newName.toLowerCase();
+      });
+    }
   };
   $scope.isMember = function() {
     if (!$scope.memberType) {
@@ -96,6 +115,7 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
         });
       });
     });
+    $scope.newName = $scope.community.name;
     $scope.setRoom(0);
     req = $http({
       method: "GET",

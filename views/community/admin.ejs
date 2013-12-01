@@ -1,0 +1,50 @@
+<div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('admin')">
+	<div class="row">
+		<!-- General settings -->
+		<div class="col-lg-4" style="text-align:center;">
+			<div class="well">
+				<h3>General Settings</h3>
+				<div class="input-group" style="width:100%;">
+					<input ng-model="newName" type="text" class="form-control" style="width: 100%;" />
+					<span class="input-group-btn" style="width:50%;">
+					<button class="btn btn-primary"
+					ng-click="renameCommunity()"
+					style="width:100%;">
+					Rename community
+				</button>
+				</span>
+				</div>
+			</div>
+		</div>
+		<!-- Chat Settings -->
+		<div class="col-lg-4" style="text-align:center;">
+			<div class="well">
+				<h3>Chat settings</h3>
+				<div class="btn-group">
+					<button class="btn btn-success">
+						Add Chatroom
+						<i class="glyphicon glyphicon-plus"></i>
+					</button>
+					<button class="btn btn-warning">
+						Remove Chatroom
+						<i class="glyphicon glyphicon-minus"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<!-- Member Settings -->
+		<div class="col-lg-4" style="text-align:center;">
+			<div class="well">
+				<h3>Member Settings</h3>
+				<div class="btn-group">
+					<button class="btn btn-success">
+						Unbann user	
+					</button>
+					<button class="btn btn-danger">
+						Ban user
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

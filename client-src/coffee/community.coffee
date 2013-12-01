@@ -6,14 +6,14 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 		$scope.loadState > 0
 
 	$scope.chats = {}
-
+	$scope.newName = ""
 	$scope.feed = []
 	$scope.mainFeed =
 		media: "none"
 
 	$scope.capitalize = capitalize
 
-	$scope.current = 'what-up'
+	$scope.current = 'admin'
 	$scope.inputSize = 1
 
 	$scope.error = (msg) ->
@@ -30,6 +30,19 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 			else if res.joined
 				$scope.memberType = "member"
 
+
+	$scope.renameCommunity = () ->
+		if $scope.newName && $scope.newName.length > 8
+			req = $http
+				method: "PUT"
+				url: "/community/#{$scope.community['_id']}"
+				data: 
+					name: $scope.newName
+
+			req.error () ->
+				$scope.error "Unable to update community name, please try again later."
+			req.success () ->
+				$scope.community.name = $scope.newName.toLowerCase()
 
 
 	$scope.isMember = () ->
@@ -90,6 +103,8 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 							scrollTop: $(".chat-window").height(),
 							duration: 50
 							queue: false
+
+			$scope.newName = $scope.community.name
 
 
 			$scope.setRoom 0
