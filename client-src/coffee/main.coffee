@@ -36,51 +36,59 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
     link: (scope, el, attrs) ->
       scope[attrs.ssv] = el.html()
 
+
  .directive "ssvParse", () ->
     restrict: 'A'
     link: (scope, el, attrs) ->
       scope[attrs['ssvParse']] = JSON.parse(el.html())
 
- .directive "pEdit", ($http) ->
+
+ .directive "popup", () ->
     restrict: 'A'
     link: (scope, el, attrs) ->
 
       el.on "click", () ->
 
-        $(".edit-field").remove()
+        saveText = attrs.text || "Save"
+        options = scope[attrs.options]
 
-        x = el.offset().left
-        y = el.offset().top - 10
-        target = x + el.outerWidth(true)
+        $(".popup").remove()
 
-        wrapper = $("<div class='edit-field panel' style='position:fixed;left:#{target}px;top:#{y}px;' />")
+        offset = el.offset()
+
+        x = offset.left + 10
+        y = offset.top - 20 - $(window).scrollTop()
+
+        calc = 
+          if $(window).width() < (x + 400)
+            -(320)
+          else
+            el.outerWidth(true)
+
+        target = x + calc
+
+        wrapper = $("<div class='popup panel' style='z-index:6;position:fixed;left:#{target}px;top:#{y}px;width:300px;' />")
         form = $("<form class='form-inline' />")
-        field = $("<div class='input-group edit-field-group'/>")
-        input = $("<input type='text' class='form-control edit-field-input' />") 
-        save = $("<button class='input-group-addon btn btn-success edit-field-save'>Save</button>")
-        nvm = $("<button class='close edit-field-close' aria-hidden='true'>&times;</button>")
-        save.on "click", () -> 
-          val = input.val()
-          wrapper.remove()
-          scope.$apply () ->
-            switch attrs.pEdit
-              when "name"
-                items = val.split " "
-                if items.length == 2
-                  req = $http
-                    method: "PUT"
-                    url: "/profile"
-                    data: 
-                      firstName: items[0]
-                      lastName: items[1]
+        field = $("<div class='input-group popup-group' style='float:left;width:90%;'/>")
+        input = 
+          if options
+            parse = ""
+            for key of options
+              text = "<option value='#{options[key]}'>#{key}</option>"
+              parse += text
+            $("<select class='form-control popup-input' style='width:70%;'>#{parse}</select>")
+          else
+            $("<input type='text' class='form-control popup-input' style='width:70%;' />") 
 
-                  req.success () ->
-                    scope.user.firstName = items[0].toLowerCase()
-                    scope.user.lastName = items[1].toLowerCase()
-                  req.error () ->
-                    scope.error "Unable to update profile"
-                else if items.length == 1
-                  scope.user.firstName = items[0].toLowerCase()
+        save = $("<button class='input-group-addon btn btn-success popup-save' style='width:30%;'>#{saveText}</button>")
+        nvm = $("<button class='close popup-close' aria-hidden='true'>&times;</button>")
+        save.on "click", () -> 
+          if scope.$$phase 
+            (scope[attrs.popup] || () ->) input.val()
+          else
+            scope.$apply () ->
+              (scope[attrs.popup] || () ->) input.val()
+          wrapper.remove()
           false
 
         nvm.on "click", () ->

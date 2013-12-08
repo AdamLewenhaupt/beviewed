@@ -1,7 +1,7 @@
 <div class="col-12 col-sm-12 col-lg-12 pull-left" ng-show="active('admin')">
 	<div class="row">
 		<!-- General settings -->
-		<div class="col-lg-4" style="text-align:center;">
+		<div class="col-lg-6" style="text-align:center;">
 			<div class="well">
 				<h3>General Settings</h3>
 				<div class="input-group" style="width:100%;">
@@ -17,15 +17,15 @@
 			</div>
 		</div>
 		<!-- Chat Settings -->
-		<div class="col-lg-4" style="text-align:center;">
+		<div class="col-lg-6" style="text-align:center;">
 			<div class="well">
 				<h3>Chat settings</h3>
 				<div class="btn-group">
-					<button class="btn btn-success">
+					<button class="btn btn-success" popup="addRoom" text="Add">
 						Add Chatroom
 						<i class="glyphicon glyphicon-plus"></i>
 					</button>
-					<button class="btn btn-warning">
+					<button class="btn btn-warning" popup="removeRoom" text="Remove" options="removeRoomOptions">
 						Remove Chatroom
 						<i class="glyphicon glyphicon-minus"></i>
 					</button>
@@ -33,14 +33,14 @@
 			</div>
 		</div>
 		<!-- Member Settings -->
-		<div class="col-lg-4" style="text-align:center;">
+		<div class="col-lg-6" style="text-align:center;">
 			<div class="well">
 				<h3>Member Settings</h3>
 				<div class="btn-group">
-					<button class="btn btn-success">
+					<button class="btn btn-success" disabled>
 						Unbann user	
 					</button>
-					<button class="btn btn-danger">
+					<button class="btn btn-danger" disabled>
 						Ban user
 					</button>
 				</div>

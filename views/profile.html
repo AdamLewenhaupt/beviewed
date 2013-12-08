@@ -16,12 +16,12 @@
 				<div class="caption">
 					<h3 class="hidden-sm">A little about {{cap(user.firstName)}}</h3>
 			<address>
-				<strong>Full Name</strong><a p-edit="name" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a>
+				<strong>Full Name</strong><a popup="setName" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a>
 				<p>{{cap(user.firstName)}} {{cap(user.lastName)}}</p>
 
-				<strong>Country</strong><a p-edit="counytry" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a></button>
+				<strong>Country</strong><a  class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a></button>
 				<p>{{cap(user.country)}}</p>
-				<strong>Contact</strong><a p-edit="contact" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a><br/>
+				<strong>Contact</strong><a  class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a><br/>
 				<p>{{user.email}}</p>
 			</address>
 				</div>

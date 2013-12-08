@@ -54,6 +54,26 @@ exploreCtrl = ($scope, $http) ->
 
 profileCtrl = ($scope, $http) ->
 
+	$scope.setName = (name) ->
+		names = name.split ' '
+		data = {}
+		data.firstName = names[0]
+		if names.length > 1
+			data.lastName = names[1]
+
+		console.log  data
+
+		if names.length > 0
+			req = $http
+				method: "PUT"
+				url: "/profile"
+				data: data
+
+			req.success () ->
+				$scope.user.firstName = data.firstName.toLowerCase()
+				if names.length > 1
+					$scope.user.lastName = data.lastName.toLowerCase()
+
 	$scope.cap = capitalize
 
 	$scope.signout = () ->

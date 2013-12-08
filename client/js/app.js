@@ -14,7 +14,7 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
     media: "none"
   };
   $scope.capitalize = capitalize;
-  $scope.current = 'admin';
+  $scope.current = 'what-up';
   $scope.inputSize = 1;
   $scope.error = function(msg) {
     return console.log(msg);
@@ -83,7 +83,7 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
     }
   };
   $scope.$watch("communityData", function() {
-    var data, id, req;
+    var data, i, id, req, room, _i, _len, _ref;
     data = $.parseJSON($scope.communityData);
     $scope.community = data.community;
     $scope.user = data.user;
@@ -102,6 +102,12 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
     flow.init(["chat"], {
       rooms: $scope.community.roomDatas
     });
+    $scope.removeRoomOptions = {};
+    _ref = $scope.community.rooms;
+    for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+      room = _ref[i];
+      $scope.removeRoomOptions[room] = i;
+    }
     $scope.community.roomDatas.forEach(function(room) {
       $scope.chats[room] = [];
       return flow.on("chat/update/" + room, function(entity) {
@@ -174,9 +180,15 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
       return "";
     }
   };
-  return $scope.setRoom = function(n) {
+  $scope.setRoom = function(n) {
     $scope.activeRoom = $scope.community.rooms[n];
     return $scope.activeRoomData = $scope.community.roomDatas[n];
+  };
+  $scope.addRoom = function(name) {
+    return console.log(name);
+  };
+  return $scope.removeRoom = function(index) {
+    return console.log(index);
   };
 };
 
@@ -239,6 +251,29 @@ exploreCtrl = function($scope, $http) {
 };
 
 profileCtrl = function($scope, $http) {
+  $scope.setName = function(name) {
+    var data, names, req;
+    names = name.split(' ');
+    data = {};
+    data.firstName = names[0];
+    if (names.length > 1) {
+      data.lastName = names[1];
+    }
+    console.log(data);
+    if (names.length > 0) {
+      req = $http({
+        method: "PUT",
+        url: "/profile",
+        data: data
+      });
+      return req.success(function() {
+        $scope.user.firstName = data.firstName.toLowerCase();
+        if (names.length > 1) {
+          return $scope.user.lastName = data.lastName.toLowerCase();
+        }
+      });
+    }
+  };
   $scope.cap = capitalize;
   return $scope.signout = function() {
     return $http({
@@ -535,52 +570,46 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       return scope[attrs['ssvParse']] = JSON.parse(el.html());
     }
   };
-}).directive("pEdit", function($http) {
+}).directive("popup", function() {
   return {
     restrict: 'A',
     link: function(scope, el, attrs) {
       return el.on("click", function() {
-        var field, form, input, nvm, save, target, wrapper, x, y;
-        $(".edit-field").remove();
-        x = el.offset().left;
-        y = el.offset().top - 10;
-        target = x + el.outerWidth(true);
-        wrapper = $("<div class='edit-field panel' style='position:fixed;left:" + target + "px;top:" + y + "px;' />");
+        var calc, field, form, input, key, nvm, offset, options, parse, save, saveText, target, text, wrapper, x, y;
+        saveText = attrs.text || "Save";
+        options = scope[attrs.options];
+        $(".popup").remove();
+        offset = el.offset();
+        x = offset.left + 10;
+        y = offset.top - 20 - $(window).scrollTop();
+        calc = $(window).width() < (x + 400) ? -320. : el.outerWidth(true);
+        target = x + calc;
+        wrapper = $("<div class='popup panel' style='z-index:6;position:fixed;left:" + target + "px;top:" + y + "px;width:300px;' />");
         form = $("<form class='form-inline' />");
-        field = $("<div class='input-group edit-field-group'/>");
-        input = $("<input type='text' class='form-control edit-field-input' />");
-        save = $("<button class='input-group-addon btn btn-success edit-field-save'>Save</button>");
-        nvm = $("<button class='close edit-field-close' aria-hidden='true'>&times;</button>");
-        save.on("click", function() {
-          var val;
-          val = input.val();
-          wrapper.remove();
-          scope.$apply(function() {
-            var items, req;
-            switch (attrs.pEdit) {
-              case "name":
-                items = val.split(" ");
-                if (items.length === 2) {
-                  req = $http({
-                    method: "PUT",
-                    url: "/profile",
-                    data: {
-                      firstName: items[0],
-                      lastName: items[1]
-                    }
-                  });
-                  req.success(function() {
-                    scope.user.firstName = items[0].toLowerCase();
-                    return scope.user.lastName = items[1].toLowerCase();
-                  });
-                  return req.error(function() {
-                    return scope.error("Unable to update profile");
-                  });
-                } else if (items.length === 1) {
-                  return scope.user.firstName = items[0].toLowerCase();
-                }
+        field = $("<div class='input-group popup-group' style='float:left;width:90%;'/>");
+        input = (function() {
+          if (options) {
+            parse = "";
+            for (key in options) {
+              text = "<option value='" + options[key] + "'>" + key + "</option>";
+              parse += text;
             }
-          });
+            return $("<select class='form-control popup-input' style='width:70%;'>" + parse + "</select>");
+          } else {
+            return $("<input type='text' class='form-control popup-input' style='width:70%;' />");
+          }
+        })();
+        save = $("<button class='input-group-addon btn btn-success popup-save' style='width:30%;'>" + saveText + "</button>");
+        nvm = $("<button class='close popup-close' aria-hidden='true'>&times;</button>");
+        save.on("click", function() {
+          if (scope.$$phase) {
+            (scope[attrs.popup] || function() {})(input.val());
+          } else {
+            scope.$apply(function() {
+              return (scope[attrs.popup] || function() {})(input.val());
+            });
+          }
+          wrapper.remove();
           return false;
         });
         nvm.on("click", function() {

@@ -13,7 +13,7 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 
 	$scope.capitalize = capitalize
 
-	$scope.current = 'admin'
+	$scope.current = 'what-up'
 	$scope.inputSize = 1
 
 	$scope.error = (msg) ->
@@ -93,6 +93,12 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 			flow.init ["chat"],
 				rooms: $scope.community.roomDatas
 
+			$scope.removeRoomOptions = {}
+
+			for room, i in $scope.community.rooms
+				$scope.removeRoomOptions[room] = i
+
+
 			$scope.community.roomDatas.forEach (room) ->
 				$scope.chats[room] = []
 				flow.on "chat/update/#{room}", (entity) ->
@@ -105,7 +111,6 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 							queue: false
 
 			$scope.newName = $scope.community.name
-
 
 			$scope.setRoom 0
 
@@ -159,3 +164,9 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 	$scope.setRoom = (n) -> 
 		$scope.activeRoom = $scope.community.rooms[n]
 		$scope.activeRoomData = $scope.community.roomDatas[n]
+
+	$scope.addRoom = (name) ->
+		console.log name
+
+	$scope.removeRoom = (index) ->
+		console.log index
