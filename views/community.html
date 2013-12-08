@@ -40,12 +40,13 @@
 			</div>
 			<% include community/what-up %>
 			<% include community/social %>
-			<% include community/admin %>
+				<% include community/admin %>
 		</div>
 	</div>
 	<!-- Community data -->
 	<div class="community-data" ssv="communityData">
 		<%= '{"community":'+JSON.stringify(community)+',"user":'+JSON.stringify(user)+'}' %>
 	</div>
+<% include tracking %>
 </body>
 </html>
