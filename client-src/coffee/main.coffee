@@ -1,11 +1,22 @@
-# if window.Snap != undefined
-#   $ () ->
-#     window.snapper = new Snap
-#       element: document.getElementById 'content'
-#       disable: "none"
-#       tapToClose: false
+snapUp = () ->
+  if $("#content").css("margin-left") != "250px"
+    if window.snapper == undefined
+      window.snapper = new Snap
+        element: document.getElementById 'content'
+        disable: "none"
+        tapToClose: false
+    else
+      window.snapper.enable()
+  else
+    window.snapper.close()
+    window.snapper.disable()
 
-#     window.snapper.open 'left'
+if window.Snap != undefined
+  $ () ->
+    $(window).resize () ->
+      snapUp()
+
+    
 
 angular.module('beviewed', ["ng", "ngAnimate"])
 

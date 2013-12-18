@@ -533,6 +533,33 @@ indexCtrl = function($scope, $http) {
   };
 };
 
+var snapUp;
+
+snapUp = function() {
+  if ($("#content").css("margin-left") !== "250px") {
+    if (window.snapper === void 0) {
+      return window.snapper = new Snap({
+        element: document.getElementById('content'),
+        disable: "none",
+        tapToClose: false
+      });
+    } else {
+      return window.snapper.enable();
+    }
+  } else {
+    window.snapper.close();
+    return window.snapper.disable();
+  }
+};
+
+if (window.Snap !== void 0) {
+  $(function() {
+    return $(window).resize(function() {
+      return snapUp();
+    });
+  });
+}
+
 angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProvider) {
   var soundCloudResource, youtubeResource;
   youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
