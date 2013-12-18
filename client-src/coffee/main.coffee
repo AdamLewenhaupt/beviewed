@@ -1,21 +1,37 @@
-angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"])
+# if window.Snap != undefined
+#   $ () ->
+#     window.snapper = new Snap
+#       element: document.getElementById 'content'
+#       disable: "none"
+#       tapToClose: false
+
+#     window.snapper.open 'left'
+
+angular.module('beviewed', ["ng", "ngAnimate"])
 
  .config ($sceDelegateProvider) ->
     youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/
     soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/
     $sceDelegateProvider.resourceUrlWhitelist ["self", youtubeResource]
 
+ .directive "ifHandheld", () ->
+    link: (scope, el, attrs) ->
+      if window.handHeld
+        el.addClass attrs["desktop-only"]
+
  .directive "embeder", ($sce) ->
+
     restrict: 'A'
     scope: 
       media: "=embeder"
       mediaData: "=embederSrc"
-    template: "<div  ng-switch on='media'>
+    template: "<div ng-switch on='media'>
         <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>
         <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>
         <div ng-switch-when='da' ng-bind-html='deviantArt'>
         </div>
       </div>"
+
     link: (scope, el, attrs) ->
 
       handleChange = () ->

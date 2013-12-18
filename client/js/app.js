@@ -403,7 +403,13 @@ createCommunity = function($scope, $http) {
 
 var dashboardCtrl;
 
-dashboardCtrl = function($scope, $http, flow) {
+dashboardCtrl = function($scope, $http, flow, stream) {
+  $scope.recent = false;
+  $scope.loadState = 0;
+  stream.change($scope, "loadState");
+  $scope.isLoading = function() {
+    return $scope.loadState > 0;
+  };
   $scope.limit = limit;
   $scope["new"] = 0;
   return $scope.$watch('user', function() {
@@ -527,11 +533,19 @@ indexCtrl = function($scope, $http) {
   };
 };
 
-angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).config(function($sceDelegateProvider) {
+angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProvider) {
   var soundCloudResource, youtubeResource;
   youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
   soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/;
   return $sceDelegateProvider.resourceUrlWhitelist(["self", youtubeResource]);
+}).directive("ifHandheld", function() {
+  return {
+    link: function(scope, el, attrs) {
+      if (window.handHeld) {
+        return el.addClass(attrs["desktop-only"]);
+      }
+    }
+  };
 }).directive("embeder", function($sce) {
   return {
     restrict: 'A',
@@ -539,7 +553,7 @@ angular.module('beviewed', ["ng", "ui.bootstrap", "ngAnimate", "ngTouch"]).confi
       media: "=embeder",
       mediaData: "=embederSrc"
     },
-    template: "<div  ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
+    template: "<div ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
     link: function(scope, el, attrs) {
       var handleChange;
       handleChange = function() {

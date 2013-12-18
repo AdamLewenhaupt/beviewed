@@ -1,4 +1,13 @@
-dashboardCtrl = ($scope, $http, flow) ->
+dashboardCtrl = ($scope, $http, flow, stream) ->
+
+	$scope.recent = false
+
+	$scope.loadState = 0
+
+	stream.change $scope, "loadState"
+
+	$scope.isLoading = () ->
+		$scope.loadState > 0
 
 	$scope.limit = limit
 	$scope.new = 0
