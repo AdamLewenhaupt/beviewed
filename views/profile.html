@@ -19,8 +19,8 @@
 				<strong>Full Name</strong><a popup="setName" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a>
 				<p>{{cap(user.firstName)}} {{cap(user.lastName)}}</p>
 
-				<strong>Country</strong><a  class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a></button>
-				<p>{{cap(user.country)}}</p>
+				<strong>Country</strong><a popup="setCountry" options="countries" class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a></button>
+				<p>{{countries[user.country]}}</p>
 				<strong>Contact</strong><a  class="edit"><i ng-show="write" class="glyphicon glyphicon-pencil icon-white"></i></a><br/>
 				<p>{{user.email}}</p>
 			</address>

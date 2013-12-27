@@ -53,12 +53,6 @@ communityCtrl = ($scope, $http, $sce, flow, stream, $window) ->
 		else
 			return false
 
-	$scope.swipeRight = () ->
-		$(".side-nav").addClass("side-nav-hover")
-
-	$scope.swipeLeft = () ->
-		$(".side-nav").removeClass("side-nav-hover")
-
 	$scope.currentTab = (name) ->
 		"btn-success" if name == $scope.current
 

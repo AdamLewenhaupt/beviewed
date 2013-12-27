@@ -60,12 +60,6 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
       return false;
     }
   };
-  $scope.swipeRight = function() {
-    return $(".side-nav").addClass("side-nav-hover");
-  };
-  $scope.swipeLeft = function() {
-    return $(".side-nav").removeClass("side-nav-hover");
-  };
   $scope.currentTab = function(name) {
     if (name === $scope.current) {
       return "btn-success";
@@ -192,101 +186,250 @@ communityCtrl = function($scope, $http, $sce, flow, stream, $window) {
   };
 };
 
-var exploreCtrl, getTime, profileCtrl,
-  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
-
-getTime = function() {
-  var d;
-  d = new Date();
-  return "" + (d.getHours()) + ":" + (d.getMinutes());
-};
-
-exploreCtrl = function($scope, $http) {
-  var req;
-  $scope.searchType = "makers";
-  $scope.swipeRight = function() {
-    console.log("swipe");
-    return $(".side-nav").addClass("side-nav-hover");
-  };
-  $scope.swipeLeft = function() {
-    return $(".side-nav").removeClass("side-nav-hover");
-  };
-  $scope.currentType = function(name) {
-    if (name === $scope.searchType) {
-      return "btn-success";
-    }
-  };
-  $scope.communities = [];
-  req = $http({
-    method: "GET",
-    url: "/community-explore/init"
-  });
-  req.success(function(data) {
-    return $scope.communities = data;
-  });
-  req.error(function(err) {
-    return console.log(err);
-  });
-  $scope.tags = ["music", "games", "art", "comedy"];
-  $scope.selectedTags = [];
-  $scope.displayTag = function(tag) {
-    return !(__indexOf.call($scope.selectedTags, tag) >= 0) && tag.indexOf($scope.tagSearch.toLowerCase()) !== -1;
-  };
-  return $scope.displayCommunity = function(community) {
-    var check1, check2, tag, _i, _len, _ref;
-    check1 = community.name.toLowerCase().indexOf($scope.mainQuery.toLowerCase()) !== -1;
-    check2 = true;
-    if ($scope.selectedTags.length > 0) {
-      _ref = $scope.selectedTags;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        tag = _ref[_i];
-        if (!(__indexOf.call(community.tags, tag) >= 0)) {
-          check2 = false;
-          break;
-        }
-      }
-    }
-    return check1 && check2;
-  };
-};
-
-profileCtrl = function($scope, $http) {
-  $scope.setName = function(name) {
-    var data, names, req;
-    names = name.split(' ');
-    data = {};
-    data.firstName = names[0];
-    if (names.length > 1) {
-      data.lastName = names[1];
-    }
-    console.log(data);
-    if (names.length > 0) {
-      req = $http({
-        method: "PUT",
-        url: "/profile",
-        data: data
-      });
-      return req.success(function() {
-        $scope.user.firstName = data.firstName.toLowerCase();
-        if (names.length > 1) {
-          return $scope.user.lastName = data.lastName.toLowerCase();
-        }
-      });
-    }
-  };
-  $scope.cap = capitalize;
-  return $scope.signout = function() {
-    return $http({
-      method: "POST",
-      url: "/signout"
-    }).success(function(res) {
-      if (res.error) {
-        return console.log(res.error);
-      } else {
-        return window.location.replace("/");
-      }
-    });
-  };
+window.countries = {
+  'AF': 'Afghanistan',
+  'AX': 'Åland Islands',
+  'AL': 'Albania',
+  'DZ': 'Algeria',
+  'AS': 'American Samoa',
+  'AD': 'AndorrA',
+  'AO': 'Angola',
+  'AI': 'Anguilla',
+  'AQ': 'Antarctica',
+  'AG': 'Antigua and Barbuda',
+  'AR': 'Argentina',
+  'AM': 'Armenia',
+  'AW': 'Aruba',
+  'AU': 'Australia',
+  'AT': 'Austria',
+  'AZ': 'Azerbaijan',
+  'BS': 'Bahamas',
+  'BH': 'Bahrain',
+  'BD': 'Bangladesh',
+  'BB': 'Barbados',
+  'BY': 'Belarus',
+  'BE': 'Belgium',
+  'BZ': 'Belize',
+  'BJ': 'Benin',
+  'BM': 'Bermuda',
+  'BT': 'Bhutan',
+  'BO': 'Bolivia',
+  'BA': 'Bosnia and Herzegovina',
+  'BW': 'Botswana',
+  'BV': 'Bouvet Island',
+  'BR': 'Brazil',
+  'IO': 'British Indian Ocean Territory',
+  'BN': 'Brunei Darussalam',
+  'BG': 'Bulgaria',
+  'BF': 'Burkina Faso',
+  'BI': 'Burundi',
+  'KH': 'Cambodia',
+  'CM': 'Cameroon',
+  'CA': 'Canada',
+  'CV': 'Cape Verde',
+  'KY': 'Cayman Islands',
+  'CF': 'Central African Republic',
+  'TD': 'Chad',
+  'CL': 'Chile',
+  'CN': 'China',
+  'CX': 'Christmas Island',
+  'CC': 'Cocos (Keeling) Islands',
+  'CO': 'Colombia',
+  'KM': 'Comoros',
+  'CG': 'Congo',
+  'CD': 'Congo, The Democratic Republic of the',
+  'CK': 'Cook Islands',
+  'CR': 'Costa Rica',
+  'CI': 'Cote D\'Ivoire',
+  'HR': 'Croatia',
+  'CU': 'Cuba',
+  'CY': 'Cyprus',
+  'CZ': 'Czech Republic',
+  'DK': 'Denmark',
+  'DJ': 'Djibouti',
+  'DM': 'Dominica',
+  'DO': 'Dominican Republic',
+  'EC': 'Ecuador',
+  'EG': 'Egypt',
+  'SV': 'El Salvador',
+  'GQ': 'Equatorial Guinea',
+  'ER': 'Eritrea',
+  'EE': 'Estonia',
+  'ET': 'Ethiopia',
+  'FK': 'Falkland Islands (Malvinas)',
+  'FO': 'Faroe Islands',
+  'FJ': 'Fiji',
+  'FI': 'Finland',
+  'FR': 'France',
+  'GF': 'French Guiana',
+  'PF': 'French Polynesia',
+  'TF': 'French Southern Territories',
+  'GA': 'Gabon',
+  'GM': 'Gambia',
+  'GE': 'Georgia',
+  'DE': 'Germany',
+  'GH': 'Ghana',
+  'GI': 'Gibraltar',
+  'GR': 'Greece',
+  'GL': 'Greenland',
+  'GD': 'Grenada',
+  'GP': 'Guadeloupe',
+  'GU': 'Guam',
+  'GT': 'Guatemala',
+  'GG': 'Guernsey',
+  'GN': 'Guinea',
+  'GW': 'Guinea-Bissau',
+  'GY': 'Guyana',
+  'HT': 'Haiti',
+  'HM': 'Heard Island and Mcdonald Islands',
+  'VA': 'Holy See (Vatican City State)',
+  'HN': 'Honduras',
+  'HK': 'Hong Kong',
+  'HU': 'Hungary',
+  'IS': 'Iceland',
+  'IN': 'India',
+  'ID': 'Indonesia',
+  'IR': 'Iran, Islamic Republic Of',
+  'IQ': 'Iraq',
+  'IE': 'Ireland',
+  'IM': 'Isle of Man',
+  'IL': 'Israel',
+  'IT': 'Italy',
+  'JM': 'Jamaica',
+  'JP': 'Japan',
+  'JE': 'Jersey',
+  'JO': 'Jordan',
+  'KZ': 'Kazakhstan',
+  'KE': 'Kenya',
+  'KI': 'Kiribati',
+  'KP': 'Korea, Democratic People\'S Republic of',
+  'KR': 'Korea, Republic of',
+  'KW': 'Kuwait',
+  'KG': 'Kyrgyzstan',
+  'LA': 'Lao People\'S Democratic Republic',
+  'LV': 'Latvia',
+  'LB': 'Lebanon',
+  'LS': 'Lesotho',
+  'LR': 'Liberia',
+  'LY': 'Libyan Arab Jamahiriya',
+  'LI': 'Liechtenstein',
+  'LT': 'Lithuania',
+  'LU': 'Luxembourg',
+  'MO': 'Macao',
+  'MK': 'Macedonia, The Former Yugoslav Republic of',
+  'MG': 'Madagascar',
+  'MW': 'Malawi',
+  'MY': 'Malaysia',
+  'MV': 'Maldives',
+  'ML': 'Mali',
+  'MT': 'Malta',
+  'MH': 'Marshall Islands',
+  'MQ': 'Martinique',
+  'MR': 'Mauritania',
+  'MU': 'Mauritius',
+  'YT': 'Mayotte',
+  'MX': 'Mexico',
+  'FM': 'Micronesia, Federated States of',
+  'MD': 'Moldova, Republic of',
+  'MC': 'Monaco',
+  'MN': 'Mongolia',
+  'MS': 'Montserrat',
+  'MA': 'Morocco',
+  'MZ': 'Mozambique',
+  'MM': 'Myanmar',
+  'NA': 'Namibia',
+  'NR': 'Nauru',
+  'NP': 'Nepal',
+  'NL': 'Netherlands',
+  'AN': 'Netherlands Antilles',
+  'NC': 'New Caledonia',
+  'NZ': 'New Zealand',
+  'NI': 'Nicaragua',
+  'NE': 'Niger',
+  'NG': 'Nigeria',
+  'NU': 'Niue',
+  'NF': 'Norfolk Island',
+  'MP': 'Northern Mariana Islands',
+  'NO': 'Norway',
+  'OM': 'Oman',
+  'PK': 'Pakistan',
+  'PW': 'Palau',
+  'PS': 'Palestinian Territory, Occupied',
+  'PA': 'Panama',
+  'PG': 'Papua New Guinea',
+  'PY': 'Paraguay',
+  'PE': 'Peru',
+  'PH': 'Philippines',
+  'PN': 'Pitcairn',
+  'PL': 'Poland',
+  'PT': 'Portugal',
+  'PR': 'Puerto Rico',
+  'QA': 'Qatar',
+  'RE': 'Reunion',
+  'RO': 'Romania',
+  'RU': 'Russian Federation',
+  'RW': 'RWANDA',
+  'SH': 'Saint Helena',
+  'KN': 'Saint Kitts and Nevis',
+  'LC': 'Saint Lucia',
+  'PM': 'Saint Pierre and Miquelon',
+  'VC': 'Saint Vincent and the Grenadines',
+  'WS': 'Samoa',
+  'SM': 'San Marino',
+  'ST': 'Sao Tome and Principe',
+  'SA': 'Saudi Arabia',
+  'SN': 'Senegal',
+  'CS': 'Serbia and Montenegro',
+  'SC': 'Seychelles',
+  'SL': 'Sierra Leone',
+  'SG': 'Singapore',
+  'SK': 'Slovakia',
+  'SI': 'Slovenia',
+  'SB': 'Solomon Islands',
+  'SO': 'Somalia',
+  'ZA': 'South Africa',
+  'GS': 'South Georgia and the South Sandwich Islands',
+  'ES': 'Spain',
+  'LK': 'Sri Lanka',
+  'SD': 'Sudan',
+  'SR': 'Suriname',
+  'SJ': 'Svalbard and Jan Mayen',
+  'SZ': 'Swaziland',
+  'SE': 'Sweden',
+  'CH': 'Switzerland',
+  'SY': 'Syrian Arab Republic',
+  'TW': 'Taiwan, Province of China',
+  'TJ': 'Tajikistan',
+  'TZ': 'Tanzania, United Republic of',
+  'TH': 'Thailand',
+  'TL': 'Timor-Leste',
+  'TG': 'Togo',
+  'TK': 'Tokelau',
+  'TO': 'Tonga',
+  'TT': 'Trinidad and Tobago',
+  'TN': 'Tunisia',
+  'TR': 'Turkey',
+  'TM': 'Turkmenistan',
+  'TC': 'Turks and Caicos Islands',
+  'TV': 'Tuvalu',
+  'UG': 'Uganda',
+  'UA': 'Ukraine',
+  'AE': 'United Arab Emirates',
+  'GB': 'United Kingdom',
+  'US': 'United States',
+  'UM': 'United States Minor Outlying Islands',
+  'UY': 'Uruguay',
+  'UZ': 'Uzbekistan',
+  'VU': 'Vanuatu',
+  'VE': 'Venezuela',
+  'VN': 'Viet Nam',
+  'VG': 'Virgin Islands, British',
+  'VI': 'Virgin Islands, U.S.',
+  'WF': 'Wallis and Futuna',
+  'EH': 'Western Sahara',
+  'YE': 'Yemen',
+  'ZM': 'Zambia',
+  'ZW': 'Zimbabwe'
 };
 
 var createCommunity,
@@ -437,6 +580,64 @@ dashboardCtrl = function($scope, $http, flow, stream) {
   });
 };
 
+var exploreCtrl, getTime,
+  __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+getTime = function() {
+  var d;
+  d = new Date();
+  return "" + (d.getHours()) + ":" + (d.getMinutes());
+};
+
+exploreCtrl = function($scope, $http) {
+  var req;
+  $scope.searchType = "makers";
+  $scope.swipeRight = function() {
+    console.log("swipe");
+    return $(".side-nav").addClass("side-nav-hover");
+  };
+  $scope.swipeLeft = function() {
+    return $(".side-nav").removeClass("side-nav-hover");
+  };
+  $scope.currentType = function(name) {
+    if (name === $scope.searchType) {
+      return "btn-success";
+    }
+  };
+  $scope.communities = [];
+  req = $http({
+    method: "GET",
+    url: "/community-explore/init"
+  });
+  req.success(function(data) {
+    return $scope.communities = data;
+  });
+  req.error(function(err) {
+    return console.log(err);
+  });
+  $scope.tags = ["music", "games", "art", "comedy"];
+  $scope.selectedTags = [];
+  $scope.displayTag = function(tag) {
+    return !(__indexOf.call($scope.selectedTags, tag) >= 0) && tag.indexOf($scope.tagSearch.toLowerCase()) !== -1;
+  };
+  return $scope.displayCommunity = function(community) {
+    var check1, check2, tag, _i, _len, _ref;
+    check1 = community.name.toLowerCase().indexOf($scope.mainQuery.toLowerCase()) !== -1;
+    check2 = true;
+    if ($scope.selectedTags.length > 0) {
+      _ref = $scope.selectedTags;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tag = _ref[_i];
+        if (!(__indexOf.call(community.tags, tag) >= 0)) {
+          check2 = false;
+          break;
+        }
+      }
+    }
+    return check1 && check2;
+  };
+};
+
 var indexCtrl;
 
 indexCtrl = function($scope, $http) {
@@ -539,9 +740,7 @@ snapUp = function() {
   if ($("#content").css("margin-left") !== "250px") {
     if (window.snapper === void 0) {
       return window.snapper = new Snap({
-        element: document.getElementById('content'),
-        disable: "none",
-        tapToClose: false
+        element: document.getElementById('content')
       });
     } else {
       return window.snapper.enable();
@@ -565,14 +764,6 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
   youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/;
   soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/;
   return $sceDelegateProvider.resourceUrlWhitelist(["self", youtubeResource]);
-}).directive("ifHandheld", function() {
-  return {
-    link: function(scope, el, attrs) {
-      if (window.handHeld) {
-        return el.addClass(attrs["desktop-only"]);
-      }
-    }
-  };
 }).directive("embeder", function($sce) {
   return {
     restrict: 'A',
@@ -589,7 +780,7 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
         } else if (scope.media === "yt") {
           return scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + scope.mediaData);
         } else if (scope.media === "da") {
-          return scope.deviantArt === ("<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + scope.mediaData + "' allowscriptaccess='always'></embed>");
+          return scope.deviantArt = $sce.trustAsHtml("<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + scope.mediaData + "' allowscriptaccess='always'></embed>");
         }
       };
       scope.$watch("media", handleChange);
@@ -632,7 +823,7 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
           if (options) {
             parse = "";
             for (key in options) {
-              text = "<option value='" + options[key] + "'>" + key + "</option>";
+              text = "<option value='" + key + "'>" + options[key] + "</option>";
               parse += text;
             }
             return $("<select class='form-control popup-input' style='width:70%;'>" + parse + "</select>");
@@ -910,6 +1101,63 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
   return stream;
 });
 
+var profileCtrl;
+
+profileCtrl = function($scope, $http) {
+  $scope.countries = window.countries;
+  $scope.setCountry = function(code) {
+    var req;
+    if ($scope.countries[code] !== void 0) {
+      req = $http({
+        method: "PUT",
+        url: "/profile",
+        data: {
+          country: code
+        }
+      });
+      return req.success(function() {
+        return $scope.user.country = code;
+      });
+    }
+  };
+  $scope.setName = function(name) {
+    var data, names, req;
+    names = name.split(' ');
+    data = {};
+    data.firstName = names[0];
+    if (names.length > 1) {
+      data.lastName = names[1];
+    }
+    console.log(data);
+    if (names.length > 0) {
+      req = $http({
+        method: "PUT",
+        url: "/profile",
+        data: data
+      });
+      return req.success(function() {
+        $scope.user.firstName = data.firstName.toLowerCase();
+        if (names.length > 1) {
+          return $scope.user.lastName = data.lastName.toLowerCase();
+        }
+      });
+    }
+  };
+  $scope.cap = capitalize;
+  return $scope.signout = function() {
+    return $http({
+      method: "POST",
+      url: "/signout"
+    }).success(function(res) {
+      if (res.error) {
+        return console.log(res.error);
+      } else {
+        return window.location.replace("/");
+      }
+    });
+  };
+};
+
 var capitalize, limit;
 
 capitalize = function(word) {
@@ -943,15 +1191,16 @@ writeCtrl = function($scope, $http, $sce) {
     }
   };
   $scope.warnings = [];
-  warn = function(msg, type) {
+  warn = function(msg, type, href) {
     return $scope.warnings.push({
       msg: msg,
-      type: type || ""
+      type: type || "",
+      href: href
     });
   };
   validators = {
     title: function() {
-      return $scope.fields.title.length >= 4 && $scope.fields.title.length <= 26;
+      return $scope.fields.title.length >= 4 && $scope.fields.title.length <= 40;
     },
     mediaData: function() {
       if ($scope.fields.media === "none") {
@@ -1027,7 +1276,7 @@ writeCtrl = function($scope, $http, $sce) {
         }
       });
       req.success(function(data) {
-        return warn("Awesome! Successfully posted", "alert-success");
+        return warn("Successfully posted, Click me to go to your community", "alert-success", "/community/" + $scope.community);
       });
       return req.error(function(data) {
         if (data === "404-type") {
@@ -1041,6 +1290,7 @@ writeCtrl = function($scope, $http, $sce) {
   $scope.capitalize = capitalize;
   $(function() {
     return $scope.$apply(function() {
+      warn("testing", "alert-success", "test");
       $scope.available = $.parseJSON($(".data").html());
       if ($scope.available.length === 1) {
         return $scope.setCommunity($scope.available[0]);

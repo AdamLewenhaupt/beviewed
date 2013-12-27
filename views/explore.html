@@ -8,10 +8,9 @@
 	<title>Beviewed - Explore</title>
 </head>
 <body>
-	<% include nav %>
 	<!-- Side navigation -->
-	<div class="side-nav">
-		<div class="navbar navbar-inverse" role="navigation">
+	<div class="snap-drawers">
+		<div class="snap-drawer snap-drawer-left side-nav">
 			<div class="btn-group btn-type">
 				<button class="btn navbar-btn btn-default btn-type"
 					ng-class="currentType('makers')"
@@ -31,16 +30,15 @@
 				<input  type="text" class="form-control" placeholder="Search for tags" ng-init="tagSearch = ''" ng-model="tagSearch" />
 			</form>
 			<div class="row side-nav-row">
-						<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
-							<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
-						</div>
+					<div ng-show="displayTag(tag)" class="tag-item bounce-animation" ng-repeat="tag in tags" ng-click="selectedTags.push(tag)">
+						<img class="img-rounded" ng-src="/img/tags/{{tag}}" />
 					</div>
+				</div>
 			</div>
-		</div>
-
+		<div/>
 	</div>
-	<!-- Side navigation end -->
-	<div class="main-content">
+	<div id="content" class="snap-content">
+		<% include nav %>
 		<div class="row">
 			<!-- Right side -->
 			<div class="col-sm-12 col-lg-12">

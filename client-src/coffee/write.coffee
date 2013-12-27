@@ -13,13 +13,14 @@ writeCtrl = ($scope, $http, $sce) ->
 
 	$scope.warnings = []
 
-	warn = (msg, type) -> $scope.warnings.push 
+	warn = (msg, type, href) -> $scope.warnings.push 
 		msg: msg
 		type: type || ""
+		href: href
 
 	validators =
 		title: () ->
-			$scope.fields.title.length >= 4 && $scope.fields.title.length <= 26
+			$scope.fields.title.length >= 4 && $scope.fields.title.length <= 40
 
 		mediaData: () ->
 			if $scope.fields.media == "none"
@@ -88,7 +89,7 @@ writeCtrl = ($scope, $http, $sce) ->
 						mediaData: $scope.extracted
 
 			req.success (data) ->
-				warn "Awesome! Successfully posted", "alert-success"
+				warn "Successfully posted, Click me to go to your community", "alert-success", "/community/#{$scope.community}"
 
 			req.error (data) ->
 				if data == "404-type"
@@ -100,6 +101,7 @@ writeCtrl = ($scope, $http, $sce) ->
 
 	$ () ->
 		$scope.$apply () ->
+			warn "testing", "alert-success", "test"
 			$scope.available = $.parseJSON $(".data").html()
 
 			if $scope.available.length == 1

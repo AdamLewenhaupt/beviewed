@@ -3,8 +3,6 @@ snapUp = () ->
     if window.snapper == undefined
       window.snapper = new Snap
         element: document.getElementById 'content'
-        disable: "none"
-        tapToClose: false
     else
       window.snapper.enable()
   else
@@ -24,11 +22,6 @@ angular.module('beviewed', ["ng", "ngAnimate"])
     youtubeResource = /^\/\/www\.youtube\.com\/embed\/.*$/
     soundCloudResource = /^https\:\/\/w\.soundcloud\.com\/player\/.*$/
     $sceDelegateProvider.resourceUrlWhitelist ["self", youtubeResource]
-
- .directive "ifHandheld", () ->
-    link: (scope, el, attrs) ->
-      if window.handHeld
-        el.addClass attrs["desktop-only"]
 
  .directive "embeder", ($sce) ->
 
@@ -51,7 +44,7 @@ angular.module('beviewed', ["ng", "ngAnimate"])
         else if scope.media == "yt"
           scope.youTube = $sce.trustAsResourceUrl "http://www.youtube.com/embed/#{scope.mediaData}"
         else if scope.media == "da"
-          scope.deviantArt == "<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{scope.mediaData}' allowscriptaccess='always'></embed>"
+          scope.deviantArt = $sce.trustAsHtml "<embed class='embed da' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=#{scope.mediaData}' allowscriptaccess='always'></embed>"
 
       scope.$watch "media", handleChange
       scope.$watch "mediaData", handleChange
@@ -71,6 +64,7 @@ angular.module('beviewed', ["ng", "ngAnimate"])
 
 
  .directive "popup", () ->
+  
     restrict: 'A'
     link: (scope, el, attrs) ->
 
@@ -101,7 +95,7 @@ angular.module('beviewed', ["ng", "ngAnimate"])
           if options
             parse = ""
             for key of options
-              text = "<option value='#{options[key]}'>#{key}</option>"
+              text = "<option value='#{key}'>#{options[key]}</option>"
               parse += text
             $("<select class='form-control popup-input' style='width:70%;'>#{parse}</select>")
           else

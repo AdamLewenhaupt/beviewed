@@ -1,0 +1,23 @@
+@background: #222;
+
+#content {
+	background-color: white;
+	box-shadow: @background -10px 0px 25px, @background 10px 0px 25px;
+	overflow-x: hidden;
+}
+
+@media(min-width: 990px) {
+	#content {
+		margin-left: 250px;
+		margin-right: 250px;
+	}
+}
+
+.side-nav {
+	padding: 10px;
+	background-color: @background;
+}
+
+body {
+	background-color: @background;
+}

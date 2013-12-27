@@ -9,7 +9,7 @@
 	<div class="warner">
 		<div ng-click="warnings.splice(i,1)" class="alert shake-animation" ng-class="warning.type" ng-repeat="(i, warning) in warnings">
 			<button ng-click="warnings.splice(i,1)" type="button" class="close" aria-hidden="true">&times;</button>
-			<h2>{{warning.msg}}</h2>
+			<a class="alert-link" ng-href="{{warning.href}}"><h2>{{warning.msg}}</h2></a>
 		</div>
 	</div>
 	<!-- Select community -->

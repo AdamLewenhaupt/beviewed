@@ -1,11 +1,7 @@
+@import "libs/drama.less";
+
 body {
 	background-color: #222;
-}
-
-#content {
-	background-color: white;
-	box-shadow: #222 -10px 0px 25px, #222 10px 0px 25px;
-	overflow-x: hidden;
 }
 
 .user-data {
@@ -18,6 +14,10 @@ body {
 }
 
 .embed.yt {
+	height: 260px;
+}
+
+.embed.da {
 	height: 260px;
 }
 
@@ -42,16 +42,4 @@ body {
 .link {
 	overflow: hidden;
 	line-height: 65px;
-}
-
-.side-nav {
-	padding: 10px;
-	background-color: #222;
-}
-
-@media(min-width: 990px) {
-	#content {
-		margin-left: 250px;
-		margin-right: 250px;
-	}
 }
