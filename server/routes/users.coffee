@@ -134,35 +134,31 @@ exports.authentication =
 
 	signup: (req, res) ->
 		email = req.body.email
-		pass = req.body.pass1 if req.body.pass1 == req.body.pass2
-		unless pass
-			res.send
-				error: "pass-err"
-		else
-			colls.users.model.find()
-				.where("email", email)
-				.exec (err, users) ->
-					if err
-						res.send
-							error: "usr-err"
-						return
-					if users.length > 0
-						res.send
-							error: "usr-exists"
-						return
 
-					colls.users.post
-						email: email
-						pass: (createHash pass), (err, user) ->
-							if err
-								res.send
-									error: "post-err"
-							else
-								createSession user, (err, sess) ->
-									console.log "stage 3"
-									if err
-										res.send
-											error: "sess-err"
-									else
-										res.cookie "s_id", sess, { signed: true }
-										res.send "reg"
+		colls.users.model.find()
+			.where("email", email)
+			.exec (err, users) ->
+				if err
+					res.send
+						error: "usr-err"
+					return
+				if users.length > 0
+					res.send
+						error: "usr-exists"
+					return
+
+				colls.users.post
+					email: email
+					pass: (createHash req.body.pass), (err, user) ->
+						if err
+							res.send
+								error: "post-err"
+						else
+							createSession user, (err, sess) ->
+								console.log "stage 3"
+								if err
+									res.send
+										error: "sess-err"
+								else
+									res.cookie "s_id", sess, { signed: true }
+									res.send "reg"

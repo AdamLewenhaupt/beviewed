@@ -11,10 +11,9 @@ snapUp = () ->
 
 if window.Snap != undefined
   $ () ->
+    snapUp()
     $(window).resize () ->
       snapUp()
-
-    
 
 angular.module('beviewed', ["ng", "ngAnimate"])
 
@@ -32,7 +31,6 @@ angular.module('beviewed', ["ng", "ngAnimate"])
     template: "<div ng-switch on='media'>
         <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>
         <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>
-        <div ng-switch-when='da' ng-bind-html='deviantArt'>
         </div>
       </div>"
 
@@ -128,7 +126,7 @@ angular.module('beviewed', ["ng", "ngAnimate"])
       link: "="
       click: "&ngClick"
     template: "
-    <div class='media'>
+    <div class='media community-wrapper'>
       <a href='{{ genLink() }}'>
         <img ng-click='delegate()' class='community img-rounded media-object'
           ng-src='/img/icons/{{community}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' />
@@ -260,7 +258,6 @@ angular.module('beviewed', ["ng", "ngAnimate"])
     applyScope = (imageResult) ->
       scope.$apply ->
         
-        #console.log(imageResult);
         if attrs.multiple
           scope.image.push imageResult
         else

@@ -36,7 +36,7 @@
 						<!-- Hosting communitites -->
 						<h2 class="text-center community-header">Admin of <span class="text-success">{{user.admin.length}}</span> communities</h2>
 						<ul class="admin-communitites">
-							<li ng-repeat="community in user.admin">
+							<li class="community-li" ng-repeat="community in user.admin">
 								<div community="community" />
 							</li>
 						</ul>
@@ -47,7 +47,7 @@
 						<!-- Involved communities -->
 						<h2 class="text-center community-header">Involved in <span class="text-success">{{user.in.length}}</span> community</h2>
 						<ul class="involved-communities">
-							<li ng-repeat="community in user.in">
+							<li ng-repeat="community in user.in" class="community-li">
 								<div community="community" />
 							</li>
 						</ul>
@@ -56,7 +56,7 @@
 			</div>
 		</div>
 		<!-- User data -->
-		<div class="ng-hide" ssv-parse="user"><%= JSON.stringify(user) %></div>
+		<div class="ng-hide" ssv-parse="user" ><%= JSON.stringify(user) %></div>
 		<div class="ng-hide" ssv-parse="write" ><%= write %></div>
 	</div>
 <% include tracking %>

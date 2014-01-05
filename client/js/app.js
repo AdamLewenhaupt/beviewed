@@ -699,14 +699,9 @@ indexCtrl = function($scope, $http) {
     }
   };
   getSignup = function() {
-    if (!($scope.signupFields.email && $scope.signupFields.pass1 && $scope.signupFields.pass2)) {
+    if (!($scope.loginFields.email && $scope.loginFields.pass)) {
       return false;
     }
-    if ($scope.signupFields.pass1 !== $scope.signupFields.pass2) {
-      $scope.error(res.error || "Your passwords don't match, please try again!");
-      return;
-    }
-    console.log("all good");
     $scope.isLoading = true;
     return $http({
       method: "POST",
@@ -753,6 +748,7 @@ snapUp = function() {
 
 if (window.Snap !== void 0) {
   $(function() {
+    snapUp();
     return $(window).resize(function() {
       return snapUp();
     });
@@ -771,7 +767,7 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
       media: "=embeder",
       mediaData: "=embederSrc"
     },
-    template: "<div ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        <div ng-switch-when='da' ng-bind-html='deviantArt'>        </div>      </div>",
+    template: "<div ng-switch on='media'>        <iframe class='embed sc' ng-switch-when='sc' scrolling='no' frameborder='no' ng-src='{{soundCloud}}'></iframe>        <iframe class='embed yt' ng-switch-when='yt' ng-src='{{youTube}}' frameborder='no' allowfullscreen></iframe>        </div>      </div>",
     link: function(scope, el, attrs) {
       var handleChange;
       handleChange = function() {
@@ -863,7 +859,7 @@ angular.module('beviewed', ["ng", "ngAnimate"]).config(function($sceDelegateProv
       link: "=",
       click: "&ngClick"
     },
-    template: "    <div class='media'>      <a href='{{ genLink() }}'>        <img ng-click='delegate()' class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' />      </a></div>",
+    template: "    <div class='media community-wrapper'>      <a href='{{ genLink() }}'>        <img ng-click='delegate()' class='community img-rounded media-object'          ng-src='/img/icons/{{community}}' onerror='$(this).attr(\"src\",\"/img/unknown.png\")' />      </a></div>",
     link: function(scope, el, attrs) {
       scope.community = scope.getCommunity();
       scope.doLink = scope.link;
@@ -1215,9 +1211,6 @@ writeCtrl = function($scope, $http, $sce) {
     yt: function() {
       return $scope.fields.mediaData.match(regex.extractors.yt);
     },
-    da: function() {
-      return $scope.fields.mediaData.match(/\d+/) && $scope.fields.mediaData.length > 0;
-    },
     text: function() {
       return $scope.fields.text.length > 0 && $scope.fields.text.length <= 320;
     }
@@ -1290,7 +1283,6 @@ writeCtrl = function($scope, $http, $sce) {
   $scope.capitalize = capitalize;
   $(function() {
     return $scope.$apply(function() {
-      warn("testing", "alert-success", "test");
       $scope.available = $.parseJSON($(".data").html());
       if ($scope.available.length === 1) {
         return $scope.setCommunity($scope.available[0]);
@@ -1326,13 +1318,10 @@ writeCtrl = function($scope, $http, $sce) {
           return $scope.fields.mediaData.replace(regex.extractors.sc, "$2");
         case "yt":
           return $scope.fields.mediaData.replace(regex.extractors.yt, "$2");
-        case "da":
-          return $scope.fields.mediaData;
       }
     })();
     $scope.soundCloud = $sce.trustAsResourceUrl($scope.extracted);
-    $scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + $scope.extracted);
-    return $scope.deviantArt = $sce.trustAsHtml("<embed class='embed' ng-switch-when='da' src='http://backend.deviantart.com/embed/view.swf?1' type='application/x-shockwave-flash' width='450' height='589' flashvars='id=" + $scope.extracted + "' allowscriptaccess='always'></embed>");
+    return $scope.youTube = $sce.trustAsResourceUrl("http://www.youtube.com/embed/" + $scope.extracted);
   };
   return $scope.mediaType = function(name) {
     return $scope.fields.media === name;

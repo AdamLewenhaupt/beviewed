@@ -49,11 +49,7 @@ indexCtrl = ($scope, $http) ->
 
 
 	getSignup = () ->
-		return false unless $scope.signupFields.email && $scope.signupFields.pass1 && $scope.signupFields.pass2
-		if $scope.signupFields.pass1 != $scope.signupFields.pass2
-			$scope.error (res.error || "Your passwords don't match, please try again!")
-			return
-		console.log "all good"
+		return false unless $scope.loginFields.email && $scope.loginFields.pass
 		$scope.isLoading = true
 		$http
 			method: "POST"

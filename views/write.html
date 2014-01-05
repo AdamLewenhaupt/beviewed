@@ -51,8 +51,6 @@
 									<img class="logo img-rounded" src="/img/logos/soundcloud.jpg" ng-click="media('sc')" />
 									
 									<img class="logo img-rounded" src="/img/logos/youtube.jpg" ng-click="media('yt')" />
-
-									<img src="/img/logos/deviantart.jpg" class="logo img-rounded" ng-click="media('da')" />
 								</div>
 								<div ng-show="fields.media != 'none'" class="fade-animation">
 									<h3>
@@ -97,9 +95,6 @@
 
 										<!-- Youtube -->
 										<iframe class="embed" ng-switch-when="yt" height="315" ng-src="{{youTube}}" frameborder="no" allowfullscreen></iframe>
-
-										<!-- Deviant art -->
-										<div ng-switch-when="da" ng-bind-html="deviantArt">
 										</div>
 
 									</div>

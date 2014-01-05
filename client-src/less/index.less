@@ -2,6 +2,26 @@
 	white-space: nowrap;
 }
 
+#content {
+	margin: 120px;
+}
+
+.field {
+	margin-bottom: 10px;
+	width: 100%;
+}
+
+@media(max-width: 992px) {
+
+	#content {
+		margin: 40px;
+	}	
+
+	.action {
+		margin-bottom: 10px;
+	}
+}
+
 @media(max-width: 769px) {
 	.greet {
 		margin-bottom: 30px;
@@ -10,34 +30,35 @@
 	.login h2, .signup h2 {
 		font-size: 24px;
 	}
-}
 
-@media(min-width: 979px) {
+	#content {
+		margin: 20px;
+	}
 
-	.sub-menu {
+	.login {
+		width: 100%;
+	}
 
-		div {
-
-			width: 100%;
-			max-height: 280px;
-
-			div {
-				width: 100%;
-				height: 0px;
-				padding-bottom: 80%;
-			}
-		}
+	.field {
+		width: 100%;
 	}
 }
 
-.login, .signup {
-	height: 100px;
-	vertical-align: top;
-	transition: width 1s;
-}
-
-.jumbotron {
-	background-image:url('/img/background.jpg');
+body {
+	overflow: auto!important;
+	background-image:url('/img/background2.jpg');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
+}
+
+.catcher {
+	margin-top: 40px;
+}
+
+.under {
+	color: rgb(70, 70, 70);
+}
+
+input {
+	height: 42px!important;
 }

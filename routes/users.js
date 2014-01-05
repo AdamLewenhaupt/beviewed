@@ -187,54 +187,45 @@ exports.authentication = {
     });
   },
   signup: function(req, res) {
-    var email, pass;
+    var email;
     email = req.body.email;
-    if (req.body.pass1 === req.body.pass2) {
-      pass = req.body.pass1;
-    }
-    if (!pass) {
-      return res.send({
-        error: "pass-err"
-      });
-    } else {
-      return colls.users.model.find().where("email", email).exec(function(err, users) {
-        if (err) {
-          res.send({
-            error: "usr-err"
-          });
-          return;
-        }
-        if (users.length > 0) {
-          res.send({
-            error: "usr-exists"
-          });
-          return;
-        }
-        return colls.users.post({
-          email: email,
-          pass: createHash(pass)
-        }, function(err, user) {
-          if (err) {
-            return res.send({
-              error: "post-err"
-            });
-          } else {
-            return createSession(user, function(err, sess) {
-              console.log("stage 3");
-              if (err) {
-                return res.send({
-                  error: "sess-err"
-                });
-              } else {
-                res.cookie("s_id", sess, {
-                  signed: true
-                });
-                return res.send("reg");
-              }
-            });
-          }
+    return colls.users.model.find().where("email", email).exec(function(err, users) {
+      if (err) {
+        res.send({
+          error: "usr-err"
         });
+        return;
+      }
+      if (users.length > 0) {
+        res.send({
+          error: "usr-exists"
+        });
+        return;
+      }
+      return colls.users.post({
+        email: email,
+        pass: createHash(req.body.pass)
+      }, function(err, user) {
+        if (err) {
+          return res.send({
+            error: "post-err"
+          });
+        } else {
+          return createSession(user, function(err, sess) {
+            console.log("stage 3");
+            if (err) {
+              return res.send({
+                error: "sess-err"
+              });
+            } else {
+              res.cookie("s_id", sess, {
+                signed: true
+              });
+              return res.send("reg");
+            }
+          });
+        }
       });
-    }
+    });
   }
 };
